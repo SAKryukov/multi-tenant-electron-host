@@ -39,6 +39,7 @@ function menuGenerator (container) {
             findNext: "F3",
             underline: text => `<u>${text}</u>`,
         },
+        keyToCode: key => `Key${key.toUpperCase()}`,
         elements: {
             header: "header",
             select: "select",
@@ -271,7 +272,7 @@ function menuGenerator (container) {
     const remapKeyboardShortcuts = () => {
         keyboardMap.clear();
         for (const character of menuOptions.keyboardShortcuts.excludes)
-            keyboardMap.set(character, null);
+            keyboardMap.set(definitionSet.keyToCode(character), null);
         const remapKeyboardShortcut = (header, xPosition) => { //automatic keyboard shortcuts:
             if (!goodForKeyboardHandling())
                 return;
@@ -280,10 +281,10 @@ function menuGenerator (container) {
             const textContent = header.textContent;
             header.innerHTML = textContent; // remove markup
             for (const character of textContent) {
-                const characterKey = character.toLowerCase(character);
-                if (!keyboardMap.has(characterKey) && !(keyboardMap.has(character))) {
-                    keyboardMap.has(characterKey);
-                    keyboardMap.set(characterKey, xPosition);
+                const code = definitionSet.keyToCode(character);
+                if (!keyboardMap.has(code) && !(keyboardMap.has(code))) {
+                    keyboardMap.has(code);
+                    keyboardMap.set(code, xPosition);
                     found = true;
                     break;
                 } //if
@@ -571,22 +572,24 @@ function menuGenerator (container) {
         if (!goodForKeyboardHandling()) return;
         const downKeys = new Set();
         window.addEventListener(definitionSet.events.keyDown, event => {
-            downKeys.add(event.key);
+            downKeys.add(event.code);
+            //if (event.key == "Alt") return;
             //if (downKeys.size <= menuOptions.keyboardShortcuts.activationPrefix.length) return;
-            if (!downKeys.has(event.key)) return;
+            if (!downKeys.has(event.code)) return;
             if (!event.altKey) return; // fixed the bug with menuOptions.keyboardShortcuts.activationPrefix
             handler(event);
         });
         window.addEventListener(definitionSet.events.keyUp, event => {
-            downKeys.delete(event.key);
+            downKeys.delete(event.code);
         });
     }; //startKeyboardHandling
 
     startKeyboardHandling(event => {
+        //if (event.key == "Alt") return;
         const length = row.length;  
         if (keyboardMap.size < 1) return;
         if (length < 1) return;
-        const index = keyboardMap.get(event.key);
+        const index = keyboardMap.get(event.code);
         if (index == null) return;
         if (index < 0 || index >= length) return;
         event.preventDefault();
