@@ -10,7 +10,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 function menuGenerator (container) {
     
-    const version = "0.2.16";
+    const version = "1.0.0";
     if (!new.target) return version; 
 
     if (!container) return;
@@ -72,6 +72,12 @@ function menuGenerator (container) {
                 Menu item "${value}" subscription failed:
                 menu item (HTML option) with this value does not exist`, //sic!
         },
+        goodKeyboardActivationPrefix: (event, activationPrefix) => {
+            for (const prefix of activationPrefix)
+                if (!event[prefix])
+                    return false;
+            return true;
+        }, //goodKeyboardActivationPrefix
         toString: text => `${text == null ? "" : text}`,
     } //const definitionSet
     Object.freeze(definitionSet);
@@ -84,8 +90,9 @@ function menuGenerator (container) {
     }; //menuItemButtonState
     Object.freeze(menuItemButtonState);
     let menuOptions = {
-            keyboardShortcuts: {
-            activationPrefix: ["AltLeft", "AltRight"],
+        keyboardShortcuts: {
+            // allowed (AND-ed) combinations of: altKey, ctrlKey, metaKey and shiftKey:
+            activationPrefix: ["altKey"],
             excludes: "|/\\`~;:,." + "q-lip"+ "jpg" + "!@#$%^&*()_+",
         },
         afterActionBehavior: {
@@ -272,7 +279,7 @@ function menuGenerator (container) {
     const remapKeyboardShortcuts = () => {
         keyboardMap.clear();
         for (const character of menuOptions.keyboardShortcuts.excludes)
-            keyboardMap.set(definitionSet.keyToCode(character), null); //SA???
+            keyboardMap.set(definitionSet.keyToCode(character), null);
         const remapKeyboardShortcut = (header, xPosition) => { //automatic keyboard shortcuts:
             if (!goodForKeyboardHandling())
                 return;
@@ -310,7 +317,7 @@ function menuGenerator (container) {
         for (const element of row)
             remapKeyboardShortcut(element.header, xPosition++);
         for (const character of menuOptions.keyboardShortcuts.excludes)
-            keyboardMap.delete(character);
+            keyboardMap.delete(definitionSet.keyToCode(character));
     }; //remapKeyboardShortcuts
     
     const reset = () => {
@@ -570,15 +577,12 @@ function menuGenerator (container) {
 
     const startKeyboardHandling = handler => {
         if (!goodForKeyboardHandling()) return;
-        const downKeys = new Set();
         window.addEventListener(definitionSet.events.keyDown, event => {
-            downKeys.add(event.code);
-            if (!downKeys.has(event.code)) return;
-            //if (!event.altKey) return; // fixed the bug with menuOptions.keyboardShortcuts.activationPrefix
+            if (!keyboardMap.has(event.code)) return;
+            //if (event.key == "Alt") return;
+            //if (event.key == "Meta") return;
+            if (!definitionSet.goodKeyboardActivationPrefix(event, menuOptions.keyboardShortcuts.activationPrefix)) return;
             handler(event);
-        });
-        window.addEventListener(definitionSet.events.keyUp, event => {
-            downKeys.delete(event.code);
         });
     }; //startKeyboardHandling
 
