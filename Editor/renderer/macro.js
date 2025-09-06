@@ -5,7 +5,9 @@ const createMacroProcessor = (editor, stateIndicator) => {
     let recordingMacro = false;
     let macro = [];
     let previousState = null;
+    let firstSelection = null, lastSelection = null;
 
+    const getSelection = () => [ editor.selectionStart, editor.selectionEnd ];
     const getState = target => {
         return {
             length: target.textLength,
@@ -24,30 +26,26 @@ const createMacroProcessor = (editor, stateIndicator) => {
         const currentState = getState(event.target);
         const delta = getDelta(previousState, currentState);
         previousState = currentState;
-        let data = event.data ? event.data : "";
-        if (!data && event.inputType == "insertLineBreak") //special case, ugly one
-            data = "\n";
+        let data = event.data ? event.data : definitionSet.empty;
+        if (!data && event.inputType == definitionSet.macro.specialInputTypeNewLine.recorded) // ugly special case
+            data = definitionSet.macro.specialInputTypeNewLine.replaced;
         macro.push({
-                    data: data,
-                    state: currentState,
-                    delta: delta,
-                });
+            data: data,
+            state: currentState,
+            delta: delta,
+        });
     }); //editor input
 
     const playMacro = () => {
         if (recordingMacro) return;
+        const delta = editor.selectionStart - firstSelection[0];
         for (const element of macro) {
-            const dataLength = element.data ? element.data.length : 0;
             let currentState = getState(editor);
-            const added = element.delta.length - dataLength;
             const range = currentState.position + element.delta.position;
+            editor.setRangeText(element.data, range - element.data.length, range - element.delta.length);
             editor.setSelectionRange(range, range);
-            if (added == 0)
-                editor.setRangeText(element.data);
-            else
-                editor.setRangeText(element.data, range, range  - element.delta.length);
-            currentState = getState(editor);
         } //loop
+        editor.setSelectionRange(lastSelection[0] + delta, lastSelection[1] + delta);
     }; //playMacro
 
     const recordingState = () => recordingMacro;
@@ -60,8 +58,11 @@ const createMacroProcessor = (editor, stateIndicator) => {
             : (macro.length > 0
                 ? definitionSet.status.macroAvailable
                 : null);
-        if (on)
+        if (on) {
             previousState = getState(editor);
+            firstSelection = getSelection();
+        } else
+            lastSelection = getSelection();
     } //setRecordingState
     const canRecord = () => !recordingMacro;
     const canStopRecording = () => recordingMacro;

@@ -3,6 +3,7 @@
 const getDefinitionSet = () => {
 
     const definitionSet = {
+        empty: "",
         SA: `<a href="https://www.SAKryukov.org">Sergey A Kryukov</a>`,
         copyright: function() {
             return `Copyright &copy; 2025 by ${this.SA}`
@@ -76,6 +77,12 @@ const getDefinitionSet = () => {
             macroRecording: "Recording keyboard macro&hellip; press Ctrl+Shift+R to stop",
             macroAvailable: "Keyboard macro is ready to play, press Ctrl+Shift+P",
         }, //status
+        macro: {
+            specialInputTypeNewLine: { // ugly special case
+                recorded: "insertLineBreak", 
+                replaced: "\n"
+            },
+        }, //macro
         errorHandling: {
             format: (errorKind, errorMessage) => `${errorKind}:<br/><br/><span style="color: red">${errorMessage}</span>`,
             save: "Save file error",
