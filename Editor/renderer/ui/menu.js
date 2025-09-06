@@ -83,7 +83,7 @@ function menuGenerator (container) {
     }; //menuItemButtonState
     Object.freeze(menuItemButtonState);
     let menuOptions = {
-        keyboardShortcuts: {
+            keyboardShortcuts: {
             activationPrefix: ["Alt"],
             excludes: "|/\\`~;:,." + "q-lip"+ "jpg" + "!@#$%^&*()_+",
         },
@@ -572,10 +572,9 @@ function menuGenerator (container) {
         const downKeys = new Set();
         window.addEventListener(definitionSet.events.keyDown, event => {
             downKeys.add(event.key);
-            if (downKeys.size <= menuOptions.keyboardShortcuts.activationPrefix.length) return;
+            //if (downKeys.size <= menuOptions.keyboardShortcuts.activationPrefix.length) return;
             if (!downKeys.has(event.key)) return;
-            for (const pressedOne of menuOptions.keyboardShortcuts.activationPrefix)
-                if (!downKeys.has(pressedOne)) return;
+            if (!event.altKey) return; // fixed the bug with menuOptions.keyboardShortcuts.activationPrefix
             handler(event);
         });
         window.addEventListener(definitionSet.events.keyUp, event => {
