@@ -76,6 +76,7 @@ const getDefinitionSet = () => {
             }, //cursorPosition
             macroRecording: "Recording keyboard macro&hellip; press Ctrl+Shift+R to stop",
             macroAvailable: "Keyboard macro is ready to play, press Ctrl+Shift+P",
+            macroIndicatorAnimation: "blinker 0.9s ease-out infinite",
         }, //status
         macro: {
             specialInputTypeNewLine: { // ugly special case

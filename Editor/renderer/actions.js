@@ -1,6 +1,8 @@
 "use strict";
 
-const subscribe = (elementSet, menu, metadata) => {
+const subscribe = (elementSet, menu, searchDialog, metadata) => {
+
+    //searchDialog.show(); //SA???
 
     const originalTitle = document.title;
     let currentFilename = null;

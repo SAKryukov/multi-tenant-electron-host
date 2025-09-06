@@ -58,6 +58,9 @@ const createMacroProcessor = (editor, stateIndicator) => {
             : (macro.length > 0
                 ? definitionSet.status.macroAvailable
                 : null);
+        stateIndicator.style.animation = on
+           ? definitionSet.status.macroIndicatorAnimation
+            : null;
         if (on) {
             previousState = getState(editor);
             firstSelection = getSelection();

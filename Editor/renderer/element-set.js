@@ -4,6 +4,9 @@ const getElementSet = document => {
     return {
         editor: document.querySelector("textarea"),
         menu: document.querySelector("menu"),
+        search: {
+            dialog: document.querySelector("dialog#id-search-dialog"),
+        }, //search
         statusBar: {
             all: document.querySelector("footer"),
             modifiedFlag: document.querySelector("span#id-modified-flag"),

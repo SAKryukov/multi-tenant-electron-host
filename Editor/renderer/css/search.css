@@ -1,0 +1,16 @@
+#id-search-dialog {
+    opacity: 0.6;
+    border-radius: 0; border-left: gray thin solid; border-bottom: gray thin solid; 
+    position: absolute; top: 0; right: 0; left: auto; 
+    padding: 0.4em;
+    padding-left: 1em;
+    padding-right: 1.7em;
+}
+
+#id-search-dialog p { margin-top: 0.3em; }
+#id-search-dialog p:first-of-type { margin-top: 0; }
+
+#id-search-dialog:hover, 
+#id-search-dialog:focus-within { opacity: 1; }
+
+#id-search-dialog-close { font-size: 1.6em; position: absolute; top: 0; left: auto; right: 2px; }

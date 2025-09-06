@@ -8,6 +8,7 @@
     <script src="./plugin-processor.js"></script>
     <script src="./ui/menu.js"></script>
     <script src="./ui/modal-dialog.js"></script>
+    <script src="./ui/search-dialog.js"></script>
     <script src="./macro.js"></script>
     <script src="./actions.js"></script>
     <script src="./renderer.js"></script>
@@ -19,6 +20,7 @@
         @import url(css/flex.css);
         @import url(css/menu.css);
         @import url(ui/modal-dialog.css);
+        @import url(css/search.css);
         /* standaloneExecutionProtection: */
         :root {
             --border: solid thin gray;
@@ -45,6 +47,7 @@
             { background-color: hsl(30, 67%, 80%);
                 padding: var(--status-delta-Y);
                 padding-left: var(--status-delta-X); padding-right: var(--status-delta-X); }
+        @keyframes blinker { 50% { opacity: 0;  } }                
     </style>
 </head>
 <body>
@@ -103,6 +106,13 @@
             Copyright &copy; 2025 by S A Kryukov
         </small>
     </footer>
+
+    <dialog id="id-search-dialog">
+        <span id="id-search-dialog-close">&times;</span> <!-- 2573 -->
+        <p><input></input></p>
+        <p><input></input></p>
+        <p><button>Search</button><button>Replace</button><button>Replace All</button></p>
+    </dialog>
 
 </body>
 </html>

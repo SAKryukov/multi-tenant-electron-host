@@ -17,7 +17,8 @@ if (window.bridgePlugin)
         if (plugins.length < 1)
             elementSet.menuItems.pluginParent.parentElement.remove();
         const menu = new menuGenerator(elementSet.menu);
-        subscribe(elementSet, menu, metadata);
+        const searchDialog = createSearchDialog(elementSet);
+        subscribe(elementSet, menu, searchDialog, metadata);
         pluginProcessor.processPlugins(definitionSet, elementSet, menu, plugins);
     });
 
