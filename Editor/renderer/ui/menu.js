@@ -85,7 +85,7 @@ function menuGenerator (container) {
     Object.freeze(menuItemButtonState);
     let menuOptions = {
             keyboardShortcuts: {
-            activationPrefix: ["Alt"],
+            activationPrefix: ["AltLeft", "AltRight"],
             excludes: "|/\\`~;:,." + "q-lip"+ "jpg" + "!@#$%^&*()_+",
         },
         afterActionBehavior: {
@@ -272,7 +272,7 @@ function menuGenerator (container) {
     const remapKeyboardShortcuts = () => {
         keyboardMap.clear();
         for (const character of menuOptions.keyboardShortcuts.excludes)
-            keyboardMap.set(definitionSet.keyToCode(character), null);
+            keyboardMap.set(definitionSet.keyToCode(character), null); //SA???
         const remapKeyboardShortcut = (header, xPosition) => { //automatic keyboard shortcuts:
             if (!goodForKeyboardHandling())
                 return;
@@ -573,10 +573,8 @@ function menuGenerator (container) {
         const downKeys = new Set();
         window.addEventListener(definitionSet.events.keyDown, event => {
             downKeys.add(event.code);
-            //if (event.key == "Alt") return;
-            //if (downKeys.size <= menuOptions.keyboardShortcuts.activationPrefix.length) return;
             if (!downKeys.has(event.code)) return;
-            if (!event.altKey) return; // fixed the bug with menuOptions.keyboardShortcuts.activationPrefix
+            //if (!event.altKey) return; // fixed the bug with menuOptions.keyboardShortcuts.activationPrefix
             handler(event);
         });
         window.addEventListener(definitionSet.events.keyUp, event => {
@@ -585,7 +583,6 @@ function menuGenerator (container) {
     }; //startKeyboardHandling
 
     startKeyboardHandling(event => {
-        //if (event.key == "Alt") return;
         const length = row.length;  
         if (keyboardMap.size < 1) return;
         if (length < 1) return;
