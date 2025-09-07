@@ -99,6 +99,8 @@ const getDefinitionSet = () => {
             shorcutReplace: { key: "KeyH", prefix: ["ctrlKey"] },
             shorcutFindNext: { key: "F3", prefix: [] },
             shorcutFindPrevious: { key: "F3", prefix: ["shiftKey"] },
+            shorcutClose: { key: "F4", prefix: ["ctrlKey"] },
+            shorcutPerform: { key: "Enter", prefix: [] },
         }, //search
         isShortcut : (event, shortcut) => {
             if (event.code != shortcut.key) return false;

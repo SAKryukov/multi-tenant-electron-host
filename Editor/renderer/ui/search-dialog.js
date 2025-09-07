@@ -2,25 +2,14 @@
 
 const createSearchDialog = (definitionSet, elementSet) => {
  
+    let isShown = false, isShownReplace = false;
     let findings, currentFinding;
     const resetFindings = () => {
         findings = [];
         currentFinding = -1;
-        elementSet.search.findingsIndicator.textContent = 0;
+        elementSet.search.findingsIndicator.textContent = definitionSet.empty;
     }; //resetFindings
     resetFindings();
-
-    elementSet.search.closeCross.onclick = () =>
-        elementSet.search.dialog.close();
-
-    const searchDialog = {
-        show: isReplaceView => {
-            definitionSet.search.showElement(elementSet.search.buttonReplace, isReplaceView);
-            definitionSet.search.showElement(elementSet.search.buttonReplaceAll, isReplaceView);
-            definitionSet.search.showElement(elementSet.search.inputReplace, isReplaceView);
-            elementSet.search.dialog.show();
-        },
-    }; //searchDialog
 
     const scrollToSelection = () => {
         const columns = elementSet.editor.cols;
@@ -83,12 +72,12 @@ const createSearchDialog = (definitionSet, elementSet) => {
         scrollToSelection();
     }; //findNext
 
-    elementSet.search.buttonFind.onclick = () => {
+    const find = () => {
         findings = [];
         const value = elementSet.editor.value;
-        if (!value) return findings;
+        if (!value) return;
         const searchString = elementSet.search.inputFind.value;
-        if (!value) return findings;
+        if (!value) return;
         const searchStringLength = searchString.length;
         let index, position = 0;
         while ((index = value.indexOf(searchString, position)) > -1) {
@@ -101,20 +90,56 @@ const createSearchDialog = (definitionSet, elementSet) => {
             scrollToSelection();
             elementSet.editor.focus();
         } //if
-    }; //elementSet.search.buttonFind.onclick
+    }; //find
 
-    elementSet.search.inputFind.oninput = () => resetFindings();
-    elementSet.editor.addEventListener(definitionSet.events.input, () => resetFindings());
+    elementSet.search.buttonFind.onclick = find;
+
+    elementSet.search.inputFind.oninput = resetFindings;
+    elementSet.editor.addEventListener(definitionSet.events.input, resetFindings);
     elementSet.search.buttonReplace.onclick = () => replace(false);
     elementSet.search.buttonReplaceAll.onclick = () => replace(true);
+    elementSet.search.inputFind.onkeydown = event => {
+        if (definitionSet.isShortcut(event, definitionSet.search.shorcutPerform)) {
+            find();
+            event.preventDefault();
+        } //if
+    }; //elementSet.search.inputFind.onkeydown
+    elementSet.search.inputReplace.onkeydown = event => {
+        if (definitionSet.isShortcut(event, definitionSet.search.shorcutPerform)) {
+            replace(true);
+            event.preventDefault();
+        } //if
+    }; //elementSet.search.inputReplace.onkeydown
 
     window.addEventListener(definitionSet.events.keydown, event => {
         if (definitionSet.isShortcut(event, definitionSet.search.shorcutFindNext))
             findNext();
         else if (definitionSet.isShortcut(event, definitionSet.search.shorcutFindPrevious))
             findNext(true);
+        else if (definitionSet.isShortcut(event, definitionSet.search.shorcutClose))
+            elementSet.search.dialog.close();
     }); //window on keydown
+    elementSet.search.closeCross.onclick = () =>
+        elementSet.search.dialog.close();
 
+    elementSet.search.dialog.onclose = () =>  isShown = false;
+
+    const searchDialog = {
+        show: isReplaceView => {
+            definitionSet.search.showElement(elementSet.search.buttonReplace, isReplaceView);
+            definitionSet.search.showElement(elementSet.search.buttonReplaceAll, isReplaceView);
+            definitionSet.search.showElement(elementSet.search.inputReplace, isReplaceView);
+            if (!isShown)
+                elementSet.search.dialog.show();
+            elementSet.search.inputFind.focus();
+            if (!isReplaceView)
+                find();
+            isShown = true;
+        },
+        find: find,
+        findNext: findNext,
+        replace,
+    }; //searchDialog
     return searchDialog;
 
 };

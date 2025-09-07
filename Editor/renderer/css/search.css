@@ -9,7 +9,7 @@
 
 #id-search-dialog p { margin-top: 0.3em; }
 #id-search-dialog p:first-of-type { margin-top: 0; }
-#id-search-dialog input { margin-right: 0.4em; }
+#id-search-dialog input { margin-right: 0.4em; width: 20em; }
 #id-findings-indicator { margin-right: 1.2em; }
 #id-search-dialog button { border-radius: 0; padding-top: 0.1em; padding-bottom: 0.1em;
     background-color:  hsl(195, 53%, 89%); }
