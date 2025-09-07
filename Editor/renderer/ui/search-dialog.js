@@ -2,7 +2,7 @@
 
 const createSearchDialog = (definitionSet, elementSet) => {
  
-    let isShown = false, isShownReplace = false;
+    let isShown = false;
     let findings, currentFinding;
     const resetFindings = () => {
         findings = [];
