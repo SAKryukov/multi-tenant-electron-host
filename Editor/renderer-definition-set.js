@@ -95,15 +95,16 @@ const getDefinitionSet = () => {
         search: {
             showElement: (element, doShow) =>
                 element.style.display = doShow ? "inline"  : "none",
-            shorcutFind: { key: "KeyF", prefix: [] },
-            shorcutReplace: { key: "KeyH", prefix: [] },
+            shorcutFind: { key: "KeyF", prefix: ["ctrlKey"] },
+            shorcutReplace: { key: "KeyH", prefix: ["ctrlKey"] },
             shorcutFindNext: { key: "F3", prefix: [] },
-            shorcutFindPrevious: { key: "F3", prefix: ["ctrlKey"] },
+            shorcutFindPrevious: { key: "F3", prefix: ["shiftKey"] },
         }, //search
         isShortcut : (event, shortcut) => {
             if (event.code != shortcut.key) return false;
-            if (!shortcut.prefix) return true;
-            for (prefixElement of shortcut.prefix) 
+            if (!shortcut.prefix || shortcut.prefix.length < 1)
+                return !(event.shiftKey || event.ctrlKey || event.metaKey || event.altKey);
+            for (const prefixElement of shortcut.prefix) 
                 if (!event[prefixElement]) return false;
             return true;
         }, //isShortcut

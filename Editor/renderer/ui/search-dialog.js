@@ -43,26 +43,43 @@ const createSearchDialog = (definitionSet, elementSet) => {
             : value.replace(searchString, replaceString);        
     }; //replace
 
-    const findNext = () => {
+    const findNext = previous => {
         if (!findings) return;
         if (!findings.length) return;
+        const delta = previous ? -1 : 1;
         const searchStringLength = elementSet.search.inputFind.value.length;
         if (currentFinding < 0) {
-            for (const findingIndex in findings) {
-                const finding = findings[findingIndex];
-                if (finding >= elementSet.editor.selectionStart) {
-                    currentFinding = findingIndex;
-                    elementSet.editor.setSelectionRange(finding, finding + searchStringLength);
-                    break;
-                } //if
-            } //loop
-        } else {
-            currentFinding++;
-            if (currentFinding < findings.length)
-                elementSet.editor.setSelectionRange(findings[currentFinding], findings[currentFinding] + searchStringLength);
-            else
-                currentFinding = 0;
+            if (previous) {
+                for (let index = findings.length - 1; index >= 0; --index) {
+                    const finding = findings[index];
+                    if (finding <= elementSet.editor.selectionEnd) {
+                        currentFinding = findingIndex;
+                        elementSet.editor.setSelectionRange(finding, finding + searchStringLength);
+                        break;
+                    } //if
+                } //loop
+            } else {
+                for (const findingIndex in findings) {
+                    const finding = findings[findingIndex];
+                    if (finding >= elementSet.editor.selectionStart) {
+                        currentFinding = findingIndex;
+                        elementSet.editor.setSelectionRange(finding, finding + searchStringLength);
+                        break;
+                    } //if
+                } //loop
+            } //if
         } //if
+        currentFinding += delta;
+        const marginCheck = previous
+            ? () => currentFinding >= 0
+            : () => currentFinding < findings.length;
+        const rollover = previous
+            ? findings.length - 1
+            : 0
+        if (marginCheck())
+            elementSet.editor.setSelectionRange(findings[currentFinding], findings[currentFinding] + searchStringLength);
+        else
+            currentFinding = rollover;
         scrollToSelection();
     }; //findNext
 
