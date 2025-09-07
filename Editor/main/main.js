@@ -72,7 +72,7 @@ const handleCommandLine = window => {
                 path.basename(filename), text, error));
 }; //handleCommandLine
 
-function createWindow() {
+const createWindow = () => {
     const applicationPath = app.getAppPath();
     const window = new BrowserWindow(
         definitionSet.createWindowProperties(title,

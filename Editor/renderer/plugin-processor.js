@@ -13,7 +13,7 @@ const pluginProcessor = (() => {
         definitionSet = theDefinitionSet;
         elementSet = theElementSet;
         menu = theMenu;
-        function loadScript(plugin) {
+        const loadScript = plugin => {
             const scriptElement = document.createElement(definitionSet.elements.script);
             scriptElement.src = plugin;
             document.head.appendChild(scriptElement);
