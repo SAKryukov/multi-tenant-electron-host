@@ -88,17 +88,25 @@ const getDefinitionSet = () => {
             format: (errorKind, errorMessage) => `${errorKind}:<br/><br/><span style="color: red">${errorMessage}</span>`,
             save: "Save file error",
             open: "Open file error",
-        },
+        }, //errorHandling
         view: {
             statusBarStyle: visible => visible ? "flex" : "none",
         },
         search: {
             showElement: (element, doShow) =>
                 element.style.display = doShow ? "inline"  : "none",
-            shorcutFind: "KeyF",
-            shorcutReplace: "KeyH",
-            shorcutFindNext: "F3",
-        }
+            shorcutFind: { key: "KeyF", prefix: [] },
+            shorcutReplace: { key: "KeyH", prefix: [] },
+            shorcutFindNext: { key: "F3", prefix: [] },
+            shorcutFindPrevious: { key: "F3", prefix: ["ctrlKey"] },
+        }, //search
+        isShortcut : (event, shortcut) => {
+            if (event.code != shortcut.key) return false;
+            if (!shortcut.prefix) return true;
+            for (prefixElement of shortcut.prefix) 
+                if (!event[prefixElement]) return false;
+            return true;
+        }, //isShortcut
     }; //definitionSet
 
     for (const subset of [definitionSet.events, definitionSet.elements, definitionSet.keys])

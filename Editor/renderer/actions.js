@@ -170,10 +170,9 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     }); //edit.selectAll
 
     window.addEventListener(definitionSet.events.keydown, event => {
-        if (!event.ctrlKey) return;
-        if (event.code == definitionSet.search.shorcutFind)
+        if (definitionSet.isShortcut(event, definitionSet.search.shorcutFind))
             searchDialog.show(false);
-        else if (event.code == definitionSet.search.shorcutReplace)
+        else if (definitionSet.isShortcut(event, definitionSet.search.shorcutReplace))
             searchDialog.show(true);
     }); //window.addEventListener
 

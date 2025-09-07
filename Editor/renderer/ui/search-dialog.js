@@ -92,8 +92,10 @@ const createSearchDialog = (definitionSet, elementSet) => {
     elementSet.search.buttonReplaceAll.onclick = () => replace(true);
 
     window.addEventListener(definitionSet.events.keydown, event => {
-        if (event.code == definitionSet.search.shorcutFindNext)
+        if (definitionSet.isShortcut(event, definitionSet.search.shorcutFindNext))
             findNext();
+        else if (definitionSet.isShortcut(event, definitionSet.search.shorcutFindPrevious))
+            findNext(true);
     }); //window on keydown
 
     return searchDialog;
