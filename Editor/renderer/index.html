@@ -71,6 +71,9 @@
                         <option id="menu-paste">Paste (Ctrl+V)</option>
                         <option id="menu-select-all">Select All (Ctrl+A)</option>
                         <option disabled="true" class="separator">─────────────────────────────</option>
+                        <option id="menu-find">Find (Ctrl+F)</option>
+                        <option id="menu-replace">Replace (Ctrl+H)</option>
+                        <option disabled="true" class="separator">─────────────────────────────</option>
                         <option id="menu-start-macro-recoding">Start Macro Recording (Shift+Ctrl+R)</option>
                         <option id="menu-stop-macro-recoding">Stop Macro Recording (Shift+Ctrl+R)</option>
                         <option id="menu-play-macro">Play Macro (Shift+Ctrl+P)</option>
@@ -109,8 +112,8 @@
 
     <dialog id="id-search-dialog">
         <span id="id-search-dialog-close">&times;</span> <!-- 2573 -->
-        <p><input></input></p>
-        <p><input></input></p>
+        <p><input placeholder="Find"></input><span id="id-findings-indicator">0</span></p>
+        <p><input placeholder="Replace"></input></p>
         <p><button>Search</button><button>Replace</button><button>Replace All</button></p>
     </dialog>
 

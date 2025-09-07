@@ -6,6 +6,13 @@ const getElementSet = document => {
         menu: document.querySelector("menu"),
         search: {
             dialog: document.querySelector("dialog#id-search-dialog"),
+            closeCross: document.querySelector("#id-search-dialog-close"),
+            buttonFind: document.querySelector("dialog#id-search-dialog button:first-of-type"),
+            buttonReplace: document.querySelector("dialog#id-search-dialog button:nth-of-type(2)"),
+            buttonReplaceAll: document.querySelector("dialog#id-search-dialog button:nth-of-type(3)"),
+            inputFind: document.querySelector("dialog#id-search-dialog p:first-of-type input"),
+            inputReplace: document.querySelector("dialog#id-search-dialog p:nth-of-type(2) input"),
+            findingsIndicator: document.querySelector("#id-findings-indicator"),
         }, //search
         statusBar: {
             all: document.querySelector("footer"),
@@ -29,6 +36,8 @@ const getElementSet = document => {
                 copy: document.querySelector("#menu-copy"),
                 paste: document.querySelector("#menu-paste"),
                 selectAll: document.querySelector("#menu-select-all"),
+                find:  document.querySelector("#menu-find"),
+                replace: document.querySelector("#menu-replace"),
             },
             macro: {
                 startRecording: document.querySelector("#menu-start-macro-recoding"),

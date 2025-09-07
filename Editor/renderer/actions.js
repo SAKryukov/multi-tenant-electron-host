@@ -2,8 +2,6 @@
 
 const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
-    //searchDialog.show(); //SA???
-
     const originalTitle = document.title;
     let currentFilename = null;
     let isModified = false;
@@ -169,7 +167,25 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         elementSet.editor.focus();
         elementSet.editor.select();
         return true;
-    }); //selectAll.textContent
+    }); //edit.selectAll
+
+    window.addEventListener(definitionSet.events.keydown, event => {
+        if (!event.ctrlKey) return;
+        if (event.code == definitionSet.search.shorcutFind)
+            searchDialog.show(false);
+        else if (event.code == definitionSet.search.shorcutReplace)
+            searchDialog.show(true);
+    }); //window.addEventListener
+
+    menu.subscribe(elementSet.menuItems.edit.find.textContent, actionRequest => {
+        if (!actionRequest) return true;
+        searchDialog.show(false);
+    }); //edit.Find
+    menu.subscribe(elementSet.menuItems.edit.replace.textContent, actionRequest => {
+        if (!actionRequest) return true;
+        searchDialog.show(true);
+        return false;
+    }); //edit.Replace
 
     // View:
 

@@ -92,6 +92,13 @@ const getDefinitionSet = () => {
         view: {
             statusBarStyle: visible => visible ? "flex" : "none",
         },
+        search: {
+            showElement: (element, doShow) =>
+                element.style.display = doShow ? "inline"  : "none",
+            shorcutFind: "KeyF",
+            shorcutReplace: "KeyH",
+            shorcutFindNext: "F3",
+        }
     }; //definitionSet
 
     for (const subset of [definitionSet.events, definitionSet.elements, definitionSet.keys])
