@@ -4,6 +4,8 @@ const createSearchDialog = (definitionSet, elementSet) => {
 
     const searchOptionSet = ((cssClassUp, cssClassDown) => {
         definitionSet.search.showBlock(elementSet.search.options.legend, false);
+        const twoStateMatchCase =
+            createTwoStateButton(elementSet.search.options.matchCase, cssClassUp, cssClassDown, true);
         const twoStateRegularExpression =
             createTwoStateButton(elementSet.search.options.useRegularExpression, cssClassUp, cssClassDown);
         const twoStateSpecial =
@@ -18,8 +20,11 @@ const createSearchDialog = (definitionSet, elementSet) => {
                 definitionSet.search.showBlock(elementSet.search.options.legend, false);
             } //if
         } //twoStateRegularExpression.onchange
+        twoStateMatchCase.onchangeState = value => {
+            if (!value) twoStateRegularExpression.value = true;
+        }; //twoStateMatchCase.onchangeState
         return {
-            matchCase: createTwoStateButton(elementSet.search.options.matchCase, cssClassUp, cssClassDown, true),
+            matchCase: twoStateMatchCase,
             matchWholeWord: createTwoStateButton(elementSet.search.options.matchWholeWord, cssClassUp, cssClassDown),
             useRegularExpression: twoStateRegularExpression,
             useSpecialCharacters: twoStateSpecial,
@@ -55,8 +60,10 @@ const createSearchDialog = (definitionSet, elementSet) => {
         if (searchOptionSet.useSpecialCharacters.value)
             for (const replacement of definitionSet.search.specialCharacterReplacements)
                 replaceString = replaceString.replaceAll(replacement[0], replacement[1]);
-        if (searchOptionSet.useRegularExpression.value) {
-            const flags = definitionSet.search.regularExpressionFlags(!searchOptionSet.matchCase.value);
+        const ignoreCase = !searchOptionSet.matchCase.value;
+        const useRegularExpression = searchOptionSet.useRegularExpression.value;
+        if (useRegularExpression) {
+            const flags = definitionSet.search.regularExpressionFlags(ignoreCase);
             searchString = new RegExp(searchString, flags);
         } //if
         if (elementSet.editor.selectionStart != elementSet.editor.selectionEnd) {
