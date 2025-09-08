@@ -87,39 +87,12 @@ const createSearchDialog = (definitionSet, elementSet) => {
         if (!findings) return;
         if (!findings.length) return;
         const delta = previous ? -1 : 1;
-        const searchStringLength = elementSet.search.inputFind.value.length;
-        if (currentFinding < 0) {
-            if (previous) {
-                for (let index = findings.length - 1; index >= 0; --index) {
-                    const finding = findings[index];
-                    if (finding <= elementSet.editor.selectionEnd) {
-                        currentFinding = findingIndex;
-                        elementSet.editor.setSelectionRange(finding[0], finding[1]);
-                        break;
-                    } //if
-                } //loop
-            } else {
-                for (const findingIndex in findings) {
-                    const finding = findings[findingIndex];
-                    if (finding >= elementSet.editor.selectionStart) {
-                        currentFinding = findingIndex;
-                        elementSet.editor.setSelectionRange(finding[0], finding[1]);
-                        break;
-                    } //if
-                } //loop
-            } //if
-        } //if
+        if (currentFinding < 0 || currentFinding >= findings.length)
+            currentFinding = previous ? findings.length - 1 : 0;
         currentFinding += delta;
-        const marginCheck = previous
-            ? () => currentFinding >= 0
-            : () => currentFinding < findings.length;
-        const rollover = previous
-            ? findings.length - 1
-            : 0
-        if (marginCheck())
-            elementSet.editor.setSelectionRange(findings[currentFinding], findings[currentFinding] + searchStringLength);
-        else
-            currentFinding = rollover;
+        if (currentFinding < 0 || currentFinding >= findings.length)
+            currentFinding = previous ? findings.length - 1 : 0;
+        elementSet.editor.setSelectionRange(findings[currentFinding][0], findings[currentFinding][1]);
         elementSet.editor.focus();
         scrollToSelection();
     }; //findNext
