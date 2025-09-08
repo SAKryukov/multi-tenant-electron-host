@@ -1,11 +1,8 @@
 "use strict";
 
-const createTwoStateButton = (tag, cssClassUp, cssClassDown, initialDown) => {
+const createTwoStateButton = (element, cssClassUp, cssClassDown, initialDown) => {
 
-    const twoStateButton = {};
-    const element = document.createElement(tag);
     let isDown = initialDown ? true : false;
-    let onChange = null
 
     element.classList.add(isDown ? cssClassDown : cssClassUp);
 
@@ -17,17 +14,31 @@ const createTwoStateButton = (tag, cssClassUp, cssClassDown, initialDown) => {
         if (onchange)
             onchange(isDown);
     }; //toggle
+    const setValue = value => {
+        if (value == isDown) return;
+        toggle();
+    }; //setValue
 
     element.onpointerup = () => toggle();
-
+    
+    const twoStateButton = {};
     Object.defineProperties(twoStateButton, {
+        value: {
+            get() { return isDown; },
+            set(value) {
+                setValue(value);
+            },
+        }, //value
         onchange: {
             get() { return onchange; },
             set(value) { onchange = value; }
         }, //onchange
         isDown: {
-            get() { return isDown;}
+            get() { return isDown; }
         }, //isDown
+        element: {
+            get() { return element; }
+        }, 
     });
 
     return twoStateButton;

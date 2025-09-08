@@ -1,6 +1,8 @@
 "use strict";
 
 const createSearchDialog = (definitionSet, elementSet) => {
+
+    const cssClassUp = "up", cssClassDown = "down";
  
     let isShown = false;
     let findings, currentFinding;
@@ -120,9 +122,17 @@ const createSearchDialog = (definitionSet, elementSet) => {
 
     elementSet.search.dialog.onclose = () =>  isShown = false;
 
+    const searchOoptions = {
+        matchCase: createTwoStateButton(elementSet.search.options.matchCase, cssClassUp, cssClassDown),
+        matchWholeWord: createTwoStateButton(elementSet.search.options.matchWholeWord, cssClassUp, cssClassDown),
+        useRegularExpression: createTwoStateButton(elementSet.search.options.useRegularExpression, cssClassUp, cssClassDown),
+        useSpecialCharacters: createTwoStateButton(elementSet.search.options.useSpecialCharacters, cssClassUp, cssClassDown),
+        askConfirmation: createTwoStateButton(elementSet.search.options.askConfirmation, cssClassUp, cssClassDown),
+    }; //searchOoptions
     const searchDialog = {
         show: isReplaceView => {
             definitionSet.search.showElement(elementSet.search.inputReplace, isReplaceView);
+            definitionSet.search.showButton(searchOoptions.askConfirmation.element, isReplaceView);
             if (!isShown)
                 elementSet.search.dialog.show();
             elementSet.search.inputFind.focus();

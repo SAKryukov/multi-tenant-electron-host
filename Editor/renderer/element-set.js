@@ -10,6 +10,13 @@ const getElementSet = document => {
             inputFind: document.querySelector("dialog#id-search-dialog p:first-of-type input"),
             inputReplace: document.querySelector("dialog#id-search-dialog p:nth-of-type(2) input"),
             findingsIndicator: document.querySelector("#id-findings-indicator"),
+            options: {
+                matchCase: document.querySelector("#id-search-match-case"),
+                matchWholeWord: document.querySelector("#id-search-whole-word"),
+                useRegularExpression: document.querySelector("#id-search-regexp"),
+                useSpecialCharacters: document.querySelector("#id-search-special"),
+                askConfirmation: document.querySelector("#id-search-confirmation"),
+            }, //options
         }, //search
         statusBar: {
             all: document.querySelector("footer"),

@@ -95,6 +95,8 @@ const getDefinitionSet = () => {
         search: {
             showElement: (element, doShow) =>
                 element.style.display = doShow ? "inline"  : "none",
+            showButton: (element, doShow) =>
+                element.style.display = doShow ? "inline-block"  : "none",
             shorcutFind: { key: "KeyF", prefix: ["ctrlKey"] },
             shorcutReplace: { key: "KeyH", prefix: ["ctrlKey"] },
             shorcutFindNext: { key: "F3", prefix: [] },
