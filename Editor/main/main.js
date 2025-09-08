@@ -10,6 +10,7 @@ const path = require('node:path');
 const shell = require('electron').shell;
 
 const image = null;
+let permittedToCloseApplication = false;
 
 const handlePlugins = (applicationPath, window) => {
     pluginProvider.setup({ definitionSet, fs, path, applicationPath, window });
@@ -44,15 +45,23 @@ const subscribeToEvents = window => {
         utilitySet.openFile((filename, text, error) =>
             window.webContents.send(ipcChannel.fileIO.openFile, filename, path.basename(filename), text, error));
     });
-    ipcMain.on(ipcChannel.fileIO.saveFileAs, (_event, text, closeApplication) => {
-        utilitySet.saveFileAs(text, (filename, error) =>
-            window.webContents.send(ipcChannel.fileIO.saveFileAs, filename, path.basename(filename), error));
-        //if (closeApplication) //SA???
-        //    window.close();
+    const closeApplicationAfterSaving = (condition, error) => {
+        if (condition && !error) {
+            permittedToCloseApplication = true;
+            window.close();
+        } //if
+    }; //closeApplicationAfterSaving
+    ipcMain.on(ipcChannel.fileIO.saveFileAs, (_event, text, closeApplicationRequest) => {
+        utilitySet.saveFileAs(text, (filename, error) => {
+            window.webContents.send(ipcChannel.fileIO.saveFileAs, filename, path.basename(filename), error);
+            closeApplicationAfterSaving(closeApplicationRequest, error);
+        });
     });
-    ipcMain.on(ipcChannel.fileIO.saveExistingFile, (_event, filename, text) => {
-        utilitySet.saveExistingFile(filename, text, (filename, error) =>
-            window.webContents.send(ipcChannel.fileIO.saveExistingFile, filename, path.basename(filename), error));
+    ipcMain.on(ipcChannel.fileIO.saveExistingFile, (_event, filename, text, closeApplicationRequest) => {
+        utilitySet.saveExistingFile(filename, text, (filename, error) => {
+            window.webContents.send(ipcChannel.fileIO.saveExistingFile, filename, path.basename(filename), error);
+            closeApplicationAfterSaving(closeApplicationRequest, error);
+        });
     });
     let isFullscreen = false;
     ipcMain.on(ipcChannel.ui.fullscreen, (_event, onOff) => {
@@ -85,7 +94,6 @@ const createWindow = () => {
         handleCommandLine(window);
         window.show();
     }); //once ready to show
-    let permittedToCloseApplication = false;
     window.on(definitionSet.events.close, event => {
         if (permittedToCloseApplication) return;
         window.webContents.send(ipcChannel.ui.requestToIgnoreUnsavedData);
