@@ -112,6 +112,10 @@ const getDefinitionSet = () => {
                 ["\\<<", String.fromCharCode(0x00AB)], //left angle quotation mark
                 ["\\>>", String.fromCharCode(0x00BB)], //right angle quotation mark
             ], //specialCharacterReplacements
+            regularExpressionFlags: ignoreCase => {
+                const caseIndicator = ignoreCase ? "" : "i";
+                return `gu${caseIndicator}`;
+            }, //regularExpressionFlags
             shorcutFind: { key: "KeyF", prefix: ["ctrlKey"] },
             shorcutReplace: { key: "KeyH", prefix: ["ctrlKey"] },
             shorcutFindNext: { key: "F3", prefix: [] },

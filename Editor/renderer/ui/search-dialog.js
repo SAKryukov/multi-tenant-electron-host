@@ -19,7 +19,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
             } //if
         } //twoStateRegularExpression.onchange
         return {
-            matchCase: createTwoStateButton(elementSet.search.options.matchCase, cssClassUp, cssClassDown),
+            matchCase: createTwoStateButton(elementSet.search.options.matchCase, cssClassUp, cssClassDown, true),
             matchWholeWord: createTwoStateButton(elementSet.search.options.matchWholeWord, cssClassUp, cssClassDown),
             useRegularExpression: twoStateRegularExpression,
             useSpecialCharacters: twoStateSpecial,
@@ -48,13 +48,17 @@ const createSearchDialog = (definitionSet, elementSet) => {
     const replace = () => {
         const value = elementSet.editor.value;
         if (!value) return;
-        const searchString = elementSet.search.inputFind.value;
+        let searchString = elementSet.search.inputFind.value;
         if (!searchString) return findings;
         let replaceString = elementSet.search.inputReplace.value;
         if (!replaceString) return;
         if (searchOptionSet.useSpecialCharacters.value)
             for (const replacement of definitionSet.search.specialCharacterReplacements)
                 replaceString = replaceString.replaceAll(replacement[0], replacement[1]);
+        if (searchOptionSet.useRegularExpression.value) {
+            const flags = definitionSet.search.regularExpressionFlags(!searchOptionSet.matchCase.value);
+            searchString = new RegExp(searchString, flags);
+        } //if
         if (elementSet.editor.selectionStart != elementSet.editor.selectionEnd) {
             let value = elementSet.editor.value.slice(elementSet.editor.selectionStart, elementSet.editor.selectionEnd);
             value = value.replaceAll(searchString, replaceString);
