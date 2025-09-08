@@ -10,7 +10,7 @@
 
 #id-search-dialog p { margin-top: 0.3em; }
 #id-search-dialog p:first-of-type { margin-top: 0; }
-#id-search-dialog input { margin-right: 0.4em; width: 20em; }
+#id-search-dialog input { margin-right: 0.4em; width: 26em; }
 #id-findings-indicator { margin-right: 1.2em; }
 
 #id-search-dialog-close { font-size: 1.6em; position: absolute; top: 0; left: auto; right: 0.4em; cursor: default; }
@@ -31,3 +31,29 @@
 #id-search-dialog button.down { background-color: lightgray; color: darkred;
     border-top-color: black; border-left-color: black;
 }
+
+section#id-search-special-legend {
+    display: none;
+    padding-left: 0;
+    padding-top: 0.4em;
+    border: none;
+    background-color: transparent;
+    font-weight: normal;
+    margin-top: 0.2em;
+    margin-left: 0em;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+section#id-search-special-legend p {
+    padding-left: 0.1em;
+    margin-top: 1em;
+    margin-left: 0.1em;
+}
+
+section#id-search-special-legend > table {
+    display: block;
+    margin-left: 1em;
+    margin-top: 0em;
+}
+
+section#id-search-special-legend > table td:nth-last-of-type(2) { padding-right: 1em; }

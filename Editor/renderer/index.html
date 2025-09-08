@@ -121,9 +121,26 @@
             <button id="id-search-match-case" title="Match case">&Alpha;&alpha;</button>
             <button id="id-search-whole-word" title="Match  whole word">&#x2223;&MediumSpace;&#x2223;</button>
             <button id="id-search-regexp" title="Use regular expression"><small>&#x2736;</small></button>
-            <button id="id-search-special" title="Use  special characters"><small>!</small></button>
+            <button id="id-search-special" title="Use  special characters"><small>\</small></button>
             <button id="id-search-confirmation" title="Ask  confirmation"><small>?</small></button>
         </p>
+        <section id="id-search-special-legend">
+            Special cases:
+            <br/>
+            <table>
+                <tr><td>\\</td><td>:</td><td>backslash (\) itself</td></tr>
+                <tr><td>\n</td><td>:</td><td>new line</td></tr>
+                <tr><td>\t</td><td>:</td><td>tab</td></tr>
+                <tr><td>\---</td><td>:</td><td>em dash (&mdash;)</td></tr>
+                <tr><td>\--</td><td>:</td><td>en dash (&ndash;)</td></tr>
+                <tr><td>\(</td><td>:</td><td>left singular quotation mark (&#x2018;)</td></tr>
+                <tr><td>\)</td><td>:</td><td>right singular quotation mark (&#x2019;)</td></tr>
+                <tr><td>\[</td><td>:</td><td>left double quotation mark (&#x201C;)</td></tr>
+                <tr><td>\]</td><td>:</td><td>right double quotation mark (&#x201D;)</td></tr>
+                <tr><td>\<</td><td>:</td><td>left angle quotation mark (&#x00AB;)</td></tr>
+                <tr><td>\></td><td>:</td><td>right angular quotation mark (&#x00BB;)</td></tr>
+            </table>
+        </section>
     </dialog>
 
 </body>

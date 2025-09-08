@@ -2,46 +2,48 @@
 
 const createTwoStateButton = (element, cssClassUp, cssClassDown, initialDown) => {
 
-    let isDown = initialDown ? true : false;
+    const twoStateButton = {
+        isDown: initialDown ? true : false,
+        onchange: null,
+    };
 
-    element.classList.add(isDown ? cssClassDown : cssClassUp);
+    element.classList.add(twoStateButton.isDown ? cssClassDown : cssClassUp);
 
     const toggle = () => {
-        isDown = !isDown;
-        const oldToken = isDown ? cssClassUp : cssClassDown;
-        const newToken = !isDown ? cssClassUp : cssClassDown;
+        twoStateButton.isDown = !twoStateButton.isDown;
+        const oldToken = twoStateButton.isDown ? cssClassUp : cssClassDown;
+        const newToken = !twoStateButton.isDown ? cssClassUp : cssClassDown;
         element.classList.replace(oldToken, newToken);
-        if (onchange)
-            onchange(isDown);
     }; //toggle
     const setValue = value => {
-        if (value == isDown) return;
+        if (value == twoStateButton.isDown) return;
         toggle();
     }; //setValue
+    const uiToggle = () => {
+        toggle();
+        if (twoStateButton.onchange)
+            twoStateButton.onchange(twoStateButton.isDown);
+    }; //uiToggle
 
-    element.onpointerup = () => toggle();
+    element.onpointerup = () => uiToggle();
     element.onkeyup = event => {
         if (event.code == "Enter" || event.code == "Space") {
-            toggle();
+            uiToggle();
             event.preventDefault();
         } //if
     }; //element.onkeyup
     
-    const twoStateButton = {};
     Object.defineProperties(twoStateButton, {
         value: {
-            get() { return isDown; },
+            get() { return twoStateButton.isDown; },
             set(value) {
                 setValue(value);
             },
         }, //value
-        onchange: {
-            get() { return onchange; },
-            set(value) { onchange = value; }
-        }, //onchange
-        isDown: {
-            get() { return isDown; }
-        }, //isDown
+        onchangeState: {
+            get() { return twoStateButton.onchange; },
+            set(value) { twoStateButton.onchange = value; }
+        }, //onchangeState
         element: {
             get() { return element; }
         }, 

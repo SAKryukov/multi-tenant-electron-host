@@ -3,11 +3,26 @@
 const createSearchDialog = (definitionSet, elementSet) => {
 
     const searchOptionSet = ((cssClassUp, cssClassDown) => {
+        definitionSet.search.showBlock(elementSet.search.options.legend, false);
+        const twoStateRegularExpression =
+            createTwoStateButton(elementSet.search.options.useRegularExpression, cssClassUp, cssClassDown);
+        const twoStateSpecial =
+            createTwoStateButton(elementSet.search.options.useSpecialCharacters, cssClassUp, cssClassDown);
+        twoStateSpecial.onchangeState = value => {
+            definitionSet.search.showBlock(elementSet.search.options.legend, value);
+            if (value) twoStateRegularExpression.value = false;
+        } //twoStateSpecial.onchange
+        twoStateRegularExpression.onchangeState = value => {
+            if (value) {
+                twoStateSpecial.value = false;
+                definitionSet.search.showBlock(elementSet.search.options.legend, false);
+            } //if
+        } //twoStateRegularExpression.onchange
         return {
             matchCase: createTwoStateButton(elementSet.search.options.matchCase, cssClassUp, cssClassDown),
             matchWholeWord: createTwoStateButton(elementSet.search.options.matchWholeWord, cssClassUp, cssClassDown),
-            useRegularExpression: createTwoStateButton(elementSet.search.options.useRegularExpression, cssClassUp, cssClassDown),
-            useSpecialCharacters: createTwoStateButton(elementSet.search.options.useSpecialCharacters, cssClassUp, cssClassDown),
+            useRegularExpression: twoStateRegularExpression,
+            useSpecialCharacters: twoStateSpecial,
             askConfirmation: createTwoStateButton(elementSet.search.options.askConfirmation, cssClassUp, cssClassDown, true),
         };
     })(definitionSet.search.optionClassName.up, definitionSet.search.optionClassName.down);
@@ -33,18 +48,17 @@ const createSearchDialog = (definitionSet, elementSet) => {
     const replace = ()=> {
         const value = elementSet.editor.value;
         if (!value) return;
-        let searchString = elementSet.search.inputFind.value;
+        const searchString = elementSet.search.inputFind.value;
         if (!searchString) return findings;
-        const replaceString = elementSet.search.inputReplace.value;
+        let replaceString = elementSet.search.inputReplace.value;
         if (!replaceString) return;
-        if (searchOptionSet.useSpecialCharacters.value) {
-            searchString = searchString
+        if (searchOptionSet.useSpecialCharacters.value)
+            replaceString = replaceString
             .replaceAll("!!", "!")
-            .replaceAll("!n", "\n")
+            .replaceAll(`\\n`, "\n")
             .replaceAll("!t", "\t")
-            .replaceAll("!--", String.fromCharCode(0x2013)) //en dash
-            .replaceAll("!---", String.fromCharCode(0x2013)); //em dash
-        } //if
+            .replaceAll("!---", String.fromCharCode(0x2014)) //em dash, order is important!
+            .replaceAll("!--", String.fromCharCode(0x2013)); //en dash
         elementSet.editor.value = value.replaceAll(searchString, replaceString);
     }; //replace
 
