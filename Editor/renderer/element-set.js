@@ -7,9 +7,6 @@ const getElementSet = document => {
         search: {
             dialog: document.querySelector("dialog#id-search-dialog"),
             closeCross: document.querySelector("#id-search-dialog-close"),
-            buttonFind: document.querySelector("dialog#id-search-dialog button:first-of-type"),
-            buttonReplace: document.querySelector("dialog#id-search-dialog button:nth-of-type(2)"),
-            buttonReplaceAll: document.querySelector("dialog#id-search-dialog button:nth-of-type(3)"),
             inputFind: document.querySelector("dialog#id-search-dialog p:first-of-type input"),
             inputReplace: document.querySelector("dialog#id-search-dialog p:nth-of-type(2) input"),
             findingsIndicator: document.querySelector("#id-findings-indicator"),

@@ -92,12 +92,8 @@ const createSearchDialog = (definitionSet, elementSet) => {
         } //if
     }; //find
 
-    elementSet.search.buttonFind.onclick = find;
-
     elementSet.search.inputFind.oninput = resetFindings;
     elementSet.editor.addEventListener(definitionSet.events.input, resetFindings);
-    elementSet.search.buttonReplace.onclick = () => replace(false);
-    elementSet.search.buttonReplaceAll.onclick = () => replace(true);
     elementSet.search.inputFind.onkeydown = event => {
         if (definitionSet.isShortcut(event, definitionSet.search.shorcutPerform)) {
             find();
@@ -126,8 +122,6 @@ const createSearchDialog = (definitionSet, elementSet) => {
 
     const searchDialog = {
         show: isReplaceView => {
-            definitionSet.search.showElement(elementSet.search.buttonReplace, isReplaceView);
-            definitionSet.search.showElement(elementSet.search.buttonReplaceAll, isReplaceView);
             definitionSet.search.showElement(elementSet.search.inputReplace, isReplaceView);
             if (!isShown)
                 elementSet.search.dialog.show();

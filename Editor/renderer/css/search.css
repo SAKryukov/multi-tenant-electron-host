@@ -1,23 +1,28 @@
 #id-search-dialog {
-    opacity: 0.6;
+    opacity: 0.1;
     border-radius: 0; border-left: gray thin solid; border-bottom: gray thin solid; 
     position: absolute; top: 0; right: 0; left: auto; 
-    padding: 0.4em;
     padding-left: 1em;
     padding-right: 1.7em;
 }
+#id-search-dialog:hover, 
+#id-search-dialog:focus-within { opacity: 1; }
 
 #id-search-dialog p { margin-top: 0.3em; }
 #id-search-dialog p:first-of-type { margin-top: 0; }
 #id-search-dialog input { margin-right: 0.4em; width: 20em; }
 #id-findings-indicator { margin-right: 1.2em; }
+
+#id-search-dialog-close { font-size: 1.6em; position: absolute; top: 0; left: auto; right: 0.4em; cursor: default; }
+#id-search-dialog { padding: 1em; padding-top: 0.2em; padding-bottom: 0.2em; }
+
 #id-search-dialog button { border-radius: 0; padding-top: 0.1em; padding-bottom: 0.1em;
     background-color:  hsl(195, 53%, 89%); }
+#id-search-dialog button { border: solid thin gray;
+    margin: 0; background-color: hsl(195, 53%, 95%); 
+    font-size: 80%; padding: 0; height: 2.2em; width: 2.2em; padding-top: 0.4em; padding-bottom: 0.5em; 
+}
+
 #id-search-dialog button:hover { background-color: hsl(195, 53%, 95%); }
 #id-search-dialog button:focus { outline: 2px solid blue; outline-offset: 1px; }
 #id-search-dialog button:active { background-color: hsl(240, 100%, 75%); }
-
-#id-search-dialog:hover, 
-#id-search-dialog:focus-within { opacity: 1; }
-
-#id-search-dialog-close { font-size: 1.6em; position: absolute; top: 0; left: auto; right: 0.4em; cursor: default; }
