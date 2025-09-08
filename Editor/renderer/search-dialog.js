@@ -47,22 +47,30 @@ const createSearchDialog = (definitionSet, elementSet) => {
         elementSet.editor.scrollTop = lineHeight * selectionRow;
     }; //scrollToSelection
 
+    const prepareRegexp = searchString => {
+        const ignoreCase = !searchOptionSet.matchCase.value;
+        const useRegularExpression = searchOptionSet.useRegularExpression.value;
+        const flags = definitionSet.search.regularExpressionFlags(ignoreCase);
+        if (!useRegularExpression)
+            searchString = RegExp.escape(searchString);
+        if (searchOptionSet.matchWholeWord.value)
+            searchString = definitionSet.search.regularExpressionWholeWord(searchString);
+        searchString = new RegExp(searchString, flags);
+        return searchString;
+    }; //prepareRegexp
+
     const replace = () => {
         const value = elementSet.editor.value;
         if (!value) return;
         let searchString = elementSet.search.inputFind.value;
+        if (!searchString) return;
+        searchString = prepareRegexp(elementSet.search.inputFind.value);
         if (!searchString) return findings;
         let replaceString = elementSet.search.inputReplace.value;
         if (!replaceString) return;
         if (searchOptionSet.useSpecialCharacters.value)
             for (const replacement of definitionSet.search.specialCharacterReplacements)
                 replaceString = replaceString.replaceAll(replacement[0], replacement[1]);
-        const ignoreCase = !searchOptionSet.matchCase.value;
-        const useRegularExpression = searchOptionSet.useRegularExpression.value;
-        const flags = definitionSet.search.regularExpressionFlags(ignoreCase);
-        if (!useRegularExpression)
-            searchString = RegExp.escape(searchString);
-        searchString = new RegExp(searchString, flags);
         if (elementSet.editor.selectionStart != elementSet.editor.selectionEnd) {
             let value = elementSet.editor.value.slice(elementSet.editor.selectionStart, elementSet.editor.selectionEnd);
             value = value.replaceAll(searchString, replaceString);
@@ -86,7 +94,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
                     const finding = findings[index];
                     if (finding <= elementSet.editor.selectionEnd) {
                         currentFinding = findingIndex;
-                        elementSet.editor.setSelectionRange(finding, finding + searchStringLength);
+                        elementSet.editor.setSelectionRange(finding[0], finding[1]);
                         break;
                     } //if
                 } //loop
@@ -95,7 +103,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
                     const finding = findings[findingIndex];
                     if (finding >= elementSet.editor.selectionStart) {
                         currentFinding = findingIndex;
-                        elementSet.editor.setSelectionRange(finding, finding + searchStringLength);
+                        elementSet.editor.setSelectionRange(finding[0], finding[1]);
                         break;
                     } //if
                 } //loop
@@ -116,23 +124,32 @@ const createSearchDialog = (definitionSet, elementSet) => {
         scrollToSelection();
     }; //findNext
 
+    const findAll = pattern => {
+        const result = [];
+        let matches;
+        if (elementSet.editor.selectionStart != elementSet.editor.selectionEnd) {
+            const aSlice = elementSet.editor.value.slice(elementSet.editor.selectionStart, elementSet.editor.selectionEnd);
+            matches = [...aSlice.matchAll(pattern)];
+            for (const match of matches)
+                result.push([match.index + elementSet.editor.selectionStart, match.index + elementSet.editor.selectionStart + match.length]);
+        } else
+            matches = [...elementSet.editor.value.matchAll(pattern)];
+        for (const match of matches)
+            result.push([match.index, match.index + match[0].length]);
+        return result;
+    }; //result
+
     const find = () => {
-        findings = [];
         const value = elementSet.editor.value;
         if (!value) return;
-        const searchString = elementSet.search.inputFind.value;
-        if (!value) return;
-        const searchStringLength = searchString.length;
-        let index, position = 0;
-        while ((index = value.indexOf(searchString, position)) > -1) {
-            findings.push(index);
-            position = index + searchStringLength;
-        } //loop
-        elementSet.search.findingsIndicator.textContent = findings.length;
-        if (findings.length > 0) {
-            elementSet.editor.setSelectionRange(findings[0], findings[0] + searchStringLength);
-            scrollToSelection();
+        let searchString = elementSet.search.inputFind.value;
+        if (!searchString) return;
+        searchString = prepareRegexp(elementSet.search.inputFind.value);
+        if (!searchString) return findings;
+        findings = findAll(searchString);
+        if (findings) {
             elementSet.editor.focus();
+            elementSet.editor.setSelectionRange(findings[0][0], findings[0][1]);
         } //if
     }; //find
 

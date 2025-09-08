@@ -116,6 +116,7 @@ const getDefinitionSet = () => {
                 const caseIndicator = ignoreCase ? "i" : "";
                 return `gu${caseIndicator}`;
             }, //regularExpressionFlags
+            regularExpressionWholeWord: word => `\\b${word}\\b`,
             shorcutFind: { key: "KeyF", prefix: ["ctrlKey"] },
             shorcutReplace: { key: "KeyH", prefix: ["ctrlKey"] },
             shorcutFindNext: { key: "F3", prefix: [] },
