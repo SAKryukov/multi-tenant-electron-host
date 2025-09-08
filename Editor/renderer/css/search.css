@@ -25,6 +25,7 @@
 
 #id-search-dialog button:hover { background-color: hsl(195, 53%, 95%); }
 #id-search-dialog button:focus { outline: 1px solid gray; outline-offset: 1px; }
+#id-search-dialog button:active { background-color: white; color: black; }
 #id-search-dialog button.up { background-color: white; }
 #id-search-dialog button.down { background-color: lightgray; color: navy;
     border-top-color: black; border-left-color: black;

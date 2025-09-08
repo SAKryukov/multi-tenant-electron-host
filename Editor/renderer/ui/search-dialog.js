@@ -9,7 +9,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
             useRegularExpression: createTwoStateButton(elementSet.search.options.useRegularExpression, cssClassUp, cssClassDown),
             useSpecialCharacters: createTwoStateButton(elementSet.search.options.useSpecialCharacters, cssClassUp, cssClassDown),
             askConfirmation: createTwoStateButton(elementSet.search.options.askConfirmation, cssClassUp, cssClassDown, true),
-        }
+        };
     })(definitionSet.search.optionClassName.up, definitionSet.search.optionClassName.down);
  
     let isShown = false;
@@ -41,6 +41,10 @@ const createSearchDialog = (definitionSet, elementSet) => {
             ? value.replaceAll(searchString, replaceString)
             : value.replace(searchString, replaceString);        
     }; //replace
+
+    const canFindNext = () => {
+        return findings && findings.length;
+    }; //canFindNext
 
     const findNext = previous => {
         if (!findings) return;
@@ -79,6 +83,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
             elementSet.editor.setSelectionRange(findings[currentFinding], findings[currentFinding] + searchStringLength);
         else
             currentFinding = rollover;
+        elementSet.editor.focus();
         scrollToSelection();
     }; //findNext
 
@@ -141,8 +146,9 @@ const createSearchDialog = (definitionSet, elementSet) => {
                 find();
             isShown = true;
         },
-        find: find,
-        findNext: findNext,
+        find,
+        canFindNext,
+        findNext,
         replace,
     }; //searchDialog
     return searchDialog;

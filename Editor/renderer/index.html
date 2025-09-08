@@ -74,6 +74,8 @@
                         <option disabled="true" class="separator">─────────────────────────────</option>
                         <option id="menu-find">Find (Ctrl+F)</option>
                         <option id="menu-replace">Replace (Ctrl+H)</option>
+                        <option id="menu-find-next">Find Next (F3)</option>
+                        <option id="menu-find-previous">Find Previous (Shift+F3)</option>
                         <option disabled="true" class="separator">─────────────────────────────</option>
                         <option id="menu-start-macro-recoding">Start Macro Recording (Shift+Ctrl+R)</option>
                         <option id="menu-stop-macro-recoding">Stop Macro Recording (Shift+Ctrl+R)</option>
@@ -113,13 +115,13 @@
     </footer>
 
     <dialog id="id-search-dialog">
-        <span id="id-search-dialog-close">&times;</span> <!-- 2573 -->
+        <span id="id-search-dialog-close" title="Ctrl+F4">&times;</span> <!-- 2573 -->
         <p><input placeholder="Search String. Enter to Find"></input><span id="id-findings-indicator">0</span></p>
         <p><input placeholder="Replace string. Enter to replace all"></input></p>
         <p>
             <button id="id-search-match-case" title="Match case">&Alpha;&alpha;</button>
             <button id="id-search-whole-word" title="Match  whole word">&#x2223;&MediumSpace;&#x2223;</button>
-            <button id="id-search-regexp" title="Use regular expression"><small>.&#x2736;</small></button>
+            <button id="id-search-regexp" title="Use regular expression"><small>&#x2736;</small></button>
             <button id="id-search-special" title="Use  special characters"><small>!</small></button>
             <button id="id-search-confirmation" title="Ask  confirmation"><small>?</small></button>
         </p>

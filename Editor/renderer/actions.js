@@ -201,6 +201,15 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         return false;
     }); //edit.Replace
 
+    menu.subscribe(elementSet.menuItems.edit.findNext.textContent, actionRequest => {
+        if (!actionRequest) return searchDialog.canFindNext();
+        searchDialog.findNext(false);
+    }); //edit.findNextс
+    menu.subscribe(elementSet.menuItems.edit.findPrevious.textContent, actionRequest => {
+        if (!actionRequest) return searchDialog.canFindNext();
+        searchDialog.findNext(true);
+    }); //edit.findPrevious
+
     // View:
 
     let isStatusBarVisible = true;

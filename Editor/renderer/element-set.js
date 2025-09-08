@@ -42,6 +42,8 @@ const getElementSet = document => {
                 selectAll: document.querySelector("#menu-select-all"),
                 find:  document.querySelector("#menu-find"),
                 replace: document.querySelector("#menu-replace"),
+                findNext: document.querySelector("#menu-find-next"),
+                findPrevious: document.querySelector("#menu-find-previous"),
             },
             macro: {
                 startRecording: document.querySelector("#menu-start-macro-recoding"),

@@ -20,12 +20,14 @@ const createTwoStateButton = (element, cssClassUp, cssClassDown, initialDown) =>
     }; //setValue
 
     element.onpointerup = () => toggle();
-    element.onkeydown = event => {
+    element.onkeypress = event => {
         if (event.code == "Enter" || event.code == "Space") {
             toggle();
             event.preventDefault();
         } //if
-    }; //element.onkeydown
+        if (event.repeat)
+            event.preventDefault();
+    }; //element.onkeyup
     
     const twoStateButton = {};
     Object.defineProperties(twoStateButton, {
