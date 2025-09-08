@@ -11,8 +11,8 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgeFileIO, { // to be used only in 
     }, //openFile
     subscribeToCommandLine: handler =>
         ipcRenderer.on(ipcChannel.fileIO.openFromCommandLine, (_event, filename, simpleFileName, text, error) => handler(filename, simpleFileName, text, error)),
-    saveFileAs: (text, handler) => {
-        ipcRenderer.send(ipcChannel.fileIO.saveFileAs, text);
+    saveFileAs: (text, handler, closeApplication) => {
+        ipcRenderer.send(ipcChannel.fileIO.saveFileAs, text, closeApplication);
         ipcRenderer.once(ipcChannel.fileIO.saveFileAs, (_event, filename, baseFilename, error) =>
                 handler(filename, baseFilename, error));
     }, //saveFileAs

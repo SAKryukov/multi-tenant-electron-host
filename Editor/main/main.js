@@ -44,9 +44,11 @@ const subscribeToEvents = window => {
         utilitySet.openFile((filename, text, error) =>
             window.webContents.send(ipcChannel.fileIO.openFile, filename, path.basename(filename), text, error));
     });
-    ipcMain.on(ipcChannel.fileIO.saveFileAs, (_event, text) => {
+    ipcMain.on(ipcChannel.fileIO.saveFileAs, (_event, text, closeApplication) => {
         utilitySet.saveFileAs(text, (filename, error) =>
             window.webContents.send(ipcChannel.fileIO.saveFileAs, filename, path.basename(filename), error));
+        //if (closeApplication) //SA???
+        //    window.close();
     });
     ipcMain.on(ipcChannel.fileIO.saveExistingFile, (_event, filename, text) => {
         utilitySet.saveExistingFile(filename, text, (filename, error) =>

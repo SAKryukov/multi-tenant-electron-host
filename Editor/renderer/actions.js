@@ -38,13 +38,17 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             window.close();
         }; //wrapper
         const effectiveAction = closingApplication ? wrapper : action;
+        const effectiveCloseAction = 
+            closingApplication
+                ? saveAsAndCloseApplication
+                : saveAs;
         if (isModified) {
             const message = closingApplication
                 ? definitionSet.modifiedTextOperationConfirmation.messageClosingApplication
                 : definitionSet.modifiedTextOperationConfirmation.message;
             modalDialog.show(
                 message, {
-                    buttons: definitionSet.modifiedTextOperationConfirmation.buttons(saveAs, effectiveAction),
+                    buttons: definitionSet.modifiedTextOperationConfirmation.buttons(effectiveCloseAction, effectiveAction),
                 });
         } else
             action();
@@ -77,7 +81,10 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     const saveAs = () =>
         window.bridgeFileIO.saveFileAs(elementSet.editor.value, (filename, baseFilename, error) =>
-            handleFileOperationResult(filename, baseFilename, null, error, true));
+            handleFileOperationResult(filename, baseFilename, null, error, true), false);
+    const saveAsAndCloseApplication = () =>
+        window.bridgeFileIO.saveFileAs(elementSet.editor.value, (filename, baseFilename, error) =>
+            handleFileOperationResult(filename, baseFilename, null, error, true), true);
 
     menu.subscribe(elementSet.menuItems.file.saveAs.textContent, actionRequest => {
         if (!actionRequest) return true;
