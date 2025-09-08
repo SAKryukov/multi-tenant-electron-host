@@ -99,16 +99,15 @@ const createSearchDialog = (definitionSet, elementSet) => {
 
     const findAll = pattern => {
         const result = [];
-        let matches;
+        let matches, shift = 0;
         if (elementSet.editor.selectionStart != elementSet.editor.selectionEnd) {
             const aSlice = elementSet.editor.value.slice(elementSet.editor.selectionStart, elementSet.editor.selectionEnd);
             matches = [...aSlice.matchAll(pattern)];
-            for (const match of matches)
-                result.push([match.index + elementSet.editor.selectionStart, match.index + elementSet.editor.selectionStart + match.length]);
+            shift = elementSet.editor.selectionStart;
         } else
             matches = [...elementSet.editor.value.matchAll(pattern)];
         for (const match of matches)
-            result.push([match.index, match.index + match[0].length]);
+            result.push([match.index + shift, match.index + match[0].length + shift]);
         return result;
     }; //result
 
