@@ -45,7 +45,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
         elementSet.editor.scrollTop = lineHeight * selectionRow;
     }; //scrollToSelection
 
-    const replace = ()=> {
+    const replace = () => {
         const value = elementSet.editor.value;
         if (!value) return;
         const searchString = elementSet.search.inputFind.value;
@@ -54,8 +54,13 @@ const createSearchDialog = (definitionSet, elementSet) => {
         if (!replaceString) return;
         if (searchOptionSet.useSpecialCharacters.value)
             for (const replacement of definitionSet.search.specialCharacterReplacements)
-                replaceString = replaceString.replaceAll(replacement[0], replacement[1]);    
-        elementSet.editor.value = value.replaceAll(searchString, replaceString);
+                replaceString = replaceString.replaceAll(replacement[0], replacement[1]);
+        if (elementSet.editor.selectionStart != elementSet.editor.selectionEnd) {
+            let value = elementSet.editor.value.slice(elementSet.editor.selectionStart, elementSet.editor.selectionEnd);
+            value = value.replaceAll(searchString, replaceString);
+            elementSet.editor.setRangeText(value);
+        } else
+            elementSet.editor.value = value.replaceAll(searchString, replaceString);
     }; //replace
 
     const canFindNext = () => {
