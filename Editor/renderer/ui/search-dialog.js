@@ -2,7 +2,7 @@
 
 const createSearchDialog = (definitionSet, elementSet) => {
 
-    const searchOptions = ((cssClassUp, cssClassDown) => {
+    const searchOptionSet = ((cssClassUp, cssClassDown) => {
         return {
             matchCase: createTwoStateButton(elementSet.search.options.matchCase, cssClassUp, cssClassDown),
             matchWholeWord: createTwoStateButton(elementSet.search.options.matchWholeWord, cssClassUp, cssClassDown),
@@ -30,16 +30,22 @@ const createSearchDialog = (definitionSet, elementSet) => {
         elementSet.editor.scrollTop = lineHeight * selectionRow;
     }; //scrollToSelection
 
-    const replace = all => {
+    const replace = ()=> {
         const value = elementSet.editor.value;
         if (!value) return;
-        const searchString = elementSet.search.inputFind.value;
+        let searchString = elementSet.search.inputFind.value;
         if (!searchString) return findings;
         const replaceString = elementSet.search.inputReplace.value;
         if (!replaceString) return;
-        elementSet.editor.value = all
-            ? value.replaceAll(searchString, replaceString)
-            : value.replace(searchString, replaceString);        
+        if (searchOptionSet.useSpecialCharacters.value) {
+            searchString = searchString
+            .replaceAll("!!", "!")
+            .replaceAll("!n", "\n")
+            .replaceAll("!t", "\t")
+            .replaceAll("!--", String.fromCharCode(0x2013)) //en dash
+            .replaceAll("!---", String.fromCharCode(0x2013)); //em dash
+        } //if
+        elementSet.editor.value = value.replaceAll(searchString, replaceString);
     }; //replace
 
     const canFindNext = () => {
@@ -117,7 +123,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
     }; //elementSet.search.inputFind.onkeydown
     elementSet.search.inputReplace.onkeydown = event => {
         if (definitionSet.isShortcut(event, definitionSet.search.shorcutPerform)) {
-            replace(true);
+            replace();
             event.preventDefault();
         } //if
     }; //elementSet.search.inputReplace.onkeydown
@@ -138,7 +144,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
     const searchDialog = {
         show: isReplaceView => {
             definitionSet.search.showElement(elementSet.search.inputReplace, isReplaceView);
-            definitionSet.search.showButton(searchOptions.askConfirmation.element, isReplaceView);
+            definitionSet.search.showButton(searchOptionSet.askConfirmation.element, isReplaceView);
             if (!isShown)
                 elementSet.search.dialog.show();
             elementSet.search.inputFind.focus();
