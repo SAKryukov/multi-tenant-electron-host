@@ -20,9 +20,6 @@ const createSearchDialog = (definitionSet, elementSet) => {
                 definitionSet.search.showBlock(elementSet.search.options.legend, false);
             } //if
         } //twoStateRegularExpression.onchange
-        twoStateMatchCase.onchangeState = value => {
-            if (!value) twoStateRegularExpression.value = true;
-        }; //twoStateMatchCase.onchangeState
         return {
             matchCase: twoStateMatchCase,
             matchWholeWord: createTwoStateButton(elementSet.search.options.matchWholeWord, cssClassUp, cssClassDown),
@@ -62,10 +59,10 @@ const createSearchDialog = (definitionSet, elementSet) => {
                 replaceString = replaceString.replaceAll(replacement[0], replacement[1]);
         const ignoreCase = !searchOptionSet.matchCase.value;
         const useRegularExpression = searchOptionSet.useRegularExpression.value;
-        if (useRegularExpression) {
-            const flags = definitionSet.search.regularExpressionFlags(ignoreCase);
-            searchString = new RegExp(searchString, flags);
-        } //if
+        const flags = definitionSet.search.regularExpressionFlags(ignoreCase);
+        if (!useRegularExpression)
+            searchString = RegExp.escape(searchString);
+        searchString = new RegExp(searchString, flags);
         if (elementSet.editor.selectionStart != elementSet.editor.selectionEnd) {
             let value = elementSet.editor.value.slice(elementSet.editor.selectionStart, elementSet.editor.selectionEnd);
             value = value.replaceAll(searchString, replaceString);
