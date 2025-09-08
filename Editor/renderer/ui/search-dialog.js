@@ -53,12 +53,8 @@ const createSearchDialog = (definitionSet, elementSet) => {
         let replaceString = elementSet.search.inputReplace.value;
         if (!replaceString) return;
         if (searchOptionSet.useSpecialCharacters.value)
-            replaceString = replaceString
-            .replaceAll("!!", "!")
-            .replaceAll(`\\n`, "\n")
-            .replaceAll("!t", "\t")
-            .replaceAll("!---", String.fromCharCode(0x2014)) //em dash, order is important!
-            .replaceAll("!--", String.fromCharCode(0x2013)); //en dash
+            for (const replacement of definitionSet.search.specialCharacterReplacements)
+                replaceString = replaceString.replaceAll(replacement[0], replacement[1]);    
         elementSet.editor.value = value.replaceAll(searchString, replaceString);
     }; //replace
 

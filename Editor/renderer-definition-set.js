@@ -99,6 +99,19 @@ const getDefinitionSet = () => {
                 element.style.display = doShow ? "inline-block"  : "none",
             showBlock: (element, doShow) =>
                 element.style.display = doShow ? "block"  : "none",
+            specialCharacterReplacements: [
+                ["\\\\", "\\"],
+                ["\\n", "\n"],
+                ["\\t", "\t"],
+                ["\\---", String.fromCharCode(0x2014)], //em dash, order is important!
+                ["\\--", String.fromCharCode(0x2013)], //en dash
+                ["\\(", String.fromCharCode(0x018)], //left single quotation mark
+                ["\\)", String.fromCharCode(0x019)], //right single quotation mark
+                ["\\[", String.fromCharCode(0x201C)], //left double quotation mark
+                ["\\]", String.fromCharCode(0x201D)], //right double quotation mark
+                ["\\<<", String.fromCharCode(0x00AB)], //left angle quotation mark
+                ["\\>>", String.fromCharCode(0x00BB)], //right angle quotation mark
+            ], //specialCharacterReplacements
             shorcutFind: { key: "KeyF", prefix: ["ctrlKey"] },
             shorcutReplace: { key: "KeyH", prefix: ["ctrlKey"] },
             shorcutFindNext: { key: "F3", prefix: [] },
