@@ -1,5 +1,5 @@
 #id-search-dialog {
-    opacity: 0.1;
+    opacity: 0.5;
     border-radius: 0; border-left: gray thin solid; border-bottom: gray thin solid; 
     position: absolute; top: 0; right: 0; left: auto; 
     padding-left: 1em;
@@ -20,11 +20,12 @@
     background-color:  hsl(195, 53%, 89%); }
 #id-search-dialog button { border: solid thin gray;
     margin: 0; background-color: hsl(195, 53%, 95%); 
-    font-size: 80%; padding: 0; height: 2.2em; width: 2.2em; padding-top: 0.4em; padding-bottom: 0.5em; 
+    font-size: 80%; padding: 0; height: 2.2em; width: 2.2em; padding-top: 0.4em; padding-bottom: 0.6em; 
 }
 
 #id-search-dialog button:hover { background-color: hsl(195, 53%, 95%); }
-#id-search-dialog button:focus { outline: 2px solid blue; outline-offset: 1px; }
-#id-search-dialog button:active { background-color: hsl(240, 100%, 75%); }
+#id-search-dialog button:focus { outline: 1px solid gray; outline-offset: 1px; }
 #id-search-dialog button.up { background-color: white; }
-#id-search-dialog button.down { background-color: gray; color: white; }
+#id-search-dialog button.down { background-color: lightgray; color: navy;
+    border-top-color: black; border-left-color: black;
+}

@@ -103,6 +103,7 @@ const getDefinitionSet = () => {
             shorcutFindPrevious: { key: "F3", prefix: ["shiftKey"] },
             shorcutClose: { key: "F4", prefix: ["ctrlKey"] },
             shorcutPerform: { key: "Enter", prefix: [] },
+            optionClassName: { up: 0, down: 0, },
         }, //search
         isShortcut : (event, shortcut) => {
             if (event.code != shortcut.key) return false;
@@ -114,7 +115,7 @@ const getDefinitionSet = () => {
         }, //isShortcut
     }; //definitionSet
 
-    for (const subset of [definitionSet.events, definitionSet.elements, definitionSet.keys])
+    for (const subset of [definitionSet.events, definitionSet.elements, definitionSet.keys, definitionSet.search.optionClassName])
         for (const index in subset)
             if (!subset[index])
                 subset[index] = index;
