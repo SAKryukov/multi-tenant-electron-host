@@ -112,9 +112,10 @@ const getDefinitionSet = () => {
                 ["\\<<", String.fromCharCode(0x00AB)], //left angle quotation mark
                 ["\\>>", String.fromCharCode(0x00BB)], //right angle quotation mark
             ], //specialCharacterReplacements
-            regularExpressionFlags: ignoreCase => {
+            regularExpressionFlags: (ignoreCase, global) => {
+                const globalIndicator = global ? "g" : "";
                 const caseIndicator = ignoreCase ? "i" : "";
-                return `gu${caseIndicator}`;
+                return `${globalIndicator}u${caseIndicator}`;
             }, //regularExpressionFlags
             regularExpressionWholeWord: word => `\\b${word}\\b`,
             shorcutFind: { key: "KeyF", prefix: ["ctrlKey"] },
@@ -124,6 +125,21 @@ const getDefinitionSet = () => {
             shorcutClose: { key: "F4", prefix: ["ctrlKey"] },
             shorcutPerform: { key: "Enter", prefix: [] },
             optionClassName: { up: 0, down: 0, },
+            replaceConfirmation: {
+                event: new Event("replace-confirmation"),
+                subscribeToReplaceConfirmation: function(element, handler) {
+                    element.addEventListener(this.event.type, handler);
+                }, //subscribeToReplaceConfirmation
+                dialogMessage: line => `<p>Found:</p>
+                    ${line}
+                    <br/><br/>
+                    <p style="text-align: center">Replace?</a><br/><br/>`,
+                dialogButtons: (yesAction, noAction) => [
+                    { text: "Yes", isDefault: true, action: yesAction, },
+                    { text: "No", action: noAction, },
+                    { default: true, isEscape: true, text: "Cancel" }
+                ],
+            }, //replaceConfirmation
         }, //search
         isShortcut : (event, shortcut) => {
             if (event.code != shortcut.key) return false;

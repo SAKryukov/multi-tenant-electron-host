@@ -28,9 +28,9 @@ const createSearchDialog = (definitionSet, elementSet) => {
             askConfirmation: createTwoStateButton(elementSet.search.options.askConfirmation, cssClassUp, cssClassDown, true),
         };
     })(definitionSet.search.optionClassName.up, definitionSet.search.optionClassName.down);
- 
+
     let isShown = false;
-    let findings, currentFinding;
+    let findings, currentFinding, replacementIndex;
     const resetFindings = () => {
         findings = [];
         currentFinding = -1;
@@ -42,15 +42,15 @@ const createSearchDialog = (definitionSet, elementSet) => {
         const columns = elementSet.editor.cols;
         const selectionRow =
             (elementSet.editor.selectionStart -
-            (elementSet.editor.selectionStart % columns)) / columns;
+                (elementSet.editor.selectionStart % columns)) / columns;
         const lineHeight = elementSet.editor.clientHeight / elementSet.editor.rows;
         elementSet.editor.scrollTop = lineHeight * selectionRow;
     }; //scrollToSelection
 
-    const prepareRegexp = searchString => {
+    const prepareRegexp = (searchString, global) => {
         const ignoreCase = !searchOptionSet.matchCase.value;
         const useRegularExpression = searchOptionSet.useRegularExpression.value;
-        const flags = definitionSet.search.regularExpressionFlags(ignoreCase);
+        const flags = definitionSet.search.regularExpressionFlags(ignoreCase, global);
         if (!useRegularExpression)
             searchString = RegExp.escape(searchString);
         if (searchOptionSet.matchWholeWord.value)
@@ -59,12 +59,8 @@ const createSearchDialog = (definitionSet, elementSet) => {
         return searchString;
     }; //prepareRegexp
 
-    const replace = () => {
-        const value = elementSet.editor.value;
-        if (!value) return;
-        let searchString = elementSet.search.inputFind.value;
-        if (!searchString) return;
-        searchString = prepareRegexp(elementSet.search.inputFind.value);
+    const replaceAll = () => {
+        let searchString = prepareRegexp(elementSet.search.inputFind.value, true); //global
         if (!searchString) return findings;
         let replaceString = elementSet.search.inputReplace.value;
         if (!replaceString) return;
@@ -77,6 +73,80 @@ const createSearchDialog = (definitionSet, elementSet) => {
             elementSet.editor.setRangeText(value);
         } else
             elementSet.editor.value = value.replaceAll(searchString, replaceString);
+    }; //replaceAll
+
+    const formatLineToReplace = finding => {
+        const text = elementSet.editor.value;
+        let lines = text.substr(0, finding[0]).split("\n");
+        const row = lines.length;
+        const column = lines[lines.length - 1].length + 1;
+        const start = finding[0] - column + 1;
+        lines = text.split("\n");
+        const source = lines[row - 1];
+        const partOne = source.slice(0, finding[0] - start);
+        const partTwo = source.slice(finding[0] - start, finding[1] - start);
+        const partThree = source.substring(finding[1] - start);
+        return `<p style="color: blue">${partOne}<b style="color: white; background-color: blue">${partTwo}</b>${partThree}</p`;
+    }; //formatLineToReplace
+    definitionSet.search.replaceConfirmation.subscribeToReplaceConfirmation(
+        elementSet.editor,
+        () => {
+            if (replacementIndex >= findings.length) {
+                const pattern = prepareRegexp(elementSet.search.inputFind.value, false); // non-global
+                for (let index = findings.length - 1; index >= 0; --index) {
+                    const finding = findings[index];
+                    if (!finding[2]) continue; // false, that is, not confirmed
+                    const sliceFirst = elementSet.editor.value.substring(0, finding[0]);
+                    let sliceSecond = elementSet.editor.value.substring(finding[0]);
+                    sliceSecond = sliceSecond.replace(pattern, elementSet.search.inputReplace.value);
+                    elementSet.editor.value = sliceFirst + sliceSecond;
+                } //loop
+                resetFindings();
+                return;
+            } //if
+            const finding = findings[replacementIndex];
+            const line = formatLineToReplace(finding);
+            modalDialog.show(`<p>Found:</p>
+                ${line}
+                <br/><br/>
+                <p style="text-align: center">Replace?</a><br/><br/>`,
+                {
+                    buttons: [
+                        {
+                            text: "Yes", isDefault: true, action: () => {
+                                findings[replacementIndex++].push(true);
+                                elementSet.editor.dispatchEvent(
+                                    elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
+                            }
+                        },
+                        {
+                            text: "No", action: () => {
+                                replacementIndex++;
+                                elementSet.editor.dispatchEvent(
+                                    elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
+                            }
+                        },
+                        { default: true, isEscape: true, text: "Cancel" }],
+                });
+        }
+    ); //subscribeToReplaceConfirmation
+
+    const replaceOneByOne = () => {
+        find(true);
+        if (!findings) return;
+        if (!findings.length) return;
+        replacementIndex = 0;
+        elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event);
+    }; //replaceOneByOne
+
+    const replace = () => {
+        if (!elementSet.editor.value) return;
+        if (!elementSet.search.inputFind.value) return;
+        if (!elementSet.search.inputReplace.value) return;
+        if (searchOptionSet.askConfirmation.value)
+            replaceOneByOne();
+        else
+            replaceAll();
     }; //replace
 
     const canFindNext = () => {
@@ -111,14 +181,15 @@ const createSearchDialog = (definitionSet, elementSet) => {
         return result;
     }; //result
 
-    const find = () => {
+    const find = notFinal => {
         const value = elementSet.editor.value;
         if (!value) return;
         let searchString = elementSet.search.inputFind.value;
         if (!searchString) return;
-        searchString = prepareRegexp(elementSet.search.inputFind.value);
+        searchString = prepareRegexp(elementSet.search.inputFind.value, true); //global
         if (!searchString) return findings;
         findings = findAll(searchString);
+        if (notFinal) return;
         if (findings) {
             elementSet.editor.focus();
             elementSet.editor.setSelectionRange(findings[0][0], findings[0][1]);
@@ -151,7 +222,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
     elementSet.search.closeCross.onclick = () =>
         elementSet.search.dialog.close();
 
-    elementSet.search.dialog.onclose = () =>  isShown = false;
+    elementSet.search.dialog.onclose = () => isShown = false;
 
     const searchDialog = {
         show: isReplaceView => {
