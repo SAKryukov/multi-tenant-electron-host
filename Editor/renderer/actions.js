@@ -5,6 +5,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     const originalTitle = document.title;
     let currentFilename = null;
     let isModified = false;
+    elementSet.statusBar.modifiedFlag.innerHTML = definitionSet.status.modified;
 
     // File I/O:
 
@@ -13,9 +14,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     const updateModifiedFlag = flag => {
         isModified = flag;
-        elementSet.statusBar.modifiedFlag.innerHTML = flag
-            ? definitionSet.status.modified
-            : null;
+        definitionSet.search.showElement(elementSet.statusBar.modifiedFlag, flag);
     }; //updateModifiedFlag
     elementSet.editor.addEventListener(definitionSet.events.input, () => updateModifiedFlag(true));
        
