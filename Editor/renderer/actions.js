@@ -14,7 +14,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     const updateModifiedFlag = flag => {
         isModified = flag;
-        definitionSet.search.showElement(elementSet.statusBar.modifiedFlag, flag);
+        definitionSet.ui.showInline(elementSet.statusBar.modifiedFlag, flag);
     }; //updateModifiedFlag
     elementSet.editor.addEventListener(definitionSet.events.input, () => updateModifiedFlag(true));
        

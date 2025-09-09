@@ -61,7 +61,7 @@ const createMacroProcessor = (editor, stateIndicator) => {
         stateIndicator.style.animation = on
            ? definitionSet.status.macroIndicatorAnimation
             : null;
-        definitionSet.search.showElement(stateIndicator, on || macro.length > 0);
+        definitionSet.ui.showInline(stateIndicator, on || macro.length > 0);
         if (on) {
             previousState = getState(editor);
             firstSelection = getSelection();

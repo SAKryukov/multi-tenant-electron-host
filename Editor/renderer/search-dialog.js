@@ -3,7 +3,7 @@
 const createSearchDialog = (definitionSet, elementSet) => {
 
     const searchOptionSet = ((cssClassUp, cssClassDown) => {
-        definitionSet.search.showBlock(elementSet.search.options.legend, false);
+        definitionSet.search.showLegend(elementSet.search.options.legend, false);
         const twoStateMatchCase =
             createTwoStateButton(elementSet.search.options.matchCase, cssClassUp, cssClassDown, true);
         const twoStateRegularExpression =
@@ -11,13 +11,13 @@ const createSearchDialog = (definitionSet, elementSet) => {
         const twoStateSpecial =
             createTwoStateButton(elementSet.search.options.useSpecialCharacters, cssClassUp, cssClassDown);
         twoStateSpecial.onchangeState = value => {
-            definitionSet.search.showBlock(elementSet.search.options.legend, value);
+            definitionSet.search.showLegend(elementSet.search.options.legend, value);
             if (value) twoStateRegularExpression.value = false;
         } //twoStateSpecial.onchange
         twoStateRegularExpression.onchangeState = value => {
             if (value) {
                 twoStateSpecial.value = false;
-                definitionSet.search.showBlock(elementSet.search.options.legend, false);
+                definitionSet.search.showLegend(elementSet.search.options.legend, false);
             } //if
         } //twoStateRegularExpression.onchange
         return {
@@ -222,7 +222,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
 
     const searchDialog = {
         show: isReplaceView => {
-            definitionSet.search.showElement(elementSet.search.inputReplace, isReplaceView);
+            definitionSet.search.showInput(elementSet.search.inputReplace, isReplaceView);
             definitionSet.search.showButton(searchOptionSet.askConfirmation.element, isReplaceView);
             if (!isShown)
                 elementSet.search.dialog.show();

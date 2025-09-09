@@ -92,12 +92,16 @@ const getDefinitionSet = () => {
         view: {
             statusBarStyle: visible => visible ? "flex" : "none",
         },
+        ui: {
+            showInline: (element, doShow) =>
+                element.style.display = doShow ? "inline"  : "none",
+        },
         search: {
-            showElement: (element, doShow) =>
+            showInput: (element, doShow) =>
                 element.style.display = doShow ? "inline"  : "none",
             showButton: (element, doShow) =>
                 element.style.display = doShow ? "inline-block"  : "none",
-            showBlock: (element, doShow) =>
+            showLegend: (element, doShow) =>
                 element.style.display = doShow ? "block"  : "none",
             specialCharacterReplacements: [
                 ["\\\\", "\\"],
