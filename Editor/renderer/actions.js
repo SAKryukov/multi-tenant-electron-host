@@ -4,27 +4,36 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     const originalTitle = document.title;
     let currentFilename = null;
-    let isModified = false;
-    elementSet.statusBar.modifiedFlag.innerHTML = definitionSet.status.modified;
+
+    const fileSystemStatus = (() => {
+        elementSet.statusBar.modifiedFlag.innerHTML = definitionSet.status.modified;
+        let isModified = false;
+        const handler = {};
+        Object.defineProperties(handler, {
+            isModified: {
+                get() { return isModified; },
+                set(value) {
+                    isModified = value;
+                    definitionSet.ui.showInline(elementSet.statusBar.modifiedFlag, isModified);
+                },
+            },
+        });
+        return handler;
+    })(); //fileSystemStatus
 
     // File I/O:
 
+    elementSet.editor.addEventListener(definitionSet.events.input, () => fileSystemStatus.isModified = true);
     const reportError = (error, errorKind) =>
         modalDialog.show(definitionSet.errorHandling.format(errorKind, error.message));
 
-    const updateModifiedFlag = flag => {
-        isModified = flag;
-        definitionSet.ui.showInline(elementSet.statusBar.modifiedFlag, flag);
-    }; //updateModifiedFlag
-    elementSet.editor.addEventListener(definitionSet.events.input, () => updateModifiedFlag(true));
-       
     const handleFileOperationResult = (filename, baseFilename, text, error, isSave) => {
         if (!error) {
             currentFilename = filename;
             document.title = definitionSet.fileNaming.title(baseFilename, originalTitle);
             if (text) elementSet.editor.value = text;
             elementSet.editor.setSelectionRange(0, 0);
-            updateModifiedFlag(false);
+            fileSystemStatus.isModified = false;
             elementSet.editor.focus();
         } else
             reportError(error, isSave ? definitionSet.errorHandling.save : definitionSet.errorHandling.open);
@@ -35,7 +44,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     const actionOnConfirmation = (action, closingApplication) => {
         const wrapper = () => {
-            isModified = !closingApplication;
+            fileSystemStatus.isModified = !closingApplication;
             window.close();
         }; //wrapper
         const effectiveNoCloseAction = closingApplication ? wrapper : action;
@@ -45,7 +54,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
                     ? saveAsAndCloseApplication
                     : saveExistingFileAndCloseApplication)
                 : action;
-        if (isModified) {
+        if (fileSystemStatus.isModified) {
             const message = closingApplication
                 ? definitionSet.modifiedTextOperationConfirmation.messageClosingApplication
                 : definitionSet.modifiedTextOperationConfirmation.message;
@@ -59,17 +68,17 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     }; //actionOnConfirmation
 
     window.bridgeUI.subscribeToApplicationClose(() => {
-        if (!isModified) return true;
+        if (!fileSystemStatus.isModified) return true;
         actionOnConfirmation(() => { permitted = true; }, true);
-        return !isModified;
+        return !fileSystemStatus.isModified;
     }); //subscribeToApplicationClose
 
     menu.subscribe(elementSet.menuItems.file.newFile.textContent, actionRequest => {
-        if (!actionRequest) return isModified || currentFilename != null;
+        if (!actionRequest) return fileSystemStatus.isModified || currentFilename != null;
         actionOnConfirmation(() => {
             elementSet.editor.value = null;
             elementSet.editor.focus();
-            isModified = false;
+            fileSystemStatus.isModified = false;
         }); //actionOnConfirmation
         return true;
     }); //file.newFile
@@ -103,7 +112,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     }); //file.saveAs
 
     menu.subscribe(elementSet.menuItems.file.saveExisting.textContent, actionRequest => {
-        if (!actionRequest) return isModified;
+        if (!actionRequest) return fileSystemStatus.isModified;
         if (currentFilename)
             saveExistingFile();
         else
