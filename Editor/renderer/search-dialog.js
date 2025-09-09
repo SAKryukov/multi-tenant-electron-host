@@ -72,7 +72,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
             value = value.replaceAll(searchString, replaceString);
             elementSet.editor.setRangeText(value);
         } else
-            elementSet.editor.value = value.replaceAll(searchString, replaceString);
+            elementSet.editor.value = elementSet.editor.value.replaceAll(searchString, replaceString);
     }; //replaceAll
 
     definitionSet.search.replaceConfirmation.subscribeToReplaceConfirmation(
