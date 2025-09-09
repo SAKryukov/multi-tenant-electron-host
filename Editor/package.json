@@ -1,6 +1,6 @@
 {
   "name": "conceptual-electron-editor",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Conceptual Electron Editor",
   "main": "./main/main.js",
   "scripts": {
