@@ -23,8 +23,10 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         if (!error) {
             currentFilename = filename;
             document.title = definitionSet.fileNaming.title(baseFilename, originalTitle);
-            if (text) elementSet.editor.value = text;        
+            if (text) elementSet.editor.value = text;
+            elementSet.editor.setSelectionRange(0, 0);
             updateModifiedFlag(false);
+            elementSet.editor.focus();
         } else
             reportError(error, isSave ? definitionSet.errorHandling.save : definitionSet.errorHandling.open);
     }; //handleFileOperationResult
