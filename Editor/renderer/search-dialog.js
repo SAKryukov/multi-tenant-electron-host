@@ -59,14 +59,9 @@ const createSearchDialog = (definitionSet, elementSet) => {
         return searchString;
     }; //prepareRegexp
 
-    const replaceAll = () => {
+    const replaceAll = replaceString => {
         let searchString = prepareRegexp(elementSet.search.inputFind.value, true); //global
         if (!searchString) return findings;
-        let replaceString = elementSet.search.inputReplace.value;
-        if (!replaceString) return;
-        if (searchOptionSet.useSpecialCharacters.value)
-            for (const replacement of definitionSet.search.specialCharacterReplacements)
-                replaceString = replaceString.replaceAll(replacement[0], replacement[1]);
         if (elementSet.editor.selectionStart != elementSet.editor.selectionEnd) {
             let value = elementSet.editor.value.slice(elementSet.editor.selectionStart, elementSet.editor.selectionEnd);
             value = value.replaceAll(searchString, replaceString);
@@ -75,57 +70,74 @@ const createSearchDialog = (definitionSet, elementSet) => {
             elementSet.editor.value = elementSet.editor.value.replaceAll(searchString, replaceString);
     }; //replaceAll
 
-    definitionSet.search.replaceConfirmation.subscribeToReplaceConfirmation(
-        elementSet.editor,
-        () => { //handler
-            if (replacementIndex >= findings.length) {
-                const pattern = prepareRegexp(elementSet.search.inputFind.value, false); // non-global
-                for (let index = findings.length - 1; index >= 0; --index) {
-                    const finding = findings[index];
-                    if (!finding[2]) continue; // false, that is, not confirmed
-                    const sliceFirst = elementSet.editor.value.substring(0, finding[0]);
-                    let sliceSecond = elementSet.editor.value.substring(finding[0]);
-                    sliceSecond = sliceSecond.replace(pattern, elementSet.search.inputReplace.value);
-                    elementSet.editor.value = sliceFirst + sliceSecond;
-                } //loop
-                resetFindings();
-                return;
-            } //if
-            const finding = findings[replacementIndex];
-            const line = definitionSet.search.replaceConfirmation.formatLineToReplace(
-                elementSet.editor.value, finding[0], finding[1]);
-            modalDialog.show(definitionSet.search.replaceConfirmation.dialogMessage(line), {
-                buttons: definitionSet.search.replaceConfirmation.dialogButtons(
-                    () => {
-                        findings[replacementIndex++].push(true);
-                        elementSet.editor.dispatchEvent(
-                            elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
-                    },
-                    () => {
-                        findings[replacementIndex++].push(true);
-                        elementSet.editor.dispatchEvent(
-                            elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
-                    })
-            }); //modalDialog.show
-        } //handler
-    ); //subscribeToReplaceConfirmation
-
-    const replaceOneByOne = () => {
-        find(true);
-        if (!findings) return;
-        if (!findings.length) return;
-        replacementIndex = 0;
-        elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event);
-    }; //replaceOneByOne
+    const confirmationReplacer = (() => {
+        let replaceString = definitionSet.empty;
+        definitionSet.search.replaceConfirmation.subscribeToReplaceConfirmation(
+            elementSet.editor,
+            () => { //handler
+                if (replacementIndex >= findings.length) {
+                    const pattern = prepareRegexp(elementSet.search.inputFind.value, false); // non-global
+                    for (let index = findings.length - 1; index >= 0; --index) {
+                        const finding = findings[index];
+                        if (!finding[2]) continue; // false, that is, not confirmed
+                        const sliceFirst = elementSet.editor.value.substring(0, finding[0]);
+                        let sliceSecond = elementSet.editor.value.substring(finding[0]);
+                        sliceSecond = sliceSecond.replace(pattern, replaceString);
+                        elementSet.editor.value = sliceFirst + sliceSecond;
+                    } //loop
+                    resetFindings();
+                    return;
+                } //if
+                const finding = findings[replacementIndex];
+                const line = definitionSet.search.replaceConfirmation.formatLineToReplace(
+                    elementSet.editor.value, finding[0], finding[1]);
+                modalDialog.show(definitionSet.search.replaceConfirmation.dialogMessage(line), {
+                    buttons: definitionSet.search.replaceConfirmation.dialogButtons(
+                        () => {
+                            findings[replacementIndex++].push(true);
+                            elementSet.editor.dispatchEvent(
+                                elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
+                        },
+                        () => {
+                            findings[replacementIndex++].push(true);
+                            elementSet.editor.dispatchEvent(
+                                elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
+                        })
+                }); //modalDialog.show
+            } //handler
+        ); //subscribeToReplaceConfirmation
+        //
+        const replaceOneByOne = () => {
+            find(true);
+            if (!findings) return;
+            if (!findings.length) return;
+            replacementIndex = 0;
+            elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event);
+        }; //replaceOneByOne
+        // prepare replacer:        
+        const replacer = { replaceOneByOne };
+        Object.defineProperties(replacer, {
+            replaceString: {
+                get() { return replaceString; },
+                set(value) { replaceString = value; },
+            }, //replaceString
+        });
+        return replacer;
+    })(); //confirmationReplacer
 
     const replace = () => {
         if (!elementSet.editor.value) return;
         if (!elementSet.search.inputFind.value) return;
-        if (!elementSet.search.inputReplace.value) return;
-        if (searchOptionSet.askConfirmation.value)
-            replaceOneByOne();
-        else
-            replaceAll();
+        let replaceString = elementSet.search.inputReplace.value;
+        if (!replaceString) return;
+        if (searchOptionSet.useSpecialCharacters.value)
+            for (const replacement of definitionSet.search.specialCharacterReplacements)
+                replaceString = replaceString.replaceAll(replacement[0], replacement[1]);
+        if (searchOptionSet.askConfirmation.value) {
+            confirmationReplacer.replaceString = replaceString;
+            confirmationReplacer.replaceOneByOne();
+        } else
+            replaceAll(replaceString);
     }; //replace
 
     const canFindNext = () => {
