@@ -92,10 +92,10 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             handleFileOperationResult(filename, baseFilename, null, error, true), true);
     const saveExistingFile = () =>
         window.bridgeFileIO.saveExistingFile(currentFilename, elementSet.editor.value, (filename, baseFilename, error) =>
-            handleFileOperationResult(filename, baseFilename, null, error, false));
+            handleFileOperationResult(filename, baseFilename, null, error, true), false);
     const saveExistingFileAndCloseApplication  = () =>
         window.bridgeFileIO.saveExistingFile(currentFilename, elementSet.editor.value, (filename, baseFilename, error) =>
-            handleFileOperationResult(filename, baseFilename, null, error, true));
+            handleFileOperationResult(filename, baseFilename, null, error, true), true);
 
     menu.subscribe(elementSet.menuItems.file.saveAs.textContent, actionRequest => {
         if (!actionRequest) return true;
