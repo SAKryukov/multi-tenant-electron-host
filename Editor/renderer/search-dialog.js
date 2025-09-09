@@ -209,7 +209,9 @@ const createSearchDialog = (definitionSet, elementSet) => {
             definitionSet.search.showButton(searchOptionSet.askConfirmation.element, isReplaceView);
             if (!isShown)
                 elementSet.search.dialog.show();
-            elementSet.search.inputFind.focus();
+            const focusControl = isReplaceView && !!elementSet.search.inputFind.value
+                ? elementSet.search.inputReplace : elementSet.search.inputFind;
+            focusControl.focus();
             if (!isReplaceView)
                 find();
             isShown = true;
