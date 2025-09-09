@@ -30,10 +30,9 @@ const createSearchDialog = (definitionSet, elementSet) => {
     })(definitionSet.search.optionClassName.up, definitionSet.search.optionClassName.down);
 
     let isShown = false;
-    let findings, currentFinding, replacementIndex;
+    let findings, replacementIndex;
     const resetFindings = () => {
         findings = [];
-        currentFinding = -1;
         elementSet.search.findingsIndicator.textContent = definitionSet.empty;
     }; //resetFindings
     resetFindings();
@@ -147,14 +146,12 @@ const createSearchDialog = (definitionSet, elementSet) => {
     const findNext = previous => {
         if (!findings) return;
         if (!findings.length) return;
-        const delta = previous ? -1 : 1;
-        if (currentFinding < 0 || currentFinding >= findings.length)
-            currentFinding = previous ? findings.length - 1 : 0;
-        currentFinding += delta;
-        if (currentFinding < 0 || currentFinding >= findings.length)
-            currentFinding = previous ? findings.length - 1 : 0;
+        const location = previous ? elementSet.editor.selectionStart : elementSet.editor.selectionEnd;
+        const found = previous
+            ? findings.findLast(element => element[1] <= location)
+            : findings.find(element => element[0] >= location);
         elementSet.editor.focus();
-        elementSet.editor.setSelectionRange(findings[currentFinding][0], findings[currentFinding][1]);
+        elementSet.editor.setSelectionRange(found[0], found[1]);
         scrollToSelection();
     }; //findNext
 
@@ -225,8 +222,6 @@ const createSearchDialog = (definitionSet, elementSet) => {
             const focusControl = isReplaceView && !!elementSet.search.inputFind.value
                 ? elementSet.search.inputReplace : elementSet.search.inputFind;
             focusControl.focus();
-            if (!isReplaceView)
-                find();
             isShown = true;
         },
         find,
