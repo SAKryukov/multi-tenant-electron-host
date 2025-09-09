@@ -153,8 +153,8 @@ const createSearchDialog = (definitionSet, elementSet) => {
         currentFinding += delta;
         if (currentFinding < 0 || currentFinding >= findings.length)
             currentFinding = previous ? findings.length - 1 : 0;
-        elementSet.editor.setSelectionRange(findings[currentFinding][0], findings[currentFinding][1]);
         elementSet.editor.focus();
+        elementSet.editor.setSelectionRange(findings[currentFinding][0], findings[currentFinding][1]);
         scrollToSelection();
     }; //findNext
 
@@ -185,6 +185,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
             elementSet.editor.focus();
             elementSet.editor.setSelectionRange(findings[0][0], findings[0][1]);
         } //if
+        scrollToSelection();
     }; //find
 
     elementSet.search.inputFind.oninput = resetFindings;
