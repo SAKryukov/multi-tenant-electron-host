@@ -139,6 +139,18 @@ const getDefinitionSet = () => {
                     { text: "No", action: noAction, },
                     { default: true, isEscape: true, text: "Cancel" }
                 ],
+                formatLineToReplace: (text, findingStart, findingEnd) => {
+                    let lines = text.substr(0, findingStart).split("\n");
+                    const row = lines.length;
+                    const column = lines[lines.length - 1].length + 1;
+                    const start = findingStart - column + 1;
+                    lines = text.split("\n");
+                    const source = lines[row - 1];
+                    const partOne = source.slice(0, findingStart - start);
+                    const partTwo = source.slice(findingStart - start, findingEnd - start);
+                    const partThree = source.substring(findingEnd - start);
+                    return `<p style="color: blue">${partOne}<b style="color: white; background-color: blue">${partTwo}</b>${partThree}</p`;
+                }, //formatLineToReplace
             }, //replaceConfirmation
         }, //search
         isShortcut : (event, shortcut) => {

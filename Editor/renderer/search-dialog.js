@@ -75,22 +75,9 @@ const createSearchDialog = (definitionSet, elementSet) => {
             elementSet.editor.value = value.replaceAll(searchString, replaceString);
     }; //replaceAll
 
-    const formatLineToReplace = finding => {
-        const text = elementSet.editor.value;
-        let lines = text.substr(0, finding[0]).split("\n");
-        const row = lines.length;
-        const column = lines[lines.length - 1].length + 1;
-        const start = finding[0] - column + 1;
-        lines = text.split("\n");
-        const source = lines[row - 1];
-        const partOne = source.slice(0, finding[0] - start);
-        const partTwo = source.slice(finding[0] - start, finding[1] - start);
-        const partThree = source.substring(finding[1] - start);
-        return `<p style="color: blue">${partOne}<b style="color: white; background-color: blue">${partTwo}</b>${partThree}</p`;
-    }; //formatLineToReplace
     definitionSet.search.replaceConfirmation.subscribeToReplaceConfirmation(
         elementSet.editor,
-        () => {
+        () => { //handler
             if (replacementIndex >= findings.length) {
                 const pattern = prepareRegexp(elementSet.search.inputFind.value, false); // non-global
                 for (let index = findings.length - 1; index >= 0; --index) {
@@ -105,30 +92,22 @@ const createSearchDialog = (definitionSet, elementSet) => {
                 return;
             } //if
             const finding = findings[replacementIndex];
-            const line = formatLineToReplace(finding);
-            modalDialog.show(`<p>Found:</p>
-                ${line}
-                <br/><br/>
-                <p style="text-align: center">Replace?</a><br/><br/>`,
-                {
-                    buttons: [
-                        {
-                            text: "Yes", isDefault: true, action: () => {
-                                findings[replacementIndex++].push(true);
-                                elementSet.editor.dispatchEvent(
-                                    elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
-                            }
-                        },
-                        {
-                            text: "No", action: () => {
-                                replacementIndex++;
-                                elementSet.editor.dispatchEvent(
-                                    elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
-                            }
-                        },
-                        { default: true, isEscape: true, text: "Cancel" }],
-                });
-        }
+            const line = definitionSet.search.replaceConfirmation.formatLineToReplace(
+                elementSet.editor.value, finding[0], finding[1]);
+            modalDialog.show(definitionSet.search.replaceConfirmation.dialogMessage(line), {
+                buttons: definitionSet.search.replaceConfirmation.dialogButtons(
+                    () => {
+                        findings[replacementIndex++].push(true);
+                        elementSet.editor.dispatchEvent(
+                            elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
+                    },
+                    () => {
+                        findings[replacementIndex++].push(true);
+                        elementSet.editor.dispatchEvent(
+                            elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
+                    })
+            }); //modalDialog.show
+        } //handler
     ); //subscribeToReplaceConfirmation
 
     const replaceOneByOne = () => {
