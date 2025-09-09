@@ -37,14 +37,19 @@ const createSearchDialog = (definitionSet, elementSet) => {
     }; //resetFindings
     resetFindings();
 
-    const scrollToSelection = () => {
-        const columns = elementSet.editor.cols;
-        const selectionRow =
-            (elementSet.editor.selectionStart -
-                (elementSet.editor.selectionStart % columns)) / columns;
-        const lineHeight = elementSet.editor.clientHeight / elementSet.editor.rows;
-        elementSet.editor.scrollTop = lineHeight * selectionRow;
-    }; //scrollToSelection
+    function gotoFinding(start, end) {
+        const fullText = elementSet.editor.value;
+        elementSet.editor.value = fullText.substring(0, end);
+        const scrollHeight = elementSet.editor.scrollHeight
+        elementSet.editor.value = fullText;
+        let scrollTop = scrollHeight;
+        const editorHeight = elementSet.editor.clientHeight;
+        scrollTop = scrollTop > editorHeight
+            ? scrollTop -= editorHeight / 2
+            : scrollTop = 0;
+        elementSet.editor.scrollTop = scrollTop;
+        elementSet.editor.setSelectionRange(start, end);
+    } //gotoFinding
 
     const prepareRegexp = (searchString, global) => {
         const ignoreCase = !searchOptionSet.matchCase.value;
@@ -151,8 +156,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
             ? findings.findLast(element => element[1] <= location)
             : findings.find(element => element[0] >= location);
         elementSet.editor.focus();
-        elementSet.editor.setSelectionRange(found[0], found[1]);
-        scrollToSelection();
+        gotoFinding(found[0], found[1]);
     }; //findNext
 
     const findAll = pattern => {
@@ -178,11 +182,10 @@ const createSearchDialog = (definitionSet, elementSet) => {
         if (!searchString) return findings;
         findings = findAll(searchString);
         if (notFinal) return;
-        if (findings) {
-            elementSet.editor.focus();
-            elementSet.editor.setSelectionRange(findings[0][0], findings[0][1]);
-        } //if
-        scrollToSelection();
+        if (!findings) return;
+        if (!findings.length) return;
+        elementSet.editor.focus();
+        gotoFinding(findings[0][0], findings[0][1]);
     }; //find
 
     elementSet.search.inputFind.oninput = resetFindings;
