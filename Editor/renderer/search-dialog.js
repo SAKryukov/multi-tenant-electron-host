@@ -152,9 +152,13 @@ const createSearchDialog = (definitionSet, elementSet) => {
         if (!findings) return;
         if (!findings.length) return;
         const location = previous ? elementSet.editor.selectionStart : elementSet.editor.selectionEnd;
-        const found = previous
+        let found = previous
             ? findings.findLast(element => element[1] <= location)
             : findings.find(element => element[0] >= location);
+        if (!found)
+            found = previous
+                ? findings[findings.length - 1]
+                : findings[0];
         elementSet.editor.focus();
         gotoFinding(found[0], found[1]);
     }; //findNext
