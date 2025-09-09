@@ -48,7 +48,7 @@
             { background-color: hsl(30, 67%, 80%);
                 padding: var(--status-delta-Y);
                 padding-left: var(--status-delta-X); padding-right: var(--status-delta-X); }
-        #id-modified-flag, #id-macro-flag, #id-find-flag { display: none; } /* initial state */
+        #id-modified-flag, #id-macro-flag { display: none; } /* initial state */
         @keyframes blinker { 50% { opacity: 0;  } }                
     </style>
 </head>
@@ -105,9 +105,9 @@
             </menu>
     </header>
     <main><textarea spellcheck="false"></textarea></main>
-    <footer>
+    <footer>    
         <span>
-            <span id="id-position-indicator"></span>&nbsp;<span id="id-modified-flag"></span>&nbsp;<span id="id-macro-flag">&nbsp;<span id="id-find-flag"></span>
+            <span id="id-position-indicator"></span>&nbsp;<span id="id-modified-flag"></span>&nbsp;<span id="id-macro-flag">
         </span>
         <small>
             Copyright &copy; 2025 by S A Kryukov

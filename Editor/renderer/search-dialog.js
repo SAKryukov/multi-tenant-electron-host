@@ -170,6 +170,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
             matches = [...elementSet.editor.value.matchAll(pattern)];
         for (const match of matches)
             result.push([match.index + shift, match.index + match[0].length + shift]);
+        elementSet.search.findingsIndicator.textContent = result.length;
         return result;
     }; //result
 
