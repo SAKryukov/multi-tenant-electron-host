@@ -37,20 +37,6 @@ const createSearchDialog = (definitionSet, elementSet) => {
     }; //resetFindings
     resetFindings();
 
-    function gotoFinding(start, end) {
-        const fullText = elementSet.editor.value;
-        elementSet.editor.value = fullText.substring(0, end);
-        const scrollHeight = elementSet.editor.scrollHeight
-        elementSet.editor.value = fullText;
-        let scrollTop = scrollHeight;
-        const editorHeight = elementSet.editor.clientHeight;
-        scrollTop = scrollTop > editorHeight
-            ? scrollTop -= editorHeight / 2
-            : scrollTop = 0;
-        elementSet.editor.scrollTop = scrollTop;
-        elementSet.editor.setSelectionRange(start, end);
-    } //gotoFinding
-
     const prepareRegexp = (searchString, global) => {
         const ignoreCase = !searchOptionSet.matchCase.value;
         const useRegularExpression = searchOptionSet.useRegularExpression.value;
@@ -148,6 +134,20 @@ const createSearchDialog = (definitionSet, elementSet) => {
         return findings && findings.length;
     }; //canFindNext
 
+    function gotoFinding(start, end) {
+        const fullText = elementSet.editor.value;
+        elementSet.editor.value = fullText.substring(0, end);
+        const scrollHeight = elementSet.editor.scrollHeight
+        elementSet.editor.value = fullText;
+        let scrollTop = scrollHeight;
+        const editorHeight = elementSet.editor.clientHeight;
+        scrollTop = scrollTop > editorHeight
+            ? scrollTop -= editorHeight / 2
+            : scrollTop = 0;
+        elementSet.editor.scrollTop = scrollTop;
+        elementSet.editor.setSelectionRange(start, end);
+    } //gotoFinding
+
     const findNext = previous => {
         if (!findings) return;
         if (!findings.length) return;
@@ -184,8 +184,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
         if (notFinal) return;
         if (!findings) return;
         if (!findings.length) return;
-        elementSet.editor.focus();
-        gotoFinding(findings[0][0], findings[0][1]);
+        findNext();
     }; //find
 
     elementSet.search.inputFind.oninput = resetFindings;
