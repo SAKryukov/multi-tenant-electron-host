@@ -83,16 +83,21 @@ const createSearchDialog = (definitionSet, elementSet) => {
                     elementSet.editor.value, finding[0], finding[1]);
                 modalDialog.show(definitionSet.search.replaceConfirmation.dialogMessage(line), {
                     buttons: definitionSet.search.replaceConfirmation.dialogButtons(
-                        () => {
+                        () => { // yesAction
                             findings[replacementIndex++].push(true);
                             elementSet.editor.dispatchEvent(
                                 elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
                         },
-                        () => {
-                            findings[replacementIndex++].push(true);
+                        () => { // noAction
+                            replacementIndex++;
                             elementSet.editor.dispatchEvent(
                                 elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
-                        })
+                        },
+                        () => { // breakAction
+                            replacementIndex = findings.length;
+                            elementSet.editor.dispatchEvent(
+                                elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
+                        }),
                 }); //modalDialog.show
             } //handler
         ); //subscribeToReplaceConfirmation

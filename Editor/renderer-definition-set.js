@@ -138,10 +138,11 @@ const getDefinitionSet = () => {
                     ${line}
                     <br/><br/>
                     <p style="text-align: center">Replace?</a><br/><br/>`,
-                dialogButtons: (yesAction, noAction) => [
+                dialogButtons: (yesAction, noAction, breakAction) => [
                     { text: "Yes", isDefault: true, action: yesAction, },
                     { text: "No", action: noAction, },
-                    { default: true, isEscape: true, text: "Cancel" }
+                    { text: "Complete Replacements", action: breakAction, },
+                    { default: true, isEscape: true, text: "Cancel All Replacements" }
                 ],
                 formatLineToReplace: (text, findingStart, findingEnd) => {
                     let lines = text.substr(0, findingStart).split("\n");
