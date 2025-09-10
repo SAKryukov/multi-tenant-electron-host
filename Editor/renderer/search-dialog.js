@@ -216,6 +216,8 @@ const createSearchDialog = (definitionSet, elementSet) => {
         if (notFinal) return;
         if (!findings) return;
         if (!findings.length) return;
+        if (elementSet.editor.selectionEnd != elementSet.editor.selectionStart)
+            elementSet.editor.selectionEnd = elementSet.editor.selectionStart;
         findNext();
     }; //find
 
