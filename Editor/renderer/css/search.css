@@ -21,7 +21,10 @@
 
 #id-search-dialog p { margin-top: 0.3em; }
 #id-search-dialog p:first-of-type { margin-top: 0; }
-#id-search-dialog input { width: 26em; }
+#id-search-dialog input {
+    width: 26em;
+    padding-left: var(--input-horizontal-margin); padding-right: var(--input-horizontal-margin);
+}
 #id-findings-indicator { margin-left: 1em; margin-right: 3em; }
 
 #id-search-dialog-close { font-size: 1.6em; position: absolute; top: 0; left: auto; right: 0.4em; cursor: default; }
