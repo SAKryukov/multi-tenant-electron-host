@@ -253,20 +253,6 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         searchDialog.findNext(true);
     }); //edit.findPrevious
 
-    function gotoFinding(start, end) {
-        const fullText = elementSet.editor.value;
-        elementSet.editor.value = fullText.substring(0, end);
-        const scrollHeight = elementSet.editor.scrollHeight
-        elementSet.editor.value = fullText;
-        let scrollTop = scrollHeight;
-        const editorHeight = elementSet.editor.clientHeight;
-        scrollTop = scrollTop > editorHeight
-            ? scrollTop -= editorHeight / 2
-            : scrollTop = 0;
-        elementSet.editor.scrollTop = scrollTop;
-        elementSet.editor.setSelectionRange(start, end);
-    } //gotoFinding
-
     let persistGotoLine = null, persistGotoLineColumn = null;
     menu.subscribe(elementSet.menuItems.search.goto.textContent, actionRequest => {
         if (!actionRequest) return elementSet.editor.textLength > 0;
@@ -322,7 +308,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
                         persistGotoLine = lineLine.input.value.trim();
                         persistGotoLineColumn = lineColumn.input.value.trim();
                         lineColumn.line.value = persistGotoLineColumn;
-                        gotoFinding(position, position);
+                        adHocUtility.scrollTo(elementSet.editor, position, position);
                     }, //goto action
                 },
                 { isEscape: true, text: "Close" },

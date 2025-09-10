@@ -147,20 +147,6 @@ const createSearchDialog = (definitionSet, elementSet) => {
         return findings && findings.length;
     }; //canFindNext
 
-    function gotoFinding(start, end) {
-        const fullText = elementSet.editor.value;
-        elementSet.editor.value = fullText.substring(0, end);
-        const scrollHeight = elementSet.editor.scrollHeight
-        elementSet.editor.value = fullText;
-        let scrollTop = scrollHeight;
-        const editorHeight = elementSet.editor.clientHeight;
-        scrollTop = scrollTop > editorHeight
-            ? scrollTop -= editorHeight / 2
-            : scrollTop = 0;
-        elementSet.editor.scrollTop = scrollTop;
-        elementSet.editor.setSelectionRange(start, end);
-    } //gotoFinding
-
     const binaryBestSearch = (point, direction) => {
         const isGood = index =>
             direction
@@ -195,7 +181,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
         if (bestIndex == null)
             return;
         elementSet.editor.focus();
-        gotoFinding(findings[bestIndex][0], findings[bestIndex][1]);
+        adHocUtility.scrollTo(elementSet.editor, findings[bestIndex][0], findings[bestIndex][1]);
     }; //findNext
 
     const findAll = pattern => {
