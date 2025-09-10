@@ -74,6 +74,10 @@ const getDefinitionSet = () => {
                 const column = lines[lines.length-1].length + 1;
                 return `${row}&thinsp;:&thinsp;${column}`;
             }, //cursorPosition
+            line: (text, offset) => {
+                const lines = text.substr(0, offset).split("\n");
+                return lines.length;
+            },
             macroRecording: "Recording keyboard macro&hellip; press Ctrl+Shift+R to stop",
             macroAvailable: "Keyboard macro is ready to play, press Ctrl+Shift+P",
             macroIndicatorAnimation: "blinker 0.9s ease-out infinite",
@@ -134,7 +138,11 @@ const getDefinitionSet = () => {
                 subscribeToReplaceConfirmation: function(element, handler) {
                     element.addEventListener(this.event.type, handler);
                 }, //subscribeToReplaceConfirmation
-                dialogMessage: line => `<p>Found:</p>
+                dialogMessageFormatLines: lines => 
+                    lines.length == 2
+                        ? `lines ${lines[0]}-${lines[1]}`
+                        : `line ${lines}`,
+                dialogMessage: (line, lineNumber) => `<p>Found in line ${lineNumber}:</p>
                     ${line}
                     <br/><br/>
                     <p style="text-align: center">Replace?</a><br/><br/>`,

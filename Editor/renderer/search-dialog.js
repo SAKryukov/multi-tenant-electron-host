@@ -81,7 +81,15 @@ const createSearchDialog = (definitionSet, elementSet) => {
                 const finding = findings[replacementIndex];
                 const line = definitionSet.search.replaceConfirmation.formatLineToReplace(
                     elementSet.editor.value, finding[0], finding[1]);
-                modalDialog.show(definitionSet.search.replaceConfirmation.dialogMessage(line), {
+                const findingPositionStart = definitionSet.status.line(elementSet.editor.value, finding[0]);
+                const findingPositionEnd = definitionSet.status.line(elementSet.editor.value, finding[1]);
+                let findingLines;
+                if (findingPositionStart == findingPositionEnd)
+                    findingLines = findingPositionStart;
+                else
+                    findingLines = definitionSet.search.replaceConfirmation.dialogMessageFormatLines(
+                        [findingPositionStart, findingPositionEnd]);
+                modalDialog.show(definitionSet.search.replaceConfirmation.dialogMessage(line, findingLines), {
                     buttons: definitionSet.search.replaceConfirmation.dialogButtons(
                         () => { // yesAction
                             findings[replacementIndex++].push(true);
