@@ -25,12 +25,12 @@ const adHocUtility = (() => {
                     event.preventDefault();
             }, //filter out
         goto: function(editor) {
-            const section = document.createElement("section");
+            const section = document.createElement(definitionSet.elements.section);
             const createLine = (text, title, value) => {
-                const line = document.createElement("p");
-                const legend = document.createElement("span");
+                const line = document.createElement(definitionSet.elements.p);
+                const legend = document.createElement(definitionSet.elements.span);
                 legend.textContent = text;
-                const input = document.createElement("input");
+                const input = document.createElement(definitionSet.elements.input);
                 input.value = value;
                 input.title = title;
                 input.placeholder = title;
@@ -51,11 +51,11 @@ const adHocUtility = (() => {
                 persistGotoLineColumn ? persistGotoLineColumn : null);
             section.appendChild(lineLine.line);
             section.appendChild(lineColumn.line);
-            section.appendChild(document.createElement("br"));
+            section.appendChild(document.createElement(definitionSet.elements.br));
             modalDialog.show(section, {
                 buttons: [
-                    {
-                        default: true, isDefault: true, isEnter: true, text: "Go to Line/Column",
+                    {   text: "Go to Line/Column",
+                        default: true, isDefault: true, isEnter: true, 
                         action: () => {
                             let line = lineLine.input.value.trim();
                             let column = lineColumn.input.value.trim();
@@ -66,9 +66,15 @@ const adHocUtility = (() => {
                             if (line < 0) line = 1;
                             if (column < 0) column = 1;
                             const lines = editor.value.substring(0).split("\n");
+                            if (line > lines.length)
+                                line = lines.length;
+                            if (lines < 1) return;
                             let position = 0;
                             for (let index = 0; index < line - 1; ++index)
                                 position += lines[index].length + 1;
+                            const maxLength = lines[line - 1].length;
+                            if (column > maxLength)
+                                column = maxLength + 1;
                             position += column - 1;
                             editor.focus();
                             editor.selectionStart = editor.selectionEnd = position;
@@ -77,8 +83,8 @@ const adHocUtility = (() => {
                             lineColumn.line.value = persistGotoLineColumn;
                             this.scrollTo(editor, position, position);
                         }, //goto action
-                    },
-                    { isEscape: true, text: "Close" },
+                    }, // button Go to
+                    { text: "Close", isEscape: true, },
                 ],
                 options: { initialFocus: lineLine.input },
             });
