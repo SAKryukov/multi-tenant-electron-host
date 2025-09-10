@@ -153,19 +153,41 @@ const createSearchDialog = (definitionSet, elementSet) => {
         elementSet.editor.setSelectionRange(start, end);
     } //gotoFinding
 
+    const binaryBestSearch = (point, direction) => {
+        const isGood = index =>
+            direction
+                ? findings[index][1] <= point
+                : findings[index][0] >= point;
+        const iteration = slice => {
+            const length = slice[1] - slice[0];
+            const trialPoint = direction
+                ? slice[1] - Math.floor(length / 2)
+                : slice[0] + Math.floor(length / 2);
+            if (direction)
+                return isGood(trialPoint)
+                    ? [trialPoint, slice[1]]
+                    : [slice[0], trialPoint - 1];
+            else
+                return isGood(trialPoint)
+                    ? [slice[0], trialPoint]
+                    : [trialPoint + 1, slice[1]];
+        }; //iteration
+        let slice = [0, findings.length - 1];
+        while ((slice[1] - slice[0]) > 0)
+            slice = iteration(slice);
+        return isGood(slice[0])
+            ? slice[0]
+            : null;
+    }; //binaryBestSearch
     const findNext = previous => {
         if (!findings) return;
         if (!findings.length) return;
         const location = previous ? elementSet.editor.selectionStart : elementSet.editor.selectionEnd;
-        let found = previous
-            ? findings.findLast(element => element[1] <= location)
-            : findings.find(element => element[0] >= location);
-        if (!found)
-            found = previous
-                ? findings[findings.length - 1]
-                : findings[0];
+        const bestIndex = binaryBestSearch(location, previous);
+        if (bestIndex == null)
+            return;
         elementSet.editor.focus();
-        gotoFinding(found[0], found[1]);
+        gotoFinding(findings[bestIndex][0], findings[bestIndex][1]);
     }; //findNext
 
     const findAll = pattern => {
