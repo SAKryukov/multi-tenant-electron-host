@@ -14,7 +14,8 @@
     position: absolute; top: 0; right: 0; left: auto; 
     border-radius: 0; 
     border-bottom-left-radius: 0.4em;
-    padding-top: 1.4em;
+    padding: 1em;
+    padding-top: var(--vertical-gap); padding-bottom: var(--vertical-gap)
 }
 #id-search-dialog:hover, 
 #id-search-dialog:focus-within { opacity: 1; }
@@ -26,9 +27,7 @@
     padding-left: var(--input-horizontal-margin); padding-right: var(--input-horizontal-margin);
 }
 #id-findings-indicator { margin-left: 1em; margin-right: 3em; }
-
 #id-search-dialog-close { font-size: 1.6em; position: absolute; top: 0; left: auto; right: 0.4em; cursor: default; }
-#id-search-dialog { padding: 1em; padding-top: 0.2em; padding-bottom: 0.2em; }
 
 #id-search-dialog button {
     border-radius: 3px;
@@ -59,7 +58,6 @@ section#id-search-special-legend {
     font-weight: normal;
     margin-top: 0.2em;
     margin-left: 0em;
-    margin-bottom: 0;
     padding-bottom: 0;
 }
 
