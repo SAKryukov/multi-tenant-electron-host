@@ -201,25 +201,6 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             searchDialog.show(true);
     }); //window.addEventListener
 
-    menu.subscribe(elementSet.menuItems.edit.find.textContent, actionRequest => {
-        if (!actionRequest) return true;
-        searchDialog.show(false);
-    }); //edit.Find
-    menu.subscribe(elementSet.menuItems.edit.replace.textContent, actionRequest => {
-        if (!actionRequest) return true;
-        searchDialog.show(true);
-        return false;
-    }); //edit.Replace
-
-    menu.subscribe(elementSet.menuItems.edit.findNext.textContent, actionRequest => {
-        if (!actionRequest) return searchDialog.canFindNext();
-        searchDialog.findNext(false);
-    }); //edit.findNextс
-    menu.subscribe(elementSet.menuItems.edit.findPrevious.textContent, actionRequest => {
-        if (!actionRequest) return searchDialog.canFindNext();
-        searchDialog.findNext(true);
-    }); //edit.findPrevious
-
     // View:
 
     let isStatusBarVisible = true;
@@ -249,5 +230,105 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         return true;
     }); //file.newFile
     viewFullscreenItem.setCheckBox();
+
+    // Search:
+
+    menu.subscribe(elementSet.menuItems.search.find.textContent, actionRequest => {
+        if (!actionRequest) return true;
+        searchDialog.show(false);
+    }); //search.Find
+
+    menu.subscribe(elementSet.menuItems.search.replace.textContent, actionRequest => {
+        if (!actionRequest) return true;
+        searchDialog.show(true);
+        return false;
+    }); //search.Replace
+
+    menu.subscribe(elementSet.menuItems.search.findNext.textContent, actionRequest => {
+        if (!actionRequest) return searchDialog.canFindNext();
+        searchDialog.findNext(false);
+    }); //search.findNextс
+    menu.subscribe(elementSet.menuItems.search.findPrevious.textContent, actionRequest => {
+        if (!actionRequest) return searchDialog.canFindNext();
+        searchDialog.findNext(true);
+    }); //edit.findPrevious
+
+    function gotoFinding(start, end) {
+        const fullText = elementSet.editor.value;
+        elementSet.editor.value = fullText.substring(0, end);
+        const scrollHeight = elementSet.editor.scrollHeight
+        elementSet.editor.value = fullText;
+        let scrollTop = scrollHeight;
+        const editorHeight = elementSet.editor.clientHeight;
+        scrollTop = scrollTop > editorHeight
+            ? scrollTop -= editorHeight / 2
+            : scrollTop = 0;
+        elementSet.editor.scrollTop = scrollTop;
+        elementSet.editor.setSelectionRange(start, end);
+    } //gotoFinding
+
+    let persistGotoLine = null, persistGotoLineColumn = null;
+    menu.subscribe(elementSet.menuItems.search.goto.textContent, actionRequest => {
+        if (!actionRequest) return elementSet.editor.textLength > 0;
+        const section = document.createElement("section");
+        const createLine = (text, title, value) => {
+            const line = document.createElement("p");
+            const legend = document.createElement("span");
+            legend.textContent = text;
+            const input = document.createElement("input");
+            input.value = value;
+            input.title = title;
+            input.placeholder = title;
+            input.style.paddingLeft = input.style.paddingRight = "1em";
+            input.onkeydown = event => {
+                if (event.key && event.key.length == 1 && "0123456789".indexOf(event.key) < 0)
+                    event.preventDefault();
+            }; //filter out
+            line.style.display = "flex";
+            line.style.flexDirection = "row";
+            line.style.alignItems = "center";
+            line.style.justifyContent = "space-between";
+            line.style.marginTop = "0.2em";
+            line.appendChild(legend);
+            line.appendChild(input);
+            return { line, input };
+        }; //createLine
+        const lineLine = createLine("Line: ", "Line to go",
+            persistGotoLine ? persistGotoLine : null);
+        const lineColumn = createLine("Column: ", "Column to go",
+            persistGotoLineColumn ? persistGotoLineColumn : null);
+        section.appendChild(lineLine.line);
+        section.appendChild(lineColumn.line);
+        section.appendChild(document.createElement("br"));
+        modalDialog.show(section, {
+            buttons: [
+                { default: true, isDefault: true, isEnter: true, text: "Go to Line/Column",
+                    action: () => {
+                        let line = lineLine.input.value.trim();
+                        let column = lineColumn.input.value.trim();
+                        if (!line) line = 1;
+                        if (!column) column = 1;
+                        line = parseInt(line);
+                        column = parseInt(column);
+                        if (line < 0) line = 1;
+                        if (column < 0) column = 1;
+                        const lines = elementSet.editor.value.substring(0).split("\n");
+                        let position = 0;
+                        for (let index = 0; index < line - 1; ++index)
+                            position += lines[index].length + 1;
+                        position += column - 1;
+                        elementSet.editor.focus();
+                        elementSet.editor.selectionStart = elementSet.editor.selectionEnd = position;
+                        persistGotoLine = lineLine.input.value.trim();
+                        persistGotoLineColumn = lineColumn.input.value.trim();
+                        lineColumn.line.value = persistGotoLineColumn;
+                        gotoFinding(position, position);
+                    }, //goto action
+                },
+                { isEscape: true, text: "Close" },
+            ],
+            options: { initialFocus: lineLine.input },
+        });
+    }); //search.goto
 
 }; //subscribe
