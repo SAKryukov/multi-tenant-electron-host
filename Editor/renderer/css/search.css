@@ -1,30 +1,45 @@
+:root {
+    --dialog-border: solid thin gray;
+    --vertical-gap: 0.4em;
+    --input-horizontal-margin: 0.6em;
+    --option-button-compensation-size: 2.2em;
+    --option-button-compensation-padding-y: 0.1em;
+    --option-button-compensation-padding-top: 0.4em;
+    --option-button-compensation-padding-bottom: 0.6em;
+}
+
 #id-search-dialog {
     opacity: 0.5;
-    border-radius: 0; border-left: gray thin solid; border-bottom: gray thin solid; 
+    border-left: gray thin solid; border-bottom: gray thin solid; 
     position: absolute; top: 0; right: 0; left: auto; 
-    padding-left: 1em;
-    padding-right: 1.7em;
+    border-radius: 0; 
+    border-bottom-left-radius: 0.4em;
+    padding-top: 1.4em;
 }
 #id-search-dialog:hover, 
 #id-search-dialog:focus-within { opacity: 1; }
 
 #id-search-dialog p { margin-top: 0.3em; }
 #id-search-dialog p:first-of-type { margin-top: 0; }
-#id-search-dialog input { margin-right: 0.4em; width: 26em; }
-#id-findings-indicator { margin-right: 1.2em; }
+#id-search-dialog input { width: 26em; }
+#id-findings-indicator { margin-left: 1em; margin-right: 3em; }
 
 #id-search-dialog-close { font-size: 1.6em; position: absolute; top: 0; left: auto; right: 0.4em; cursor: default; }
 #id-search-dialog { padding: 1em; padding-top: 0.2em; padding-bottom: 0.2em; }
 
-#id-search-dialog button { border-radius: 0; padding-top: 0.1em; padding-bottom: 0.1em;
-    background-color:  hsl(195, 53%, 89%); }
-#id-search-dialog button { border: solid thin gray;
+#id-search-dialog button {
+    border-radius: 3px;
+    height: var(--option-button-compensation-size);
+    width: var(--option-button-compensation-size);
+    padding-top: var(--option-button-compensation-padding-top);
+    padding-bottom: var(--option-button-compensation-padding-bottom);
+    background-color:  hsl(195, 53%, 89%);
+    border: solid thin gray;
     margin: 0; background-color: hsl(195, 53%, 95%); 
-    font-size: 80%; padding: 0; height: 2.2em; width: 2.2em; padding-top: 0.4em; padding-bottom: 0.6em; 
+    font-size: 80%; padding: 0;  
     font-weight: bold;
 }
 
-#id-search-dialog button:hover { background-color: hsl(195, 53%, 95%); }
 #id-search-dialog button:focus { outline: 1px solid gray; outline-offset: 1px; }
 #id-search-dialog button:active { background-color: white; color: black; }
 #id-search-dialog button.up { background-color: white; }
@@ -43,11 +58,6 @@ section#id-search-special-legend {
     margin-left: 0em;
     margin-bottom: 0;
     padding-bottom: 0;
-}
-section#id-search-special-legend p {
-    padding-left: 0.1em;
-    margin-top: 1em;
-    margin-left: 0.1em;
 }
 
 section#id-search-special-legend > table {
