@@ -13,9 +13,10 @@ module.exports.utilitySet = (() => {
             const filename = process.argv.length > 1
                 ? process.argv[process.argv.length - 1]
                 : null;
-            return fileSystem.existsSync(filename)
-                ? filename
-                : null;
+            if (!fileSystem.existsSync(filename)) return null;
+            const lstat = fileSystem.lstatSync(filename);
+            if (!lstat.isFile()) return null; // to prevent failure with the application directory passed to electron
+            return filename;
         }, //processCommandLine
         openKnownFile: (filename, useData) => {
                 fs.readFile(filename, {}, (error, data) =>
