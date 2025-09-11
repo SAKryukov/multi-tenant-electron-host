@@ -203,7 +203,8 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     let isStatusBarVisible = true;
     let isFullscreen = false;
-    let viewStatusBarItem, viewFullscreenItem;
+    let viewStatusBarItem, viewFullscreenItem, viewWordWrapItem;
+    let isWordWrap = false;
     viewStatusBarItem = menu.subscribe(elementSet.menuItems.view.statusBar.textContent, actionRequest => {
         if (!actionRequest) return true;
         isStatusBarVisible = !isStatusBarVisible;
@@ -213,7 +214,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             viewStatusBarItem.setCheckBox();
         elementSet.statusBar.all.style.display = definitionSet.view.statusBarStyle(isStatusBarVisible);
         return true;
-    }); //file.newFile
+    }); //view.statusBar
     viewStatusBarItem.setCheckBox();
     //setCheckedCheckBox
 
@@ -226,8 +227,19 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             viewFullscreenItem.setCheckBox();
         window.bridgeUI.fullscreenToggle();
         return true;
-    }); //file.newFile
+    }); //view.fullscreen
     viewFullscreenItem.setCheckBox();
+
+    viewWordWrapItem = menu.subscribe(elementSet.menuItems.view.wordWrap.textContent, actionRequest => {
+        if (!actionRequest) return true;
+        isWordWrap = !isWordWrap;
+        if (isWordWrap)
+            viewWordWrapItem.setCheckedCheckBox();
+        else
+            viewWordWrapItem.setCheckBox();
+        elementSet.editor.style.textWrap = definitionSet.view.textWrapStyle(isWordWrap);
+    }); //view.wordWrap
+    viewWordWrapItem.setCheckBox();
 
     // Search:
 

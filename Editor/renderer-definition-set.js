@@ -90,6 +90,7 @@ const getDefinitionSet = () => {
         }, //errorHandling
         view: {
             statusBarStyle: visible => visible ? "flex" : "none",
+            textWrapStyle: wrap => wrap ? "stable" : "nowrap",
         },
         ui: {
             showInline: (element, doShow) =>
