@@ -63,6 +63,11 @@ const subscribeToEvents = (window, baseTitle) => {
             closeApplicationAfterSaving(closeApplicationRequest, error);
         });
     });
+    ipcMain.on(ipcChannel.fileIO.resetApplicationTitle, _event => window.title = baseTitle);
+    ipcMain.on(ipcChannel.fileIO.closeApplication, _event => {
+        permittedToCloseApplication = true;
+        window.close();
+    });
     let isFullscreen = false;
     ipcMain.on(ipcChannel.ui.fullscreen, (_event, onOff) => {
          window.setFullScreen(onOff);

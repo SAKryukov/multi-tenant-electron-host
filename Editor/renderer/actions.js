@@ -41,17 +41,26 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         handleFileOperationResult(filename, text, error));
 
     const actionOnConfirmation = (action, closingApplication) => {
-        const wrapper = () => {
-            fileSystemStatus.isModified = !closingApplication;
-            window.close();
-        }; //wrapper
-        const effectiveNoCloseAction = closingApplication ? wrapper : action;
-        const effectiveCloseAction = 
-            closingApplication
-                ? (currentFilename == null
-                    ? saveAsAndCloseApplication
-                    : saveExistingFileAndCloseApplication)
-                : action;
+        const saveBeforeAction = () => {
+            if (closingApplication) {
+                if (currentFilename == null)
+                    saveAsAndCloseApplication();
+                else
+                    saveExistingFileAndCloseApplication();
+            } else {
+                action();
+                if (currentFilename == null)
+                    saveExistingFileAndContinue(action);
+                else
+                    saveAsAndContinue(action);
+            } //if
+        }; //saveBeforeAction
+        const noSaveAction = () => {
+            if (closingApplication)
+                window.bridgeFileIO.closeApplication();
+            else
+                action();
+        } //noSaveAction
         if (fileSystemStatus.isModified) {
             const message = closingApplication
                 ? definitionSet.modifiedTextOperationConfirmation.messageClosingApplication
@@ -59,7 +68,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             modalDialog.show(
                 message, {
                     buttons: definitionSet.modifiedTextOperationConfirmation.buttons(
-                        effectiveCloseAction, effectiveNoCloseAction),
+                        saveBeforeAction, noSaveAction),
                 });
         } else
             action();
@@ -74,9 +83,11 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     menu.subscribe(elementSet.menuItems.file.newFile.textContent, actionRequest => {
         if (!actionRequest) return fileSystemStatus.isModified || currentFilename != null;
         actionOnConfirmation(() => {
+            currentFilename = null;
             elementSet.editor.value = null;
             elementSet.editor.focus();
             fileSystemStatus.isModified = false;
+            window.bridgeFileIO.resetApplicationTitle();
         }); //actionOnConfirmation
         return true;
     }); //file.newFile
@@ -91,17 +102,42 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     }); //file.open
 
     const saveAs = () =>
-        window.bridgeFileIO.saveFileAs(elementSet.editor.value, (filename, error) =>
-            handleFileOperationResult(filename, null, error, true), false);
+        window.bridgeFileIO.saveFileAs(elementSet.editor.value,
+            (filename, error) =>
+                handleFileOperationResult(filename, null, error, true),
+            false);
+    const saveAsAndContinue = action =>
+        window.bridgeFileIO.saveFileAs(elementSet.editor.value,
+            (filename, error) => {
+                action();
+                handleFileOperationResult(filename, null, error, true);
+            },
+            false);
     const saveAsAndCloseApplication = () =>
-        window.bridgeFileIO.saveFileAs(elementSet.editor.value, (filename, error) =>
-            handleFileOperationResult(filename, null, error, true), true);
+        window.bridgeFileIO.saveFileAs(elementSet.editor.value,
+            (filename, error) =>
+                handleFileOperationResult(filename, null, error, true),
+            true);
     const saveExistingFile = () =>
-        window.bridgeFileIO.saveExistingFile(currentFilename, elementSet.editor.value, (filename, error) =>
-            handleFileOperationResult(filename, null, error, true), false);
+        window.bridgeFileIO.saveExistingFile(currentFilename,
+            elementSet.editor.value,
+            (filename, error) =>
+                handleFileOperationResult(filename, null, error, true),
+            false);
+    const saveExistingFileAndContinue = action =>
+        window.bridgeFileIO.saveExistingFile(currentFilename,
+            elementSet.editor.value,
+            (filename, error) => {
+                action();
+                handleFileOperationResult(filename, null, error, true);
+            },
+            false);    
     const saveExistingFileAndCloseApplication  = () =>
-        window.bridgeFileIO.saveExistingFile(currentFilename, elementSet.editor.value, (filename, error) =>
-            handleFileOperationResult(filename, null, error, true), true);
+        window.bridgeFileIO.saveExistingFile(currentFilename,
+            elementSet.editor.value,
+            (filename, error) =>
+                handleFileOperationResult(filename, null, error, true),
+            true);
 
     menu.subscribe(elementSet.menuItems.file.saveAs.textContent, actionRequest => {
         if (!actionRequest) return true;

@@ -6,6 +6,8 @@ const ipcChannel = {
         openFromCommandLine: 0,
         saveFileAs: 0,
         saveExistingFile: 0,
+        resetApplicationTitle: 0, // for file/new
+        closeApplication: 0, // for don't save dialog
     }, //fileIO
     plugin: {
         loadAll: 0,

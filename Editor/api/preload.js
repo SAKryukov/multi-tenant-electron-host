@@ -21,6 +21,8 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgeFileIO, { // to be used only in 
         ipcRenderer.once(ipcChannel.fileIO.saveExistingFile, (_event, filename, error) =>
                 handler(filename, error));
     }, //saveExistingFile
+    closeApplication: () => ipcRenderer.send(ipcChannel.fileIO.closeApplication),
+    resetApplicationTitle: () => ipcRenderer.send(ipcChannel.fileIO.resetApplicationTitle),
 }); //contextBridge.exposeInMainWorld
 
 contextBridge.exposeInMainWorld(bridgeAPI.bridgePlugin, {

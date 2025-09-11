@@ -31,6 +31,9 @@ const getDefinitionSet = () => {
             <br/>Node.js: v.&thinsp;${metadata.versions.node}
             <br/><br/>`,
         modifiedTextOperationConfirmation: {
+            saveAsEvent: new Event("save-as"),
+            saveExistingEvent: new Event("save-existing"),
+            closeApplication: new Event("close-application"),
             message: `<p>Do you want to save the changes?</p><br>
                 <small>
                 <p>The changes will be lost if you don't save them.</p>
@@ -53,6 +56,7 @@ const getDefinitionSet = () => {
             keydown: 0,
             selectionchange: 0,
             input: 0,
+            //custom
         },
         keys: {
             KeyP: 0,
