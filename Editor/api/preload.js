@@ -5,21 +5,21 @@ const { ipcRenderer, contextBridge} = require("electron/renderer");
 contextBridge.exposeInMainWorld(bridgeAPI.bridgeFileIO, { // to be used only in renderer loaded from HTML
     openFile: handler => {
             ipcRenderer.send(ipcChannel.fileIO.openFile);
-            ipcRenderer.once(ipcChannel.fileIO.openFile, (_event, filename, baseFilename, text, error) => {
-                handler(filename, baseFilename, text, error);
+            ipcRenderer.once(ipcChannel.fileIO.openFile, (_event, filename, text, error) => {
+                handler(filename, text, error);
             });
     }, //openFile
     subscribeToCommandLine: handler =>
-        ipcRenderer.on(ipcChannel.fileIO.openFromCommandLine, (_event, filename, simpleFileName, text, error) => handler(filename, simpleFileName, text, error)),
+        ipcRenderer.on(ipcChannel.fileIO.openFromCommandLine, (_event, filename, text, error) => handler(filename, text, error)),
     saveFileAs: (text, handler, closeApplication) => {
         ipcRenderer.send(ipcChannel.fileIO.saveFileAs, text, closeApplication);
-        ipcRenderer.once(ipcChannel.fileIO.saveFileAs, (_event, filename, baseFilename, error) =>
-                handler(filename, baseFilename, error));
+        ipcRenderer.once(ipcChannel.fileIO.saveFileAs, (_event, filename, error) =>
+                handler(filename, error));
     }, //saveFileAs
     saveExistingFile: (filename, text, handler, closeApplication) => {
         ipcRenderer.send(ipcChannel.fileIO.saveExistingFile, filename, text, closeApplication);
-        ipcRenderer.once(ipcChannel.fileIO.saveExistingFile, (_event, filename, baseFilename, error) =>
-                handler(filename, baseFilename, error));
+        ipcRenderer.once(ipcChannel.fileIO.saveExistingFile, (_event, filename, error) =>
+                handler(filename, error));
     }, //saveExistingFile
 }); //contextBridge.exposeInMainWorld
 

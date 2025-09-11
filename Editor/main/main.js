@@ -41,7 +41,7 @@ const subscribeToEvents = (window, baseTitle) => {
     ipcMain.on(ipcChannel.fileIO.openFile, () => {
         utilitySet.openFile((filename, text, error) => {
             window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
-            return window.webContents.send(ipcChannel.fileIO.openFile, filename, path.basename(filename), text, error);
+            return window.webContents.send(ipcChannel.fileIO.openFile, filename, text, error);
         });
     });
     const closeApplicationAfterSaving = (condition, error) => {
@@ -53,13 +53,13 @@ const subscribeToEvents = (window, baseTitle) => {
     ipcMain.on(ipcChannel.fileIO.saveFileAs, (_event, text, closeApplicationRequest) => {
         utilitySet.saveFileAs(text, (filename, error) => {
             window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
-            window.webContents.send(ipcChannel.fileIO.saveFileAs, filename, path.basename(filename), error);
+            window.webContents.send(ipcChannel.fileIO.saveFileAs, filename, error);
             closeApplicationAfterSaving(closeApplicationRequest, error);
         });
     });
     ipcMain.on(ipcChannel.fileIO.saveExistingFile, (_event, filename, text, closeApplicationRequest) => {
         utilitySet.saveExistingFile(filename, text, (filename, error) => {
-            window.webContents.send(ipcChannel.fileIO.saveExistingFile, filename, path.basename(filename), error);
+            window.webContents.send(ipcChannel.fileIO.saveExistingFile, filename, error);
             closeApplicationAfterSaving(closeApplicationRequest, error);
         });
     });
@@ -80,7 +80,7 @@ const handleCommandLine = window => {
             window.webContents.send(
                 ipcChannel.fileIO.openFromCommandLine,
                 filename,
-                path.basename(filename), text, error));
+                text, error));
 }; //handleCommandLine
 
 const createWindow = (title, baseTitle) => {

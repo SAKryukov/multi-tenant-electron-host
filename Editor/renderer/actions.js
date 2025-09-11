@@ -26,11 +26,9 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     const reportError = (error, errorKind) =>
         modalDialog.show(definitionSet.errorHandling.format(errorKind, error.message));
 
-    const handleFileOperationResult = (filename, title,  text, error, isSave) => {
+    const handleFileOperationResult = (filename, text, error, isSave) => {
         if (!error) {
             currentFilename = filename;
-            //document.title = definitionSet.fileNaming.title(baseFilename, originalTitle);
-            //SA???
             if (text) elementSet.editor.value = text;
             elementSet.editor.setSelectionRange(0, 0);
             fileSystemStatus.isModified = false;
@@ -39,8 +37,8 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             reportError(error, isSave ? definitionSet.errorHandling.save : definitionSet.errorHandling.open);
     }; //handleFileOperationResult
 
-    window.bridgeFileIO.subscribeToCommandLine((filename, baseFilename, text, error) =>
-        handleFileOperationResult(filename, baseFilename, text, error));
+    window.bridgeFileIO.subscribeToCommandLine((filename, text, error) =>
+        handleFileOperationResult(filename, text, error));
 
     const actionOnConfirmation = (action, closingApplication) => {
         const wrapper = () => {
@@ -86,24 +84,24 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     menu.subscribe(elementSet.menuItems.file.open.textContent, actionRequest => {
         if (!actionRequest) return true;
         actionOnConfirmation(() => {
-            window.bridgeFileIO.openFile((filename, baseFilename, text, error) =>
-            handleFileOperationResult(filename, baseFilename, text, error));
+            window.bridgeFileIO.openFile((filename, text, error) =>
+            handleFileOperationResult(filename, text, error));
         });
         return true;
     }); //file.open
 
     const saveAs = () =>
-        window.bridgeFileIO.saveFileAs(elementSet.editor.value, (filename, baseFilename, error) =>
-            handleFileOperationResult(filename, baseFilename, null, error, true), false);
+        window.bridgeFileIO.saveFileAs(elementSet.editor.value, (filename, error) =>
+            handleFileOperationResult(filename, null, error, true), false);
     const saveAsAndCloseApplication = () =>
-        window.bridgeFileIO.saveFileAs(elementSet.editor.value, (filename, baseFilename, error) =>
-            handleFileOperationResult(filename, baseFilename, null, error, true), true);
+        window.bridgeFileIO.saveFileAs(elementSet.editor.value, (filename, error) =>
+            handleFileOperationResult(filename, null, error, true), true);
     const saveExistingFile = () =>
-        window.bridgeFileIO.saveExistingFile(currentFilename, elementSet.editor.value, (filename, baseFilename, error) =>
-            handleFileOperationResult(filename, baseFilename, null, error, true), false);
+        window.bridgeFileIO.saveExistingFile(currentFilename, elementSet.editor.value, (filename, error) =>
+            handleFileOperationResult(filename, null, error, true), false);
     const saveExistingFileAndCloseApplication  = () =>
-        window.bridgeFileIO.saveExistingFile(currentFilename, elementSet.editor.value, (filename, baseFilename, error) =>
-            handleFileOperationResult(filename, baseFilename, null, error, true), true);
+        window.bridgeFileIO.saveExistingFile(currentFilename, elementSet.editor.value, (filename, error) =>
+            handleFileOperationResult(filename, null, error, true), true);
 
     menu.subscribe(elementSet.menuItems.file.saveAs.textContent, actionRequest => {
         if (!actionRequest) return true;
@@ -180,7 +178,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     }); //edit.copy
 
     menu.subscribe(elementSet.menuItems.edit.paste.textContent, actionRequest => {
-        if (!actionRequest) return true; //SA???
+        if (!actionRequest) return true;
         elementSet.editor.focus();
         navigator.clipboard.readText().then(value =>
             elementSet.editor.setRangeText(value));
