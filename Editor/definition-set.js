@@ -31,8 +31,8 @@ const definitionSet = {
         pluginFileSuffix: ".js",
     }, //plugin
     isDarwin: process => process.platform == 'darwin',
-    testCommandLineKey: "test",
-    createWindowProperties: (title, preloadScript) => {
+    applicationIcon: "images/editor.png",
+    createWindowProperties: (title, icon, preloadScript) => {
         return { // see https://www.electronjs.org/docs/latest/api/base-window#new-basewindowoptions
             resizable: true,
             minWidth: 800,
@@ -43,6 +43,7 @@ const definitionSet = {
             frame: true,
             transparent: false,
             title: title,
+            icon: icon,
             webPreferences: { //https://www.electronjs.org/docs/latest/api/structures/web-preferences
                 preload: preloadScript,
                 sandbox: false, // required with CommonJS or ES Modules used in preload

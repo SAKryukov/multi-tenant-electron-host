@@ -24,7 +24,7 @@ const getDefinitionSet = () => {
             nameInMenu: name => `${name}`,
         },
         aboutDialog: metadata =>
-            `<h4><img src="../images/electron.png"/>${metadata?.package?.description}</h4>
+            `<h4><img src="../images/editor.png"/>${metadata?.package?.description}</h4>
             <br/>Application version: ${metadata.applicationVersion}
             <br>Electron: v.&thinsp;${metadata.versions.electron}
             <br/>Chromium: v.&thinsp;${metadata.versions.chrome}

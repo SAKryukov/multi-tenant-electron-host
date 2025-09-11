@@ -4,7 +4,7 @@ const { ipcChannel } = require("../api/ipc-channels.js");
 const { definitionSet } = require("../definition-set.js");
 const { utilitySet } = require("./utility.js");
 const { pluginProvider } = require("./plugin-provider.js");
-const { app, dialog, BrowserWindow, Menu, ipcMain } = require('electron');
+const { app, dialog, BrowserWindow, Menu, ipcMain, nativeImage } = require('electron');
 const fs = require('fs');
 const path = require('node:path');
 const shell = require('electron').shell;
@@ -90,8 +90,9 @@ const handleCommandLine = window => {
 
 const createWindow = (title, baseTitle) => {
     const applicationPath = app.getAppPath();
+    const icon = nativeImage.createFromPath(path.join(applicationPath, definitionSet.applicationIcon));
     const window = new BrowserWindow(
-        definitionSet.createWindowProperties(title,
+        definitionSet.createWindowProperties(title, icon,
             path.join(applicationPath, definitionSet.paths.preload)));
     window.maximize(); //SA???
     window.once(definitionSet.events.readyToShow, () => {
