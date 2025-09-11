@@ -11,8 +11,8 @@ module.exports.utilitySet = (() => {
             app = values.app;
             process = values.process;
         }, //setup
-        processCommandLine: () => { //SA???
-            const filename = process.argv.length > 2
+        processCommandLine: () => {
+            const filename = process.argv.length > 1
                 ? process.argv[process.argv.length - 1]
                 : null;
             return fs.existsSync(filename)
