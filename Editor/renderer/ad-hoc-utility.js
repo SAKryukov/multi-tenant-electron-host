@@ -7,7 +7,6 @@ const adHocUtility = (() => {
     const implementation = {
         scrollTo: (editor, start, end) => {
             const fullText = editor.value;
-            editor.value = fullText.substring(0, end);
             const scrollHeight = editor.scrollHeight
             editor.value = fullText;
             let scrollTop = scrollHeight;
@@ -81,7 +80,6 @@ const adHocUtility = (() => {
                             persistGotoLine = lineLine.input.value.trim();
                             persistGotoLineColumn = lineColumn.input.value.trim();
                             lineColumn.line.value = persistGotoLineColumn;
-                            this.scrollTo(editor, position, position);
                         }, //goto action
                     }, // button Go to
                     { text: "Close", isEscape: true, },
@@ -90,31 +88,38 @@ const adHocUtility = (() => {
             });
         }, //goto
         replaceConfirmation: function(line, findingLines, finding, yesAction, noAction, breakAction) {
+            const lineFirst = line.slice(0, finding[0]);
+            const middle = line.slice(finding[0], finding[1]);
+            const lineLast = line.substring(finding[1]);
             const container = document.createElement("p");
             const found = document.createElement("p");
             found.textContent = `Found in ${findingLines}:`;
             const question = document.createElement("p");
             question.textContent = "Replace?";
-            const textArea = document.createElement("textarea");
+            const textArea = document.createElement("div");
             textArea.spellcheck = false;
+            textArea.tabIndex = 0;
             textArea.readOnly = true;
+            textArea.style.backgroundColor = "white";
             textArea.style.border = "solid thin black";
-            textArea.value = line;
-            container.style.paddingRight = "1.4em";
+            textArea.innerHTML = `${lineFirst}<span style="background-color: blue; color: yellow">${middle}</span>${lineLast}`;
             container.style.margin = 0;
             textArea.style.margin = 0;
+            textArea.style.width = "45em"; // the problem is: it is critical but ad-hoc
+            textArea.style.height = "3em";
+            textArea.style.overflow = "scroll";
+            textArea.style.padding = "1em";
             textArea.style.marginTop = "0.2em";
             textArea.style.marginBottom = "0.2em";
             container.appendChild(found);
             container.appendChild(textArea);
             container.appendChild(question);
-            this.scrollTo(textArea, finding[0], finding[1]);
             modalDialog.show(container, { buttons: [
                 { text: "Yes", isDefault: true, action: yesAction, },
                 { text: "No", action: noAction, },
                 { text: "Complete Replacements", action: breakAction, },
                 { isEscape: true, text: "Cancel All Replacements" },
-            ], options: { initialFocus: textArea, } } );
+            ]});
         }, //
     }; //implementation
     Object.freeze(implementation);

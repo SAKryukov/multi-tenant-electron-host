@@ -83,12 +83,9 @@ const createSearchDialog = (definitionSet, elementSet) => {
                     elementSet.editor.value, finding[0], finding[1]);
                 const findingPositionStart = definitionSet.status.line(elementSet.editor.value, finding[0]);
                 const findingPositionEnd = definitionSet.status.line(elementSet.editor.value, finding[1]);
-                let findingLines;
-                if (findingPositionStart == findingPositionEnd)
-                    findingLines = findingPositionStart;
-                else
-                    findingLines = definitionSet.search.replaceConfirmation.dialogMessageFormatLines(
-                        [findingPositionStart, findingPositionEnd]);
+                let findingLines = [findingPositionStart, findingPositionEnd];
+                findingLines = definitionSet.search.replaceConfirmation.dialogMessageFormatLines(
+                    [findingPositionStart, findingPositionEnd]);
                 const baseAction = () => elementSet.editor.dispatchEvent(
                     definitionSet.search.replaceConfirmation.event);
                 adHocUtility.replaceConfirmation(replacementPresentation.line, findingLines, replacementPresentation.finding,

@@ -148,9 +148,9 @@ const getDefinitionSet = () => {
                         finding: [findingStart - startOfLine, findingEnd - startOfLine] };
                 }, //replacementPresentation
                 dialogMessageFormatLines: lines =>
-                    lines.length == 2
+                    lines.length == 2 && lines[0] != lines[1]
                         ? `lines ${lines[0]}-${lines[1]}`
-                        : `line ${lines}`,
+                        : `line ${lines[0]}`,
             }, //replaceConfirmation
         }, //search
         isShortcut : (event, shortcut) => {
