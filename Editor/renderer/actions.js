@@ -26,7 +26,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     const reportError = (error, errorKind) =>
         modalDialog.show(definitionSet.errorHandling.format(errorKind, error.message));
 
-    const handleFileOperationResult = (filename, baseFilename, text, error, isSave) => {
+    const handleFileOperationResult = (filename, title,  text, error, isSave) => {
         if (!error) {
             currentFilename = filename;
             //document.title = definitionSet.fileNaming.title(baseFilename, originalTitle);

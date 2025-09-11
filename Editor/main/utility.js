@@ -25,7 +25,7 @@ module.exports.utilitySet = (() => {
             dialog.showOpenDialog(window, { title: definitionSet.utility.fileDialog.titleOpenFile }).then(event => {
                 if (event.canceled) return;
                 fs.readFile(event.filePaths[0], {}, (error, data) =>
-                    useData(event.filePaths[0], data?.toString(), error));
+                    useData(event.filePaths[0], data?.toString(), error));            
             }); //dialog.showOpenDialog
         }, //openFile
         saveFileAs: (text, handler) => {

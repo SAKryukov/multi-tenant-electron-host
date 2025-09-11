@@ -9,7 +9,6 @@ const fs = require('fs');
 const path = require('node:path');
 const shell = require('electron').shell;
 
-const image = null;
 let permittedToCloseApplication = false;
 
 const handlePlugins = (applicationPath, window) => {
@@ -23,7 +22,7 @@ const applicationPackage = (() => {
         return JSON.parse(fs.readFileSync(packageFileName));
 })();
 
-const subscribeToEvents = window => {
+const subscribeToEvents = (window, baseTitle) => {
     ipcMain.handle(ipcChannel.metadata.request, async (_event) => {
         return {
             package: applicationPackage,
@@ -40,8 +39,10 @@ const subscribeToEvents = window => {
     }); //metadata.source
     utilitySet.setup({ definitionSet, dialog, fs, window });
     ipcMain.on(ipcChannel.fileIO.openFile, () => {
-        utilitySet.openFile((filename, text, error) =>
-            window.webContents.send(ipcChannel.fileIO.openFile, filename, path.basename(filename), text, error));
+        utilitySet.openFile((filename, text, error) => {
+            window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
+            return window.webContents.send(ipcChannel.fileIO.openFile, filename, path.basename(filename), text, error);
+        });
     });
     const closeApplicationAfterSaving = (condition, error) => {
         if (condition && !error) {
@@ -51,6 +52,7 @@ const subscribeToEvents = window => {
     }; //closeApplicationAfterSaving
     ipcMain.on(ipcChannel.fileIO.saveFileAs, (_event, text, closeApplicationRequest) => {
         utilitySet.saveFileAs(text, (filename, error) => {
+            window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
             window.webContents.send(ipcChannel.fileIO.saveFileAs, filename, path.basename(filename), error);
             closeApplicationAfterSaving(closeApplicationRequest, error);
         });
@@ -81,7 +83,7 @@ const handleCommandLine = window => {
                 path.basename(filename), text, error));
 }; //handleCommandLine
 
-const createWindow = title => {
+const createWindow = (title, baseTitle) => {
     const applicationPath = app.getAppPath();
     const window = new BrowserWindow(
         definitionSet.createWindowProperties(title,
@@ -104,7 +106,7 @@ const createWindow = title => {
         event.preventDefault();
     }); //on close
     window.loadFile(path.join(applicationPath, definitionSet.paths.index));
-    subscribeToEvents(window);
+    subscribeToEvents(window, baseTitle);
     Menu.setApplicationMenu(null);
 }; //createWindow
 
@@ -114,7 +116,7 @@ app.whenReady().then(() => {
     const title = filename
         ? definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle)
         : baseTitle
-    createWindow(title);
+    createWindow(title, baseTitle);
     app.on(definitionSet.events.activate, () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow(title);
     });

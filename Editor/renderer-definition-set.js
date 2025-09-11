@@ -61,10 +61,6 @@ const getDefinitionSet = () => {
         elements: {
             script: 0, option: 0, section: 0, p: 0, span: 0, input: 0, br: 0,
         },
-        fileNaming: {
-            title:  (baseFilename, originalTitle) =>
-                `${baseFilename} ${String.fromCharCode(0x2014)} ${originalTitle}`,
-        },
         status: {
             modified: "Modified",
             cursorPosition: (text, offset) => {
