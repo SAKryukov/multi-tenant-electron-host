@@ -49,7 +49,7 @@ const getDefinitionSet = () => {
             buttons: (saveAction, dontSaveAction) => [
                 { text: "Save", action: saveAction, },
                 { text: "Don't Save", action : dontSaveAction },
-                { isDefault: true, default: true, isEscape: true, text: "Cancel" }],
+                { isDefault: true, isEscape: true, text: "Cancel" }],
         }, //modifiedTextOperationConfirmation
         events: {
             DOMContentLoaded: 0,

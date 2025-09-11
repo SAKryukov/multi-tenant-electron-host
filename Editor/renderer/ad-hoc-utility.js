@@ -55,7 +55,7 @@ const adHocUtility = (() => {
             modalDialog.show(section, {
                 buttons: [
                     {   text: "Go to Line/Column",
-                        default: true, isDefault: true, isEnter: true, 
+                        isDefault: true, isEnter: true, 
                         action: () => {
                             let line = lineLine.input.value.trim();
                             let column = lineColumn.input.value.trim();
