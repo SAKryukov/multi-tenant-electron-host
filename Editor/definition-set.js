@@ -21,6 +21,10 @@ const definitionSet = {
             buttons: ["Close"],
             title: "About Electron Application",
         },
+        fileNaming: {
+            title:  (baseFilename, title) =>
+                `${baseFilename} ${String.fromCharCode(0x2014)} ${title}`,
+        },
     }, //utility
     plugin: {
         directory: "plugins",

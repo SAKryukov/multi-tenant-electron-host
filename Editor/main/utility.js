@@ -1,21 +1,19 @@
 module.exports.utilitySet = (() => {
 
-    let definitionSet, dialog, fs, window, image, app, process;
+    let definitionSet, dialog, fs, window;
     const utilitySet = {
         setup: values => {
             definitionSet = values.definitionSet;
             dialog = values.dialog;
             fs = values.fs;
             window = values.window;
-            image = values.image;
-            app = values.app;
-            process = values.process;
         }, //setup
-        processCommandLine: () => {
+        processCommandLine: fileSystem => {
+            if (!fileSystem) fileSystem = fs; // this way, this function can be called with or without setup
             const filename = process.argv.length > 1
                 ? process.argv[process.argv.length - 1]
                 : null;
-            return fs.existsSync(filename)
+            return fileSystem.existsSync(filename)
                 ? filename
                 : null;
         }, //processCommandLine
@@ -41,29 +39,8 @@ module.exports.utilitySet = (() => {
                 fs.writeFile(filenane, text, {}, error =>
                     handler(filenane, error));
         }, //saveExistingFile
-        aboutBox: () =>
-            dialog.showMessageBoxSync(window, {
-                icon: image,
-                //type: "info", //alternative to icon
-                message:
-                    `This application ${String.fromCharCode(0x201C)}${app.name}${String.fromCharCode(0x201D)}: ${app.getVersion()}\n` +
-                    `Application location: ${app.getAppPath()}\n` +
-                    "\n" +
-                    `Platform: ${process.platform} ${process.arch}\n` +
-                    "\n" +
-                    `Electron path: ${process.argv0}\n` +
-                    `Electron: ${process.versions.electron}\n` +
-                    `Node.js: ${process.versions.node}\n` +
-                    `Chrome: ${process.versions.chrome}\n` +
-                    `JavaScript engine V8: ${process.versions.v8}\n` +
-                    `Unicode: ${process.versions.unicode}`,
-                title: definitionSet.utility.aboutDialog.title,
-                buttons: definitionSet.utility.aboutDialog.buttons,
-            }), //aboutBox
     }; //utilitySet
 
     return utilitySet;
 
 })();
-
-

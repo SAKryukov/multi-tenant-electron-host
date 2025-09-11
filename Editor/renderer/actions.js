@@ -2,7 +2,6 @@
 
 const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
-    const originalTitle = document.title;
     let currentFilename = null;
 
     const fileSystemStatus = (() => {
@@ -30,7 +29,8 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     const handleFileOperationResult = (filename, baseFilename, text, error, isSave) => {
         if (!error) {
             currentFilename = filename;
-            document.title = definitionSet.fileNaming.title(baseFilename, originalTitle);
+            //document.title = definitionSet.fileNaming.title(baseFilename, originalTitle);
+            //SA???
             if (text) elementSet.editor.value = text;
             elementSet.editor.setSelectionRange(0, 0);
             fileSystemStatus.isModified = false;

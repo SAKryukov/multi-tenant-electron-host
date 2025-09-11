@@ -23,8 +23,6 @@ const applicationPackage = (() => {
         return JSON.parse(fs.readFileSync(packageFileName));
 })();
 
-const title = applicationPackage?.description;
-
 const subscribeToEvents = window => {
     ipcMain.handle(ipcChannel.metadata.request, async (_event) => {
         return {
@@ -40,7 +38,7 @@ const subscribeToEvents = window => {
                 shell.openExternal(source);
         } //if
     }); //metadata.source
-    utilitySet.setup({ definitionSet, dialog, fs, window, image, app, process, });
+    utilitySet.setup({ definitionSet, dialog, fs, window });
     ipcMain.on(ipcChannel.fileIO.openFile, () => {
         utilitySet.openFile((filename, text, error) =>
             window.webContents.send(ipcChannel.fileIO.openFile, filename, path.basename(filename), text, error));
@@ -83,7 +81,7 @@ const handleCommandLine = window => {
                 path.basename(filename), text, error));
 }; //handleCommandLine
 
-const createWindow = () => {
+const createWindow = title => {
     const applicationPath = app.getAppPath();
     const window = new BrowserWindow(
         definitionSet.createWindowProperties(title,
@@ -111,9 +109,14 @@ const createWindow = () => {
 }; //createWindow
 
 app.whenReady().then(() => {
-    createWindow();
+    const filename = utilitySet.processCommandLine(fs);
+    const baseTitle = applicationPackage?.description;
+    const title = filename
+        ? definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle)
+        : baseTitle
+    createWindow(title);
     app.on(definitionSet.events.activate, () => {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
+        if (BrowserWindow.getAllWindows().length === 0) createWindow(title);
     });
 }); //app.whenReady
 
