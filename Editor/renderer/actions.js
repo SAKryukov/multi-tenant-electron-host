@@ -48,11 +48,10 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
                 else
                     saveExistingFileAndCloseApplication();
             } else {
-                action();
                 if (currentFilename == null)
-                    saveExistingFileAndContinue(action);
-                else
                     saveAsAndContinue(action);
+                else
+                    saveExistingFileAndContinue(action);
             } //if
         }; //saveBeforeAction
         const noSaveAction = () => {
