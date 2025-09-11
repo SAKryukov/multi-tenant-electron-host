@@ -79,7 +79,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
                     return;
                 } //if
                 const finding = findings[replacementIndex];
-                const line = definitionSet.search.replaceConfirmation.formatLineToReplace(
+                const replacementPresentation = definitionSet.search.replaceConfirmation.replacementPresentation(
                     elementSet.editor.value, finding[0], finding[1]);
                 const findingPositionStart = definitionSet.status.line(elementSet.editor.value, finding[0]);
                 const findingPositionEnd = definitionSet.status.line(elementSet.editor.value, finding[1]);
@@ -89,27 +89,18 @@ const createSearchDialog = (definitionSet, elementSet) => {
                 else
                     findingLines = definitionSet.search.replaceConfirmation.dialogMessageFormatLines(
                         [findingPositionStart, findingPositionEnd]);
-                modalDialog.show(definitionSet.search.replaceConfirmation.dialogMessage(line, findingLines), {
-                    buttons: definitionSet.search.replaceConfirmation.dialogButtons(
-                        () => { // yesAction
-                            findings[replacementIndex++].push(true);
-                            elementSet.editor.dispatchEvent(
-                                elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
-                        },
-                        () => { // noAction
-                            replacementIndex++;
-                            elementSet.editor.dispatchEvent(
-                                elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
-                        },
-                        () => { // breakAction
-                            replacementIndex = findings.length;
-                            elementSet.editor.dispatchEvent(
-                                elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event));
-                        }),
-                }); //modalDialog.show
+                const baseAction = () => elementSet.editor.dispatchEvent(
+                    definitionSet.search.replaceConfirmation.event);
+                adHocUtility.replaceConfirmation(replacementPresentation.line, findingLines, replacementPresentation.finding,
+                    () => { //yesAction
+                        findings[replacementIndex++].push(true); baseAction(); },
+                    () => { //noAction
+                        replacementIndex++;  baseAction(); },
+                    () => { //breakAction
+                        replacementIndex = findings.length;  baseAction(); },
+                ); //adHocUtility.replaceConfirmation
             } //handler
         ); //subscribeToReplaceConfirmation
-        //
         const replaceOneByOne = () => {
             find(true);
             if (!findings) return;

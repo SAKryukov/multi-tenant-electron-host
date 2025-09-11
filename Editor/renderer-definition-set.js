@@ -135,35 +135,22 @@ const getDefinitionSet = () => {
             optionClassName: { up: 0, down: 0, },
             replaceConfirmation: {
                 event: new Event("replace-confirmation"),
-                subscribeToReplaceConfirmation: function(element, handler) {
+                subscribeToReplaceConfirmation: function (element, handler) {
                     element.addEventListener(this.event.type, handler);
                 }, //subscribeToReplaceConfirmation
-                dialogMessageFormatLines: lines => 
+                replacementPresentation: (text, findingStart, findingEnd) => {
+                    let endOfLine = text.indexOf("\n", findingEnd);
+                    if (endOfLine < 0) endOfLine = text.length - 1;
+                    let startOfLine = text.lastIndexOf("\n", findingStart) + 1;
+                    if (startOfLine < 0) startOfLine = 0;
+                    return {
+                        line: text.slice(startOfLine, endOfLine),
+                        finding: [findingStart - startOfLine, findingEnd - startOfLine] };
+                }, //replacementPresentation
+                dialogMessageFormatLines: lines =>
                     lines.length == 2
                         ? `lines ${lines[0]}-${lines[1]}`
                         : `line ${lines}`,
-                dialogMessage: (line, lineNumber) => `<p>Found in line ${lineNumber}:</p>
-                    ${line}
-                    <br/><br/>
-                    <p style="text-align: center">Replace?</a><br/><br/>`,
-                dialogButtons: (yesAction, noAction, breakAction) => [
-                    { text: "Yes", isDefault: true, action: yesAction, },
-                    { text: "No", action: noAction, },
-                    { text: "Complete Replacements", action: breakAction, },
-                    { default: true, isEscape: true, text: "Cancel All Replacements" }
-                ],
-                formatLineToReplace: (text, findingStart, findingEnd) => {
-                    let lines = text.substr(0, findingStart).split("\n");
-                    const row = lines.length;
-                    const column = lines[lines.length - 1].length + 1;
-                    const start = findingStart - column + 1;
-                    lines = text.split("\n");
-                    const source = lines[row - 1];
-                    const partOne = source.slice(0, findingStart - start);
-                    const partTwo = source.slice(findingStart - start, findingEnd - start);
-                    const partThree = source.substring(findingEnd - start);
-                    return `<p style="color: blue">${partOne}<b style="color: white; background-color: blue">${partTwo}</b>${partThree}</p`;
-                }, //formatLineToReplace
             }, //replaceConfirmation
         }, //search
         isShortcut : (event, shortcut) => {
