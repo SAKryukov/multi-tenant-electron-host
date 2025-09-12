@@ -7,7 +7,8 @@ const adHocUtility = (() => {
     const implementation = {
         scrollTo: (editor, start, end) => {
             const fullText = editor.value;
-            const scrollHeight = editor.scrollHeight
+            editor.value = fullText.substring(0, end);
+            const scrollHeight = editor.scrollHeight;
             editor.value = fullText;
             let scrollTop = scrollHeight;
             const editorHeight = editor.clientHeight;
@@ -91,12 +92,19 @@ const adHocUtility = (() => {
             const lineFirst = line.slice(0, finding[0]);
             const middle = line.slice(finding[0], finding[1]);
             const lineLast = line.substring(finding[1]);
+            const spanFirst = document.createElement(definitionSet.elements.span);
+            spanFirst.textContent = lineFirst;
+            const spanMiddle = document.createElement(definitionSet.elements.span);
+            spanMiddle.textContent = middle;
+            setTimeout(() =>  spanMiddle.scrollIntoView({ behavior: "smooth" })); 
+            const spanLast = document.createElement(definitionSet.elements.span);
+            spanLast.textContent = lineLast;
             const container = document.createElement(definitionSet.elements.p);
             const found = document.createElement(definitionSet.elements.p);
             found.textContent = `Found in ${findingLines}:`;
             const question = document.createElement(definitionSet.elements.p);
             question.textContent = "Replace?";
-            const textArea = document.createElement(definitionSet.elements.div);
+            const textArea = document.createElement(definitionSet.elements.pre);
             textArea.spellcheck = false;
             textArea.tabIndex = 0;
             textArea.readOnly = true;
@@ -104,18 +112,22 @@ const adHocUtility = (() => {
             const textAreaVerticalGap = "0.2em"; 
             question.style.marginTop = "0.8em";
             question.style.marginBottom = "1em";
-            textArea.style.fontFamily = `${fontFamily}`;
+            for (const element of [textArea, spanFirst, spanMiddle, spanLast]) {
+                element.style.fontFamily = fontFamily;
+            } //loop
             textArea.style.fontSize = "140%";
             textArea.style.width = "40em"; // the problem is: it is critical but ad-hoc, depends on two properties above
-            textArea.style.backgroundColor = "white";
+            textArea.style.backgroundColor = "hsl(203, 92%, 96%, 100%)";
             textArea.style.border = "solid thin black";
-            textArea.innerHTML = `${lineFirst}` +
-                `<span style="background-color: blue; color: yellow; font-family: ${fontFamily};">`
-                + `${middle}</span>${lineLast}`;
+            textArea.appendChild(spanFirst);
+            textArea.appendChild(spanMiddle);
+            textArea.appendChild(spanLast);
+            spanMiddle.style.color = "yellow";
+            spanMiddle.style.backgroundColor = "blue";
             container.style.margin = 0;
             textArea.style.margin = 0;
-            textArea.style.height = "3em";
-            textArea.style.overflow = "scroll";
+            textArea.style.height = "2em";
+            textArea.style.overflowX = "scroll";
             textArea.style.padding = "1em";
             textArea.style.marginTop = textAreaVerticalGap;
             textArea.style.marginBottom = textAreaVerticalGap;
