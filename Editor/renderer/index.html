@@ -36,12 +36,12 @@
         footer, textarea { padding-left: var(--deltaX); padding-right: var(--deltaX); }
         textarea { width: 100%; height: 100%; padding-bottom: 1px;
             caret-color: darkgreen;
-            font-family: monospace;
-            font-size: 140%;
             resize: none; border: none; outline: none;
             white-space: nowrap;
             background-color: white;
-        } 
+        }
+        textarea, #measure-big, #measure-small { font-size: 14pt; font-family: monospace; }
+        #measure-big, #measure-small { visibility: hidden; top:0; right:0; padding:0; position: absolute; }            
         header { background-color: aliceblue; }
         footer { background-color: linen; }
         footer > span > span, footer > small
@@ -53,7 +53,8 @@
     </style>
 </head>
 <body>
-
+    <!--Important! measures for scrollTo(elementSet.editor...): -->
+    <p id="measure"><p><span  id="measure-big">ab<br>|</span></p><p><span id="measure-small">c</span></p></p>
     <header>
             <menu>
                 <li>

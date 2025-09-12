@@ -3,7 +3,7 @@
 const getDefinitionSet = () => {
 
     const definitionSet = {
-        empty: "",
+        empty: "", newLine: "\n",
         SA: `<a href="https://www.SAKryukov.org">Sergey A Kryukov</a>`,
         copyright: function() {
             return `Copyright &copy; 2025 by ${this.SA}`

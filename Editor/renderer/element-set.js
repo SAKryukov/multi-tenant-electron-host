@@ -5,6 +5,10 @@ const getElementSet = document => {
         editor: document.querySelector("textarea"),
         menu: document.querySelector("menu"),
         search: {
+            measure: { // measures for scrollTo(elementSet.editor...)
+                big: document.querySelector("#measure-big"), //must be <span>aa<br>b</span>
+                small: document.querySelector("#measure-small"), //must be <span>a</span>
+            }, //measure
             dialog: document.querySelector("dialog#id-search-dialog"),
             closeCross: document.querySelector("#id-search-dialog-close"),
             inputFind: document.querySelector("dialog#id-search-dialog p:first-of-type input"),

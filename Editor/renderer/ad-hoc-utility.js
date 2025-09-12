@@ -5,19 +5,26 @@ const adHocUtility = (() => {
     let persistGotoLine = null, persistGotoLineColumn = null;
 
     const implementation = {
-        scrollTo: (editor, start, end) => {
-            editor.style.padding = 0;
-            const fullText = editor.value;
-            let left = editor.value.lastIndexOf("\n", start);
+        measure: null,
+        scrollTo: function(editor, start, end) {
+            if (this.measure == null) {
+                const measureBig = elementSet.search.measure.big;
+                const measureSmall = elementSet.search.measure.small;
+                const lineHeight = measureBig.offsetHeight - measureSmall.offsetHeight;
+                const columnWidth = measureBig.offsetWidth - measureSmall.offsetWidth;
+                this.measure = { lineHeight, columnWidth };
+                Object.freeze(implementation);
+            } //if
+            const lineHeight = this.measure.lineHeight;
+            const columnWidth = this.measure.columnWidth;
+            const text = editor.value;
+            let left = editor.value.lastIndexOf(definitionSet.newLine, start);
             if (left < 0) left = 0; else left += 1;
-            const slice = editor.value.slice(left, end);
-            editor.value = slice;
-            const scrollWidth = editor.scrollWidth;
-            editor.value = fullText.substr(0, end);
-            const scrollHeight = editor.scrollHeight;
-            editor.value = fullText;
-            let scrollTop = scrollHeight;
-            let scrollLeft = scrollWidth;
+            let sliceX = text.slice(left, end);
+            let sliceY = text.substr(0, end);
+            sliceY = sliceY.split(definitionSet.newLine);
+            let scrollTop = (sliceY.length + 1) * lineHeight;
+            let scrollLeft = (sliceX.length + 1) * columnWidth;
             const editorHeight = editor.clientHeight;
             const editorWidth = editor.clientWidth;
             scrollTop = scrollTop - editorHeight;
@@ -152,7 +159,6 @@ const adHocUtility = (() => {
             ]});
         }, //
     }; //implementation
-    Object.freeze(implementation);
 
     return implementation;
     
