@@ -95,6 +95,7 @@ const adHocUtility = (() => {
                             position += column - 1;
                             editor.focus();
                             editor.selectionStart = editor.selectionEnd = position;
+                            this.scrollTo(editor, position, position);
                             persistGotoLine = lineLine.input.value.trim();
                             persistGotoLineColumn = lineColumn.input.value.trim();
                             lineColumn.line.value = persistGotoLineColumn;
