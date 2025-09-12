@@ -13,8 +13,8 @@ const definitionSet = {
     },
     utility: {
         fileDialog: {
-            titleOpenFile: "Open text file...",
-            titleSaveFile: "Save text file as...",
+            titleOpenFile: `Open text file${String.fromCharCode(0x2026)}`,
+            titleSaveFile: `Save text file as${String.fromCharCode(0x2026)}`,
             ioError: "File I/O error",
         },
         aboutDialog: {
