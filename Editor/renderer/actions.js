@@ -22,7 +22,8 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     // File I/O:
 
-    elementSet.editor.addEventListener(definitionSet.events.input, () => fileSystemStatus.isModified = true);
+    //elementSet.editor.addEventListener(definitionSet.events.input, () => fileSystemStatus.isModified = true);
+    elementSet.editorAPI.subscribeToModified(() => fileSystemStatus.isModified = true);
     const reportError = (error, errorKind) =>
         modalDialog.show(definitionSet.errorHandling.format(errorKind, error.message));
 
@@ -169,7 +170,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     // Macro:
 
-    const macroProcessor = createMacroProcessor(elementSet.editor, elementSet.statusBar.macroFlag);
+    const macroProcessor = createMacroProcessor(elementSet.editor, elementSet.statusBar.macroFlag, elementSet.editorAPI);
     menu.subscribe(elementSet.menuItems.macro.startRecording.textContent, actionRequest => {
         if (!actionRequest) return macroProcessor.canRecord();
         elementSet.editor.focus();

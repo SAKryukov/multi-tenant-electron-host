@@ -26,6 +26,26 @@ if (window.bridgePlugin)
 
 window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
     elementSet = getElementSet(document);
+    elementSet.editorAPI = (editor => {
+            let isModifiedFlag = false;
+            const modifiedEventName = definitionSet.events.editorTextModified;
+            const modifiedEvent = new Event(modifiedEventName);
+            const api = {
+                subscribeToModified: handler => editor.addEventListener(modifiedEventName, handler),
+            }; //api
+            editor.addEventListener(definitionSet.events.input, () => api.isModified = true);
+            Object.defineProperties(api, {
+                isModified: {
+                    get() { return isModifiedFlag; },
+                    set(value) {
+                        isModifiedFlag = value;
+                        editor.dispatchEvent(modifiedEvent, isModifiedFlag);
+                    },
+                },
+            });
+            return api;
+        })(elementSet.editor);
+    Object.freeze(elementSet);
     if (!window.bridgePlugin)
         return definitionSet.standaloneExecutionProtection();
     elementSet.editor.addEventListener(definitionSet.events.selectionchange, event => {

@@ -58,6 +58,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
             elementSet.editor.setRangeText(value);
         } else
             elementSet.editor.value = elementSet.editor.value.replaceAll(searchString, replaceString);
+        elementSet.editorAPI.isModified = true;
     }; //replaceAll
 
     const confirmationReplacer = (() => {
@@ -74,6 +75,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
                         let sliceSecond = elementSet.editor.value.substring(finding[0]);
                         sliceSecond = sliceSecond.replace(pattern, replaceString);
                         elementSet.editor.value = sliceFirst + sliceSecond;
+                        elementSet.editorAPI.isModified = true;
                     } //loop
                     resetFindings();
                     return;

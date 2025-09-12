@@ -56,7 +56,8 @@ const getDefinitionSet = () => {
             keydown: 0,
             selectionchange: 0,
             input: 0,
-            //custom
+            //custom:
+            editorTextModified: 0,
         },
         keys: {
             KeyP: 0,

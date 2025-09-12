@@ -1,6 +1,6 @@
 "use strict";
 
-const createMacroProcessor = (editor, stateIndicator) => {
+const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
 
     let recordingMacro = false;
     let macro = [];
@@ -44,6 +44,7 @@ const createMacroProcessor = (editor, stateIndicator) => {
             const range = currentState.position + element.delta.position;
             editor.setRangeText(element.data, range - element.data.length, range - element.delta.length);
             editor.setSelectionRange(range, range);
+            editorAPI.isModified = true;
         } //loop
         editor.setSelectionRange(lastSelection[0] + delta, lastSelection[1] + delta);
     }; //playMacro
