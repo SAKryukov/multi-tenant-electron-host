@@ -17,9 +17,15 @@ const handlePlugins = (applicationPath, window) => {
 }; //handlePlugins
 
 const applicationPackage = (() => {
-    const packageFileName = path.join(app.getAppPath(), definitionSet.paths.package);
-    if (fs.existsSync(packageFileName))
-        return JSON.parse(fs.readFileSync(packageFileName));
+    const getJSON = filename => {
+        const fullName = path.join(app.getAppPath(), filename);
+        if (fs.existsSync(fullName))
+            return JSON.parse(fs.readFileSync(fullName));
+    };
+    const packageJSON = getJSON(definitionSet.paths.package);
+    const metadataJSON = getJSON(definitionSet.paths.metadata);
+    packageJSON.metadata = metadataJSON;
+    return packageJSON;
 })();
 
 const subscribeToEvents = (window, baseTitle) => {
