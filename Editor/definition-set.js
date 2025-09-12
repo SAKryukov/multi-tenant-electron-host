@@ -10,6 +10,7 @@ const definitionSet = {
         image: "main/editor.png",
         index: "renderer/index.html",
         package: "package.json",
+        metadata: "metadata.json",
     },
     utility: {
         fileDialog: {

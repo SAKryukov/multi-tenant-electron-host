@@ -2,6 +2,7 @@
 
 const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
+    elementSet.copyright.innerHTML = metadata?.package?.metadata?.copyright;
     let currentFilename = null;
 
     const fileSystemStatus = (() => {

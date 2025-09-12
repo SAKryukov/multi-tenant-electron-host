@@ -26,9 +26,15 @@ const getDefinitionSet = () => {
         aboutDialog: metadata =>
             `<h4><img src="../images/editor.png"/>${metadata?.package?.description}</h4>
             <br/>Application version: ${metadata.applicationVersion}
+            <br/>
+            <br/>Platform: ${metadata.platform}
+            <br/>CPU architecture: ${metadata.architecture}
+            <br/>
             <br>Electron: v.&thinsp;${metadata.versions.electron}
             <br/>Chromium: v.&thinsp;${metadata.versions.chrome}
             <br/>Node.js: v.&thinsp;${metadata.versions.node}
+            <br/>
+            <br/>${metadata?.package?.metadata?.copyright}
             <br/><br/>`,
         modifiedTextOperationConfirmation: {
             saveAsEvent: new Event("save-as"),

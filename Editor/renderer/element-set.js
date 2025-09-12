@@ -4,6 +4,7 @@ const getElementSet = document => {
     return {
         editor: document.querySelector("textarea"),
         menu: document.querySelector("menu"),
+        copyright: document.querySelector("#id-copyright"),
         search: {
             measure: { // measures for scrollTo(elementSet.editor...)
                 big: document.querySelector("#measure-big"), //must be <span>aa<br>b</span>

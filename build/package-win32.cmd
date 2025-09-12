@@ -1,1 +1,0 @@
-@npx @electron/packager ../Editor --platform=win32 --arch=x64 --appCopyright="Copyright (c) 2025 by Sergey A Kryukov"
