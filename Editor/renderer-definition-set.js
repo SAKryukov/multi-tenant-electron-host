@@ -29,6 +29,8 @@ const getDefinitionSet = () => {
             <br>Electron: v.&thinsp;${metadata.versions.electron}
             <br/>Chromium: v.&thinsp;${metadata.versions.chrome}
             <br/>Node.js: v.&thinsp;${metadata.versions.node}
+            <br/>
+            <br/>${metadata?.package?.metadata?.copyright}
             <br/><br/>`,
         modifiedTextOperationConfirmation: {
             saveAsEvent: new Event("save-as"),

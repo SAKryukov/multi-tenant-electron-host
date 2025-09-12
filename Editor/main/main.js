@@ -26,7 +26,7 @@ const applicationPackage = (() => {
     const metadataJSON = getJSON(definitionSet.paths.metadata);
     packageJSON.metadata = metadataJSON;
     return packageJSON;
-})();
+})(); //applicationPackage
 
 const subscribeToEvents = (window, baseTitle) => {
     ipcMain.handle(ipcChannel.metadata.request, async (_event) => {
