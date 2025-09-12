@@ -6,14 +6,15 @@ const adHocUtility = (() => {
 
     const implementation = {
         scrollTo: (editor, start, end) => {
+            editor.style.padding = 0;
             const fullText = editor.value;
             let left = editor.value.lastIndexOf("\n", start);
-            if (left < 0) left = 0;
-            const slice = editor.value.slice(left + 1, end);
-            editor.value = fullText.substr(0, end);
-            const scrollHeight = editor.scrollHeight;
+            if (left < 0) left = 0; else left += 1;
+            const slice = editor.value.slice(left, end);
             editor.value = slice;
             const scrollWidth = editor.scrollWidth;
+            editor.value = fullText.substr(0, end);
+            const scrollHeight = editor.scrollHeight;
             editor.value = fullText;
             let scrollTop = scrollHeight;
             let scrollLeft = scrollWidth;
