@@ -7,15 +7,24 @@ const adHocUtility = (() => {
     const implementation = {
         scrollTo: (editor, start, end) => {
             const fullText = editor.value;
-            editor.value = fullText.substring(0, end);
+            let left = editor.value.lastIndexOf("\n", start);
+            if (left < 0) left = 0;
+            const slice = editor.value.slice(left + 1, end);
+            editor.value = fullText.substr(0, end);
             const scrollHeight = editor.scrollHeight;
+            editor.value = slice;
+            const scrollWidth = editor.scrollWidth;
             editor.value = fullText;
             let scrollTop = scrollHeight;
+            let scrollLeft = scrollWidth;
             const editorHeight = editor.clientHeight;
-            scrollTop = scrollTop > editorHeight
-                ? scrollTop -= editorHeight / 2
-                : scrollTop = 0;
+            const editorWidth = editor.clientWidth;
+            scrollTop = scrollTop - editorHeight;
+            if (scrollTop < 0) scrollTop = 0;
+            scrollLeft = scrollLeft - editorWidth;
+            if (scrollLeft < 0) scrollLeft = 0;
             editor.scrollTop = scrollTop;
+            editor.scrollLeft = scrollLeft;
             editor.setSelectionRange(start, end);
         }, //scrollTo
         decimalDidits: "0123456789",
