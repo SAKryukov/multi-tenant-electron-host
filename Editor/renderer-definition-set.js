@@ -64,7 +64,7 @@ const getDefinitionSet = () => {
             KeyR: 0,
         },
         elements: {
-            script: 0, option: 0, section: 0, p: 0, span: 0, input: 0, br: 0,
+            script: 0, option: 0, section: 0, p: 0, span: 0, input: 0, br: 0, div: 0, 
         },
         status: {
             modified: "Modified",

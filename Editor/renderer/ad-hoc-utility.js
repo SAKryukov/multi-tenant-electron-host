@@ -91,26 +91,34 @@ const adHocUtility = (() => {
             const lineFirst = line.slice(0, finding[0]);
             const middle = line.slice(finding[0], finding[1]);
             const lineLast = line.substring(finding[1]);
-            const container = document.createElement("p");
-            const found = document.createElement("p");
+            const container = document.createElement(definitionSet.elements.p);
+            const found = document.createElement(definitionSet.elements.p);
             found.textContent = `Found in ${findingLines}:`;
-            const question = document.createElement("p");
+            const question = document.createElement(definitionSet.elements.p);
             question.textContent = "Replace?";
-            const textArea = document.createElement("div");
+            const textArea = document.createElement(definitionSet.elements.div);
             textArea.spellcheck = false;
             textArea.tabIndex = 0;
             textArea.readOnly = true;
+            const fontFamily = "monospace";
+            const textAreaVerticalGap = "0.2em"; 
+            question.style.marginTop = "0.8em";
+            question.style.marginBottom = "1em";
+            textArea.style.fontFamily = `${fontFamily}`;
+            textArea.style.fontSize = "140%";
+            textArea.style.width = "40em"; // the problem is: it is critical but ad-hoc, depends on two properties above
             textArea.style.backgroundColor = "white";
             textArea.style.border = "solid thin black";
-            textArea.innerHTML = `${lineFirst}<span style="background-color: blue; color: yellow">${middle}</span>${lineLast}`;
+            textArea.innerHTML = `${lineFirst}` +
+                `<span style="background-color: blue; color: yellow; font-family: ${fontFamily};">`
+                + `${middle}</span>${lineLast}`;
             container.style.margin = 0;
             textArea.style.margin = 0;
-            textArea.style.width = "45em"; // the problem is: it is critical but ad-hoc
             textArea.style.height = "3em";
             textArea.style.overflow = "scroll";
             textArea.style.padding = "1em";
-            textArea.style.marginTop = "0.2em";
-            textArea.style.marginBottom = "0.2em";
+            textArea.style.marginTop = textAreaVerticalGap;
+            textArea.style.marginBottom = textAreaVerticalGap;
             container.appendChild(found);
             container.appendChild(textArea);
             container.appendChild(question);
