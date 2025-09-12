@@ -27,6 +27,17 @@
       "request": "launch",
       "file": "${workspaceFolder}/Editor/renderer/index.html", 
     },
+    {
+      "name": "Build",
+      "type": "node",
+      "program": "${workspaceFolder}/build/package.js",
+      "request": "launch",
+      "args": ["linux", "x64"],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+    },
+
   ],
   "compounds": [
     {

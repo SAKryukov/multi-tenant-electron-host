@@ -1,1 +1,1 @@
-@npx @electron/packager ../Editor --platform=linux --arch=x64  --appCopyright="Copyright (c) 2025 by Sergey A Kryukov" --asar
+@node package linux x64
