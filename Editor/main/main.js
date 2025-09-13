@@ -77,8 +77,7 @@ const subscribeToEvents = (window, baseTitle) => {
     });
 }; //subscribeToEvents
 
-const handleCommandLine = window => {
-    const filename = utilitySet.processCommandLine();
+const handleCommandLine = (window, filename) => {
     if (filename)
         utilitySet.openKnownFile(filename, (text, error) =>
             window.webContents.send(
@@ -87,7 +86,7 @@ const handleCommandLine = window => {
                 text, error));
 }; //handleCommandLine
 
-const createWindow = (title, baseTitle) => {
+const createWindow = (title, baseTitle, filename) => {
     const applicationPath = app.getAppPath();
     const icon = nativeImage.createFromPath(path.join(applicationPath, definitionSet.applicationIcon));
     const window = new BrowserWindow(
@@ -104,7 +103,7 @@ const createWindow = (title, baseTitle) => {
     window.maximize(); //SA???
     window.once(definitionSet.events.readyToShow, () => {
         handlePlugins(applicationPath, window);
-        handleCommandLine(window);
+        handleCommandLine(window, filename);
         window.show();
     }); //once ready to show
     window.on(definitionSet.events.close, event => {
@@ -129,7 +128,7 @@ app.whenReady().then(() => {
     const title = filename
         ? definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle)
         : baseTitle
-    createWindow(title, baseTitle);
+    createWindow(title, baseTitle, filename);
     app.on(definitionSet.events.activate, () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow(title);
     });
