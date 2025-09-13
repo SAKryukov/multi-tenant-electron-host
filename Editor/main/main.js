@@ -29,13 +29,6 @@ const applicationPackage = (() => {
 })(); //applicationPackage
 
 const subscribeToEvents = (window, baseTitle) => {
-    ipcMain.handle(ipcChannel.metadata.request, async (_event) => {
-        return {
-            package: applicationPackage,
-            versions: process.versions,
-            applicationVersion: app.getVersion(),
-            applicationName: app.name,
-    }}); //metadata.request
     ipcMain.on(ipcChannel.metadata.source, () => {
         if (applicationPackage) {
             const source = applicationPackage.repository;
@@ -100,6 +93,14 @@ const createWindow = (title, baseTitle) => {
     const window = new BrowserWindow(
         definitionSet.createWindowProperties(title, icon,
             path.join(applicationPath, definitionSet.paths.preload)));
+    window.webContents.send(ipcChannel.metadata.metadataPush, {
+        platform: process.platform,
+        architecture: process.arch,
+        package: applicationPackage,
+        versions: process.versions,
+        applicationVersion: app.getVersion(),
+        applicationName: app.name,
+    });
     window.maximize(); //SA???
     window.once(definitionSet.events.readyToShow, () => {
         handlePlugins(applicationPath, window);

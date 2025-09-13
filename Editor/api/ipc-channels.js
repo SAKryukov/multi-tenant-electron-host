@@ -13,7 +13,7 @@ const ipcChannel = {
         loadAll: 0,
     }, //plugin
     metadata: {
-        request: 0,
+        metadataPush: 0,
         source: 0, // show application source code in a default external browser
     }, //metadata
     ui: {

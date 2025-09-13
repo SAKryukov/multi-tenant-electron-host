@@ -2,6 +2,9 @@
 const { bridgeAPI, ipcChannel } = require("./ipc-channels.js");
 const { ipcRenderer, contextBridge} = require("electron/renderer"); 
 
+let metadata = null;
+ipcRenderer.once(ipcChannel.metadata.metadataPush, (_event, received) => metadata = received);
+
 contextBridge.exposeInMainWorld(bridgeAPI.bridgeFileIO, { // to be used only in renderer loaded from HTML
     openFile: handler => {
             ipcRenderer.send(ipcChannel.fileIO.openFile);
@@ -33,8 +36,7 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgePlugin, {
 }); //contextBridge.exposeInMainWorld
 
 contextBridge.exposeInMainWorld(bridgeAPI.bridgeMetadata, {
-    metadata: async () =>
-        await ipcRenderer.invoke(ipcChannel.metadata.request),
+    pushedMetadata: () => metadata,
     showSource: () =>
         ipcRenderer.send(ipcChannel.metadata.source),
 }); //contextBridge.exposeInMainWorld

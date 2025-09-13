@@ -3,8 +3,8 @@
 const definitionSet = getDefinitionSet();
 let elementSet = null;
 if (window.bridgePlugin)
-    window.bridgePlugin.subscribeToPlugin(async plugins => {        
-        const metadata = await window.bridgeMetadata.metadata();
+    window.bridgePlugin.subscribeToPlugin(async plugins => {
+        const metadata = window.bridgeMetadata.pushedMetadata();
         for (let index = 0; index < plugins.length; ++index) {
             const option = document.createElement(definitionSet.elements.option);
             const name = index.toString();
