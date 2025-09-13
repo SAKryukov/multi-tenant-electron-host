@@ -171,7 +171,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
         if (bestIndex == null)
             return;
         elementSet.editor.focus();
-        adHocUtility.scrollTo(elementSet.editor, findings[bestIndex][0], findings[bestIndex][1]);
+        adHocUtility.scrollTo(elementSet.editor, findings[bestIndex][0], findings[bestIndex][1], true);
     }; //findNext
 
     const findAll = pattern => {

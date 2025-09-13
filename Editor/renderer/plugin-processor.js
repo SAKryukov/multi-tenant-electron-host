@@ -13,24 +13,25 @@ const pluginProcessor = (() => {
         definitionSet = theDefinitionSet;
         elementSet = theElementSet;
         menu = theMenu;
-        const loadScript = plugin => {
+        let index = 0;
+        const loadScript = () => {
+            const plugin = plugins[index++];
+            if (index >= plugins.length) return;
             const scriptElement = document.createElement(definitionSet.elements.script);
             scriptElement.src = plugin;
+            scriptElement.onload = () => loadScript(); // this way, the order is preserved as in plugins
             document.head.appendChild(scriptElement);
         }; //loadScript
-        for (const plugin of plugins)
-            loadScript(plugin);
+        loadScript();
         for (let index = 0; index < plugins.length; ++index) {
             const item = menu.subscribe(index.toString(), null);
             pluginMenuItemSet.set(index.toString(), { item: item, file: plugins[index] });
         } //item
     }; //processPlugins
 
-    const normalizeInvalidPlugins = value => {
-        const result = undefined ? true : value;
-        if (pluginMenuItemSet.empty) return result;
+    const normalizeInvalidPlugins = () => {
+        if (pluginMenuItemSet.empty) return;
         pluginMenuItemSet.forEach((element, index) => {
-            console.log(element, index);
             if (!validPluginMenuItemSet.has(index)) {
                 element.item.changeText(definitionSet.plugin.invalid);
                 menu.subscribe(index, actionRequested => {
@@ -41,18 +42,27 @@ const pluginProcessor = (() => {
         });
         pluginMenuItemSet.clear();
         validPluginMenuItemSet.clear();
-        return result;
     } //normalizeInvalidPlugins
 
     const registerPlugin = plugin => {
         const isValidPlugin = plugin && plugin.name;
         const index = currentPluginIndex;
         const item = menu.subscribe(index.toString(), actionRequested => {
-            if (!actionRequested) return normalizeInvalidPlugins();
+            if (!actionRequested) {
+                normalizeInvalidPlugins();
+                if (!isValidPlugin) return true;
+                if (plugin.isEnabled) return plugin.isEnabled(elementSet.editorAPI);
+                return true;
+            } //if
             if (isValidPlugin && plugin.bufferHandler) {
-                const pluginReturn = plugin.bufferHandler(elementSet.editor);
+                try
+                {
+                const pluginReturn = plugin.bufferHandler(elementSet.editorAPI);
                     if (pluginReturn != null)
                         modalDialog.show(definitionSet.plugin.returnResult(plugin.name, pluginReturn.toString()));
+                } catch(e) {
+                    modalDialog.show(definitionSet.plugin.returnResult(plugin.name, e.toString(), true));
+                } //exception
             } //if
             elementSet.editor.focus();
             return true;

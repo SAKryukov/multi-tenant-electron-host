@@ -6,7 +6,7 @@ const adHocUtility = (() => {
 
     const implementation = {
         measure: null,
-        scrollTo: function(editor, start, end) {
+        scrollTo: function(editor, start, end, doSelect) {
             if (this.measure == null) {
                 const measureBig = elementSet.search.measure.big;
                 const measureSmall = elementSet.search.measure.small;
@@ -33,7 +33,8 @@ const adHocUtility = (() => {
             if (scrollLeft < 0) scrollLeft = 0;
             editor.scrollTop = scrollTop;
             editor.scrollLeft = scrollLeft;
-            editor.setSelectionRange(start, end);
+            if (doSelect)
+                editor.setSelectionRange(start, end);
         }, //scrollTo
         decimalDidits: "0123456789",
         filterOut: (element, characters) =>

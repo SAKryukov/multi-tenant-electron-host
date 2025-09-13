@@ -3,7 +3,8 @@
 const getDefinitionSet = () => {
 
     const definitionSet = {
-        empty: "", newLine: "\n",
+        empty: "", blankSpace: " ", newLine: "\n",
+        tabReplacement: " ".repeat(4),
         SA: `<a href="https://www.SAKryukov.org">Sergey A Kryukov</a>`,
         copyright: function() {
             return `Copyright &copy; 2025 by ${this.SA}`
@@ -15,12 +16,15 @@ const getDefinitionSet = () => {
             window.stop();
         }, //standalongExecutionProtection
         plugin: {
+            errorStyle: `style="color: red"`,
             invalid: "Invalid plugin! Click to see the explanation",
             invalidExplanation: file =>
                 `<p style="color: red">Invalid plugin ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}</p>
                 <br/>A valid plugin should register itself.
                 <br/>Please see ${String.fromCharCode(0x201C)}plugins.readme.txt${String.fromCharCode(0x201D)}.<br/><br/>`,
-            returnResult: (name, theResult) => `<p>${name}:</p><br/>${theResult}</br></br>`,
+            returnResult: function (name, theResult, error) {
+                return `<p>${name}:</p><br/><span ${error ? this.errorStyle : this.empty}>${theResult}</span></br></br>`;
+            },
             nameInMenu: name => `${name}`,
         },
         aboutDialog: metadata =>
@@ -68,6 +72,7 @@ const getDefinitionSet = () => {
         keys: {
             KeyP: 0,
             KeyR: 0,
+            Tab: 0,
         },
         elements: {
             script: 0, option: 0, section: 0, p: 0, span: 0, input: 0, br: 0, pre: 0, 
