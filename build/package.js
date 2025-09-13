@@ -39,21 +39,27 @@ const parseCommandLine = () => {
 const parsedArguments = parseCommandLine();
 if (!parsedArguments) return;
 
-const copyright = (() => {
+const metadata = (() => {
     const script = argv[1];
     const filename = path.join(path.dirname(script), medatadaFile);
     let metadata = null;
     if (fs.existsSync(filename))
         metadata = JSON.parse(fs.readFileSync(filename));
-    if (!metadata)
-        return;
-    let copyright = metadata?.copyright;
-    if (copyright)
-        copyright = metadata.copyright.replace("&copy;", "(c)");
-    return copyright;
-})(); //copyright
+    return metadata;
+})(); //metadata
 
-const command = `npx @electron/packager ../Editor --overwrite --platform=${parsedArguments.platform} --arch=${parsedArguments.architecture} --appCopyright="${copyright}" --asar`;
+let exe = "";
+if (metadata && metadata["executable-file-name"])
+    exe = metadata["executable-file-name"];
+if (exe)
+    exe = `--executable-name="${exe}"`;
+let copyright = ""
+if (metadata && metadata.copyright)
+    copyright = metadata.copyright;
+if (copyright)
+    copyright = `--appCopyright="${copyright}`;
+
+const command = `npx @electron/packager ../Editor --overwrite --platform=${parsedArguments.platform} --arch=${parsedArguments.architecture} ${exe} ${copyright} --asar`;
 
 exec(command, (error, stdout, stderr) => {
     if (error) {
