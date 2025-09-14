@@ -8,4 +8,5 @@ pluginProcessor.registerPlugin({
         api.isModified = true;
     },
     isEnabled: api => api.editor.textLength > 0,
+    menuItemIndent: 3,
 });

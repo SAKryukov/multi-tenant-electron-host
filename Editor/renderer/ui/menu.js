@@ -157,8 +157,11 @@ function menuGenerator (container) {
             },
             title: {
                 get() { return menuItem.title; },
-                set(value) { menuItem.title = value; }
+                set(value) { menuItem.title = value; },
             }, //title
+            indent: {
+                set(value) { menuItem.style.paddingLeft = `${value}em`; },
+            }, //indent
             setCheckBox: {
                 get() { return () => setBox(menuItemButtonState.checkBox) }, enumerable: true },
             setCheckedCheckBox: {

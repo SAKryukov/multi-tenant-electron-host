@@ -16,12 +16,18 @@ const getDefinitionSet = () => {
             window.stop();
         }, //standalongExecutionProtection
         plugin: {
+            filenameToURL: filename => `file:///" + ${filename}.replaceAll("\\", "/")`,
             errorStyle: `style="color: red"`,
             invalid: "Invalid plugin! Click to see the explanation",
-            invalidExplanation: file =>
-                `<p style="color: red">Invalid plugin ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}</p>
+            excepton: "Invalid plugin throws exception! Click to see the explanation",
+            invalidExplanation: function (file, error) {
+            const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
+            const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
+            return `<p style="color: red">Invalid plugin${fileName}</p>
+                ${errorText}
                 <br/>A valid plugin should register itself.
-                <br/>Please see ${String.fromCharCode(0x201C)}plugins.readme.txt${String.fromCharCode(0x201D)}.<br/><br/>`,
+                <br/>Please see ${String.fromCharCode(0x201C)}plugins.readme.txt${String.fromCharCode(0x201D)}.<br/><br/>`;
+            },
             returnResult: function (name, theResult, error) {
                 return `<p>${name}:</p><br/><span ${error ? this.errorStyle : this.empty}>${theResult}</span></br></br>`;
             },

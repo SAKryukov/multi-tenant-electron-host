@@ -1,5 +1,5 @@
 pluginProcessor.registerPlugin({
-    name: "Change Case: Split",
+    name: "Split",
     description: "Split selection into words where the case is changed",
     bufferHandler: api => {
         const slice = api.editor.value.slice(api.editor.selectionStart, api.editor.selectionEnd);
@@ -18,4 +18,5 @@ pluginProcessor.registerPlugin({
         api.scrollToSelection();
     },
     isEnabled: api => api.selectionLength > 0,
+    menuItemIndent: 3,
 });

@@ -6,8 +6,8 @@ const pluginProcessor = (() => {
     let elementSet = null;
     let menu = null;
     let currentPluginIndex = 0;
-    const validPluginMenuItemSet = new Set();
-    const pluginMenuItemSet = new Map();
+    const pluginMap = new Map();
+    const pluginFileNamesWithError = [];
 
     const processPlugins = (theDefinitionSet, theElementSet, theMenu, plugins) => {
         definitionSet = theDefinitionSet;
@@ -25,28 +25,52 @@ const pluginProcessor = (() => {
         loadScript();
         for (let index = 0; index < plugins.length; ++index) {
             const item = menu.subscribe(index.toString(), null);
-            pluginMenuItemSet.set(index.toString(), { item: item, file: plugins[index] });
+            const fixedName = definitionSet.plugin.filenameToURL(plugins[index]);
+            pluginMap.set(fixedName, { index, item, status: {} });
         } //item
     }; //processPlugins
 
     const normalizeInvalidPlugins = () => {
-        if (pluginMenuItemSet.empty) return;
-        pluginMenuItemSet.forEach((element, index) => {
-            if (!validPluginMenuItemSet.has(index)) {
-                element.item.changeText(definitionSet.plugin.invalid);
-                menu.subscribe(index, actionRequested => {
-                    if (actionRequested)
-                        modalDialog.show(definitionSet.plugin.invalidExplanation(element.file));        
-                });
+        if (pluginMap.size < 1) return;
+        for (let index = 0; index < pluginFileNamesWithError.length; ++index) {
+            const name = pluginFileNamesWithError[index]
+            const mapItem = pluginMap.get(name);
+            let error;
+            if (mapItem) {
+                error = mapItem.status.error;
             } //if
-        });
-        pluginMenuItemSet.clear();
-        validPluginMenuItemSet.clear();
-    } //normalizeInvalidPlugins
+            const menuItem = menu.subscribe(currentPluginIndex.toString(), actionRequested => {
+                if (actionRequested)
+                    modalDialog.show(definitionSet.plugin.invalidExplanation(name, error));
+            });
+            currentPluginIndex++;
+            menuItem.changeText(definitionSet.plugin.excepton);
+        } //loop
+        for (let index = currentPluginIndex; index < pluginMap.size; ++index) {
+            console.log(index);
+            const menuItem = menu.subscribe(index.toString(), actionRequested => {
+                if (actionRequested)
+                    modalDialog.show(definitionSet.plugin.invalidExplanation());
+            });
+            menuItem.changeText(definitionSet.plugin.invalid);
+        } //loop
+        pluginMap.clear();
+    }; //normalizeInvalidPlugins
+
+    window.onerror = (message, source, line, column, error) => {
+        pluginFileNamesWithError.push(source);
+        const mapItem = pluginMap.get(source);
+        if (mapItem == null) return;
+        mapItem.status.error = error;
+        mapItem.status.errorMessage = message;
+        mapItem.status.errorLine = line;
+        mapItem.status.errorColumn = column;
+    }; //window.onerror
 
     const registerPlugin = plugin => {
-        const isValidPlugin = plugin && plugin.name;
+        const isValidPlugin = (plugin != null) && (plugin.name != null) && plugin.name.length > 0;
         const index = currentPluginIndex;
+        if (!isValidPlugin) return;
         const item = menu.subscribe(index.toString(), actionRequested => {
             if (!actionRequested) {
                 normalizeInvalidPlugins();
@@ -54,7 +78,7 @@ const pluginProcessor = (() => {
                 if (plugin.isEnabled) return plugin.isEnabled(elementSet.editorAPI);
                 return true;
             } //if
-            if (isValidPlugin && plugin.bufferHandler) {
+            if (plugin.bufferHandler) {
                 try
                 {
                 const pluginReturn = plugin.bufferHandler(elementSet.editorAPI);
@@ -63,18 +87,16 @@ const pluginProcessor = (() => {
                 } catch(e) {
                     modalDialog.show(definitionSet.plugin.returnResult(plugin.name, e.toString(), true));
                 } //exception
-            } //if
+            } else //SA???
+                modalDialog.show(definitionSet.plugin.invalidExplanation(""));
             elementSet.editor.focus();
             return true;
         }); //item
         currentPluginIndex++;
-        if (isValidPlugin)
-            validPluginMenuItemSet.add(index.toString());
-        const name = isValidPlugin
-            ? definitionSet.plugin.nameInMenu(plugin.name)
-            : definitionSet.plugin.invalid;
-        item.changeText(name);
+        item.changeText(definitionSet.plugin.nameInMenu(plugin.name));
         item.title = plugin.description;
+        if (plugin.menuItemIndent != null)
+            item.indent = plugin.menuItemIndent;
     }; //registerPlugin
 
     return { processPlugins, registerPlugin };

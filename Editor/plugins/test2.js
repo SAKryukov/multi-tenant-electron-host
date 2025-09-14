@@ -5,4 +5,5 @@ pluginProcessor.registerPlugin({
 	api.editor.value = "This is the second plugin operation";
         api.isModified = true;
     },
+    menuItemIndent: 3,
 });

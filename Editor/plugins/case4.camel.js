@@ -1,5 +1,5 @@
 pluginProcessor.registerPlugin({
-    name: "Change Case: Camel",
+    name: "Camel",
     description: "Join words in selection with camel case",
     bufferHandler: api => {
         const slice = api.editor.value.slice(api.editor.selectionStart, api.editor.selectionEnd);
@@ -17,4 +17,5 @@ pluginProcessor.registerPlugin({
         api.scrollToSelection();
     },
     isEnabled: api => api.selectionLength > 0,
+    menuItemIndent: 3,
 });
