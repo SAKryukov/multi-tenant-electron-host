@@ -16,6 +16,13 @@ const getDefinitionSet = () => {
             window.stop();
         }, //standalongExecutionProtection
         plugin: {
+            styleMenuItem: (item, group, error) => {
+                if (group || error)
+                    item.color = group ? "navy" : "red";
+                item.opacity = 1;
+                if (group)
+                    item.fontWeight = "bold";
+            }, //styleMenuItem
             filenameToURL: filename => `file:///${filename.replaceAll("\\", "/")}`,
             errorStyle: `style="color: red"`,
             invalid: `Invalid plugin ${String.fromCharCode(0x2014)} click to see the explanation`,

@@ -43,7 +43,7 @@ const pluginProcessor = (() => {
                     modalDialog.show(definitionSet.plugin.exceptionExplanation(itemData.name, itemData.error));
             }, { name, error });
             menuItem.userData = { name, error };
-            menuItem.color = "red";
+            definitionSet.plugin.styleMenuItem(menuItem, false, true);
             currentPluginIndex++;
             menuItem.changeText(definitionSet.plugin.excepton);
         } //loop
@@ -54,7 +54,7 @@ const pluginProcessor = (() => {
                     modalDialog.show(definitionSet.plugin.invalidExplanation());
             });
             menuItem.changeText(definitionSet.plugin.invalid);
-            menuItem.color = "red";
+            definitionSet.plugin.styleMenuItem(menuItem, false, true);
         } //loop
         pluginMap.clear();
     }; //normalizeInvalidPlugins
@@ -73,7 +73,7 @@ const pluginProcessor = (() => {
         const isValidPlugin = (plugin != null) && (plugin.name != null) && plugin.name.length > 0;
         const index = currentPluginIndex;
         if (!isValidPlugin) return;
-        const item = menu.subscribe(index.toString(), actionRequested => {
+        const menuItem = menu.subscribe(index.toString(), actionRequested => {
             if (!actionRequested) {
                 normalizeInvalidPlugins();
                 if (!isValidPlugin) return true;
@@ -89,21 +89,17 @@ const pluginProcessor = (() => {
                 } catch(e) {
                     modalDialog.show(definitionSet.plugin.returnResult(plugin.name, e.toString(), true));
                 } //exception
-            } else //SA???
-                modalDialog.show(definitionSet.plugin.invalidExplanation(""));
+            } //if
             elementSet.editor.focus();
             return true;
         }); //item
         currentPluginIndex++;
-        item.changeText(definitionSet.plugin.nameInMenu(plugin.name));
-        item.title = plugin.description;
-        if (!plugin.handler) {
-            item.color = "navy";
-            item.opacity = 1;
-            item.fontWeight = "bold";
-        } //if
+        menuItem.changeText(definitionSet.plugin.nameInMenu(plugin.name));
+        menuItem.title = plugin.description;
+        if (!plugin.handler)
+            definitionSet.plugin.styleMenuItem(menuItem, true, false);
         if (plugin.menuItemIndent != null)
-            item.indent = plugin.menuItemIndent;
+            menuItem.indent = plugin.menuItemIndent;
     }; //registerPlugin
 
     return { processPlugins, registerPlugin };
