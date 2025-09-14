@@ -74,6 +74,7 @@ const pluginProcessor = (() => {
             ? definitionSet.plugin.nameInMenu(plugin.name)
             : definitionSet.plugin.invalid;
         item.changeText(name);
+        item.title = plugin.description;
     }; //registerPlugin
 
     return { processPlugins, registerPlugin };

@@ -1,6 +1,6 @@
 pluginProcessor.registerPlugin({
     name: "Change Case: Camel",
-    description: "",
+    description: "Join words in selection with camel case",
     bufferHandler: api => {
         const slice = api.editor.value.slice(api.editor.selectionStart, api.editor.selectionEnd);
         let sequence = slice.split(api.blankSpace);

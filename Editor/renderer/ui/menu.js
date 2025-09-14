@@ -10,7 +10,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 function menuGenerator (container) {
     
-    const version = "1.0.0";
+    const version = "1.1.0";
     if (!new.target) return version; 
 
     if (!container) return;
@@ -155,6 +155,10 @@ function menuGenerator (container) {
                     };
                 }, enumerable: true
             },
+            title: {
+                get() { return menuItem.title; },
+                set(value) { menuItem.title = value; }
+            }, //title
             setCheckBox: {
                 get() { return () => setBox(menuItemButtonState.checkBox) }, enumerable: true },
             setCheckedCheckBox: {

@@ -1,6 +1,6 @@
 pluginProcessor.registerPlugin({
     name: "Change Case: Toggle",
-    description: "",
+    description: "Toggle selection case",
     bufferHandler: api => {
         const slice = api.editor.value.slice(api.editor.selectionStart, api.editor.selectionEnd);
         let newSlice = [];
