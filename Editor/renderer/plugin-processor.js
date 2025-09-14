@@ -16,10 +16,12 @@ const pluginProcessor = (() => {
         let index = 0;
         const loadScript = () => {
             const plugin = plugins[index++];
-            if (index >= plugins.length) return;
+            if (index > plugins.length) return;
             const scriptElement = document.createElement(definitionSet.elements.script);
             scriptElement.src = plugin;
-            scriptElement.onload = () => loadScript(); // this way, the order is preserved as in plugins
+            scriptElement.onload = () => { 
+                loadScript();
+            }; // this way, the order is preserved as in plugins
             document.head.appendChild(scriptElement);
         }; //loadScript
         loadScript();
