@@ -155,6 +155,15 @@ function menuGenerator (container) {
                     };
                 }, enumerable: true
             },
+            color: {
+                set(value) {  menuItem.style.color = value; }
+            }, //color
+            opacity: {
+                set(value) {  menuItem.style.opacity = value; }
+            }, //opacity
+            fontWeight: {
+                set(value) {  menuItem.style.fontWeight = value; }
+            }, //v
             title: {
                 get() { return menuItem.title; },
                 set(value) { menuItem.title = value; },

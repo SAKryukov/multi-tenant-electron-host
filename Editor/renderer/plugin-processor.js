@@ -43,6 +43,7 @@ const pluginProcessor = (() => {
                     modalDialog.show(definitionSet.plugin.exceptionExplanation(itemData.name, itemData.error));
             }, { name, error });
             menuItem.userData = { name, error };
+            menuItem.color = "red";
             currentPluginIndex++;
             menuItem.changeText(definitionSet.plugin.excepton);
         } //loop
@@ -53,6 +54,7 @@ const pluginProcessor = (() => {
                     modalDialog.show(definitionSet.plugin.invalidExplanation());
             });
             menuItem.changeText(definitionSet.plugin.invalid);
+            menuItem.color = "red";
         } //loop
         pluginMap.clear();
     }; //normalizeInvalidPlugins
@@ -95,6 +97,11 @@ const pluginProcessor = (() => {
         currentPluginIndex++;
         item.changeText(definitionSet.plugin.nameInMenu(plugin.name));
         item.title = plugin.description;
+        if (!plugin.handler) {
+            item.color = "navy";
+            item.opacity = 1;
+            item.fontWeight = "bold";
+        } //if
         if (plugin.menuItemIndent != null)
             item.indent = plugin.menuItemIndent;
     }; //registerPlugin
