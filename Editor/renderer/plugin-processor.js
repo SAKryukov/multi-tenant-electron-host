@@ -25,7 +25,7 @@ const pluginProcessor = (() => {
         loadScript();
         for (let index = 0; index < plugins.length; ++index) {
             const item = menu.subscribe(index.toString(), null);
-            const fixedName = definitionSet.plugin.filenameToURL(plugins[index]);
+            const fixedName = definitionSet.plugin.normalizeFilename(plugins[index]);
             pluginMap.set(fixedName, { index, item, status: {} });
         } //item
     }; //processPlugins
@@ -60,8 +60,9 @@ const pluginProcessor = (() => {
     }; //normalizeInvalidPlugins
 
     window.onerror = (message, source, line, column, error) => {
-        pluginFileNamesWithError.push(source);
-        const mapItem = pluginMap.get(source);
+        const filename = definitionSet.plugin.filenameFromURI(source);
+        pluginFileNamesWithError.push(filename);
+        const mapItem = pluginMap.get(filename);
         if (mapItem == null) return;
         mapItem.status.error = error;
         mapItem.status.errorMessage = message;

@@ -18,12 +18,13 @@ const getDefinitionSet = () => {
         plugin: {
             styleMenuItem: (item, group, error) => {
                 if (group || error)
-                    item.color = group ? "navy" : "red";
+                    item.color = group ? "hsl(248, 53%, 20%, 100%)" : "red";
                 item.opacity = 1;
                 if (group)
                     item.fontWeight = "bold";
             }, //styleMenuItem
-            filenameToURL: filename => `file:///${filename.replaceAll("\\", "/")}`,
+            normalizeFilename: filename => filename.replaceAll("\\", "/"),
+            filenameFromURI: uri => uri.substring("file:///".length),
             errorStyle: `style="color: red"`,
             invalid: `Invalid plugin ${String.fromCharCode(0x2014)} click to see the explanation`,
             excepton: `Failed plugin registration ${String.fromCharCode(0x2014)} click to see the explanation.`,
@@ -38,8 +39,9 @@ const getDefinitionSet = () => {
             exceptionExplanation: function (file, error) {
                 const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
                 const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
-                return `<p style="color: red">Plugin registration failed</p>
-                    <br/><p>${fileName}</p>
+                const where = file ? " in the script" : "";
+                return `<p style="color: red">Plugin registration failed${where}</p>
+                    <p>${fileName}</p>
                     ${errorText}
                     <br/>`;
             },

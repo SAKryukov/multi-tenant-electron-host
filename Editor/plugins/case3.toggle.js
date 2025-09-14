@@ -1,6 +1,6 @@
 "use strict";
 
-??pluginProcessor.registerPlugin({
+pluginProcessor.registerPlugin({
     name: "Toggle",
     description: "Toggle selection case",
     handler: api => {
