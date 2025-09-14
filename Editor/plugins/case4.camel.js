@@ -1,7 +1,9 @@
+"use strict";
+
 pluginProcessor.registerPlugin({
     name: "Camel",
     description: "Join words in selection with camel case",
-    bufferHandler: api => {
+    handler: api => {
         const slice = api.editor.value.slice(api.editor.selectionStart, api.editor.selectionEnd);
         let sequence = slice.split(api.blankSpace);
         const result = [];

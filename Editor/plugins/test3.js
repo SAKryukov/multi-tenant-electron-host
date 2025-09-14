@@ -1,2 +1,4 @@
+"use strict";
+
 pluginProcessor.registerPlugin({
 });

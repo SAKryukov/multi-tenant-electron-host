@@ -1,7 +1,9 @@
+"use strict";
+
 pluginProcessor.registerPlugin({
     name: "Split",
     description: "Split selection into words where the case is changed",
-    bufferHandler: api => {
+    handler: api => {
         const slice = api.editor.value.slice(api.editor.selectionStart, api.editor.selectionEnd);
         let newSlice = [];
         let previousLow = null;

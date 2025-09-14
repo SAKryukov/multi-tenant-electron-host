@@ -1,7 +1,9 @@
+"use strict";
+
 ??pluginProcessor.registerPlugin({
     name: "Toggle",
     description: "Toggle selection case",
-    bufferHandler: api => {
+    handler: api => {
         const slice = api.editor.value.slice(api.editor.selectionStart, api.editor.selectionEnd);
         let newSlice = [];
         for (const letter of slice) {

@@ -35,14 +35,14 @@ const pluginProcessor = (() => {
         for (let index = 0; index < pluginFileNamesWithError.length; ++index) {
             const name = pluginFileNamesWithError[index]
             const mapItem = pluginMap.get(name);
-            let error;
-            if (mapItem) {
-                error = mapItem.status.error;
-            } //if
-            const menuItem = menu.subscribe(currentPluginIndex.toString(), actionRequested => {
-                if (actionRequested)
-                    modalDialog.show(definitionSet.plugin.invalidExplanation(name, error));
-            });
+            const error = mapItem ? mapItem.status.error : definitionSet.empty;
+            const menuItem = menu.subscribe(currentPluginIndex.toString(), (actionRequested, _itemAction, itemData) => {
+                if (!actionRequested)
+                    return true;
+                else
+                    modalDialog.show(definitionSet.plugin.exceptionExplanation(itemData.name, itemData.error));
+            }, { name, error });
+            menuItem.userData = { name, error };
             currentPluginIndex++;
             menuItem.changeText(definitionSet.plugin.excepton);
         } //loop
@@ -78,10 +78,10 @@ const pluginProcessor = (() => {
                 if (plugin.isEnabled) return plugin.isEnabled(elementSet.editorAPI);
                 return true;
             } //if
-            if (plugin.bufferHandler) {
+            if (plugin.handler) {
                 try
                 {
-                const pluginReturn = plugin.bufferHandler(elementSet.editorAPI);
+                const pluginReturn = plugin.handler(elementSet.editorAPI);
                     if (pluginReturn != null)
                         modalDialog.show(definitionSet.plugin.returnResult(plugin.name, pluginReturn.toString()));
                 } catch(e) {

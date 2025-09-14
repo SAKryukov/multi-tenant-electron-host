@@ -10,7 +10,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 function menuGenerator (container) {
     
-    const version = "1.1.0";
+    const version = "1.2.0";
     if (!new.target) return version; 
 
     if (!container) return;
@@ -159,6 +159,16 @@ function menuGenerator (container) {
                 get() { return menuItem.title; },
                 set(value) { menuItem.title = value; },
             }, //title
+            userData: {
+                get() { 
+                    const menuItemData = elementMap.get(menuItem);
+                    return menuItemData.userData;
+                }, //userData getter
+                set(value) {
+                    const menuItemData = elementMap.get(menuItem);
+                    menuItemData.userData = value;
+                }, //userData setter
+            }, //userData
             indent: {
                 set(value) { menuItem.style.paddingLeft = `${value}em`; },
             }, //indent
@@ -184,13 +194,14 @@ function menuGenerator (container) {
     Object.defineProperties(this, { //menu API:
         subscribe: {
             get() {
-                return (value, action) => {
+                return (value, action, customItemData) => {
                     if (!value) return;
                     if (value instanceof Map) {
                         for (const [key, command] of value)
                             command.menuItemHandle = this.subscribe(key, command);
                     } else {
                         const actionMapData = actionMap.get(value);
+                        actionMapData.customItemData = customItemData;
                         if (!actionMapData)
                             throw new MenuSubscriptionFailure(
                                 definitionSet.exceptions.menuItemSubscriptionFailure(value));
@@ -342,7 +353,7 @@ function menuGenerator (container) {
         const menuItemData = actionMap.get(event.detail.action);
         const action = menuItemData.action;
         if (action) {
-            action(true, event.detail.action);
+            action(true, event.detail.action, menuItemData.customItemData);
             if (isContextMenu) {
                 updateStates(container);
                 container.style.display = definitionSet.css.hide;

@@ -1,3 +1,5 @@
+"use strict";
+
 pluginProcessor.registerPlugin({
     name: "Demo:",
     description: "",

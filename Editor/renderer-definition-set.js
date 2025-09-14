@@ -16,17 +16,25 @@ const getDefinitionSet = () => {
             window.stop();
         }, //standalongExecutionProtection
         plugin: {
-            filenameToURL: filename => `file:///" + ${filename}.replaceAll("\\", "/")`,
+            filenameToURL: filename => `file:///${filename.replaceAll("\\", "/")}`,
             errorStyle: `style="color: red"`,
-            invalid: "Invalid plugin! Click to see the explanation",
-            excepton: "Invalid plugin throws exception! Click to see the explanation",
+            invalid: `Invalid plugin ${String.fromCharCode(0x2014)} click to see the explanation`,
+            excepton: `Failed plugin registration ${String.fromCharCode(0x2014)} click to see the explanation.`,
             invalidExplanation: function (file, error) {
-            const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
-            const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
-            return `<p style="color: red">Invalid plugin${fileName}</p>
-                ${errorText}
-                <br/>A valid plugin should register itself.
-                <br/>Please see ${String.fromCharCode(0x201C)}plugins.readme.txt${String.fromCharCode(0x201D)}.<br/><br/>`;
+                const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
+                const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
+                return `<p style="color: red">Invalid plugin${fileName}</p>
+                    ${errorText}
+                    <br/>A valid plugin should register itself.
+                    <br/>Please see ${String.fromCharCode(0x201C)}plugins.readme.md${String.fromCharCode(0x201D)}.<br/><br/>`;
+            },
+            exceptionExplanation: function (file, error) {
+                const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
+                const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
+                return `<p style="color: red">Plugin registration failed</p>
+                    <br/><p>${fileName}</p>
+                    ${errorText}
+                    <br/>`;
             },
             returnResult: function (name, theResult, error) {
                 return `<p>${name}:</p><br/><span ${error ? this.errorStyle : this.empty}>${theResult}</span></br></br>`;

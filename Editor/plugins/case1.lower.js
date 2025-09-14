@@ -1,7 +1,9 @@
+"use strict";
+
 pluginProcessor.registerPlugin({
     name: "Lower",
     description: "Change selection case to lower",
-    bufferHandler: api => {
+    handler: api => {
         const slice = api.editor.value.slice(api.editor.selectionStart, api.editor.selectionEnd).toLowerCase();
         api.editor.setRangeText(slice);
         api.isModified = true;

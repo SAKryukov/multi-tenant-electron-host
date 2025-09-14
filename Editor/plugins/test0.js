@@ -1,7 +1,9 @@
+"use strict";
+bad = 3;
 pluginProcessor.registerPlugin({
     name: "Select current Line",
     description: "Select current Line",
-    bufferHandler: api => {
+    handler: api => {
         const point = api.currentLines;
         api.scrollTo(point[0], point[1], true);
     },
