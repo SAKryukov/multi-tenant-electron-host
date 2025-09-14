@@ -21,7 +21,7 @@ const adHocUtility = (() => {
             let left = editor.value.lastIndexOf(definitionSet.newLine, start);
             if (left < 0) left = 0; else left += 1;
             let sliceX = text.slice(left, end);
-            let sliceY = text.substr(0, end);
+            let sliceY = text.substring(0, end);
             sliceY = sliceY.split(definitionSet.newLine);
             let scrollTop = (sliceY.length + 1) * lineHeight;
             let scrollLeft = (sliceX.length + 1) * columnWidth;

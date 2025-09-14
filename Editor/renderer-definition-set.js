@@ -103,13 +103,13 @@ const getDefinitionSet = () => {
         status: {
             modified: "Modified",
             cursorPosition: (text, offset) => {
-                const lines = text.substr(0, offset).split("\n");
+                const lines = text.substring(0, offset).split("\n");
                 const row = lines.length;
                 const column = lines[lines.length-1].length + 1;
                 return `${row}&thinsp;:&thinsp;${column}`;
             }, //cursorPosition
             line: (text, offset) => {
-                const lines = text.substr(0, offset).split("\n");
+                const lines = text.substring(0, offset).split("\n");
                 return lines.length;
             },
             macroRecording: "Recording keyboard macro&hellip; press Ctrl+Shift+R to stop",
