@@ -77,6 +77,7 @@ const pluginProcessor = (() => {
             if (!actionRequested) {
                 normalizeInvalidPlugins();
                 if (!isValidPlugin) return true;
+                if (!plugin.handler) return false; // sic! group label: no matter what plugin.isEnabled returns
                 if (plugin.isEnabled) return plugin.isEnabled(elementSet.editorAPI);
                 return true;
             } //if

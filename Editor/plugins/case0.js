@@ -1,8 +1,8 @@
 "use strict";
 
-let groupIndent = 3;
+const caseGroupIndent = 3;
 pluginProcessor.registerPlugin({
     name: "Case:",
     description: "Change Case, Split, Join",
-    isEnabled: api => false,
+    isEnabled: api => true,
 });

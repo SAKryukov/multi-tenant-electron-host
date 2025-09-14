@@ -20,5 +20,5 @@ pluginProcessor.registerPlugin({
         api.scrollToSelection();
     },
     isEnabled: api => api.selectionLength > 0,
-    menuItemIndent: 3,
+    menuItemIndent: caseGroupIndent,
 });
