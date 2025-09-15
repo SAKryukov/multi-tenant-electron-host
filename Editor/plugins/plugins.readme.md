@@ -2,10 +2,10 @@
 
 A plugin is a JavaScript file placed in this directory.
 
-Each plugin file is represented by a corresponging menu item in the `Plugins` menu.
+Each plugin file is represented by a corresponding menu item in the `Plugins` menu.
 
 A valid plugin should call `pluginProcessor.registerPlugin`.
-It should define `name` to be valid. All other properties of the argument passed to `pluginProcessor.registerPlugin` are optional.
+It should define the property `name` to be valid. All other properties of the argument passed to `pluginProcessor.registerPlugin` are optional.
 
 For example,
 ~~~
@@ -23,7 +23,7 @@ pluginProcessor.registerPlugin({
 
 ### Registration
 
-Files are added to the system in lexicographic order. This way, the plugin execution order is determined by the names of their JavaScript files. Thus, later JavaScript files in the order depend on earlier ones. For example, an earlier file might contain APIs for later ones.
+Files are added to the system in lexicographic order. This way, the plugin execution order is determined by the names of their JavaScript files. Thus, later JavaScript files in this order depend on earlier ones. For example, an earlier file might contain APIs for later ones.
 
 The registration method `pluginProcessor.registerPlugin` accepts one argument, the object with the following properties:
 
@@ -31,9 +31,9 @@ The registration method `pluginProcessor.registerPlugin` accepts one argument, t
 1. `description`: a string used to define the title of the menu item; the title is shown by hovering over the menu item
 1. `handler` a function accepting the editor API used to perform the job with the editor
 1. `isEnabled`: a function accepting the editor API used to enable or disable the menu item, depending on the current condition of the editor
-1. `menuItemIndent`: integer value determine the additional indent of the menu item represenging plugin; it can be used to structurize plugins in the menu.
+1. `menuItemIndent`: integer value determines the additional indent of the menu item; it can be used to structure plugins in the menu.
 
-A plugin can be registered if `handler` is `undefined` (or `null`). In this case, the menu item is always disabled, and the return of the function `isEnabled`, if any, is ignored. Such a plugin could be used as a group header for the plugins found lexicographically below it. In this case, it is shown in the menu in a special recognizeable style.
+A plugin can be registered if `handler` is `undefined` (or `null`). In this case, the menu item is always disabled, and the return of the function `isEnabled`, if any, is ignored. Such a plugin could be used as a group header for the plugins found lexicographically below it. In this case, it is shown in the menu in a special recognizable style.
 
 ### Editor API
 
@@ -56,4 +56,4 @@ The argument passed to `handler` and `isEnabled` (in the example above, `api`) h
 
 The properties `currentLines`, `nextLine`, `previousLine`, `currentWord`, `nextWord`, and `previousWord` return the array of two integer elements: the start and the end of the editor position for the found word or line. These properties always return valid positions. If the requested word or line is not found, the current editor selection is returned.
 
-The property `isModified` returns the current modified state of the editor. The plugins are supposed to determine if their operations modify the editor text and assign `true` to the property `isModified`. This is extremely important point, because the modified state affects the operations where the editor text could be potentially lost, for example, opening new file or termination of the application.
+The property `isModified` returns the current modified state of the editor. The plugins are supposed to determine if their operations modify the editor text and assign `true` to the property `isModified`. This is an extremely important point, because the modified state affects the operations where the editor text could be potentially lost, for example, opening a file, or the termination of the application.
