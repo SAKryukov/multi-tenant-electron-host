@@ -26,21 +26,23 @@ const getDefinitionSet = () => {
             normalizeFilename: filename => filename.replaceAll("\\", "/"),
             filenameFromURI: uri => uri.substring("file:///".length),
             errorStyle: `style="color: red"`,
-            invalid: `Invalid plugin ${String.fromCharCode(0x2014)} click to see the explanation`,
+            invalid: `Unregistered plugin ${String.fromCharCode(0x2014)} click to see the explanation`,
             excepton: `Failed plugin registration ${String.fromCharCode(0x2014)} click to see the explanation.`,
-            invalidExplanation: function (file, error) {
+            unregisteredExplanation: function (file, error) {
                 const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
                 const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
-                return `<p style="color: red">Invalid plugin${fileName}</p>
+                return `<p>This plugin did not register itself:<br/>
+                    <span ${this.errorStyle}>${fileName}</span></p>
                     ${errorText}
-                    <br/>A valid plugin should register itself.
+                    <br/>A valid plugin should register itself using
+                    <br/><code style="font-family: monospace; font-size:140%; color: green">pluginProcessor.registerPlugin(pluginProperties)</code>.
                     <br/>Please see ${String.fromCharCode(0x201C)}plugins.readme.md${String.fromCharCode(0x201D)}.<br/><br/>`;
             },
             exceptionExplanation: function (file, error) {
                 const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
                 const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
                 const where = file ? " in the script" : "";
-                return `<p style="color: red">Plugin registration failed${where}</p>
+                return `<p ${this.errorStyle}>Plugin registration failed${where}</p>
                     <p>${fileName}</p>
                     ${errorText}
                     <br/>`;

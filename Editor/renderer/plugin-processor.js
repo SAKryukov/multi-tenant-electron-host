@@ -7,8 +7,6 @@ const pluginProcessor = (() => {
     let menu = null;
     let currentPluginIndex = 0;
     const pluginMap = new Map();
-    const pluginFileNamesWithError = [];
-    const unRegisteredplugins = [];
 
     const processPlugins = (theDefinitionSet, theElementSet, theMenu, plugins) => {
         definitionSet = theDefinitionSet;
@@ -23,9 +21,10 @@ const pluginProcessor = (() => {
             const previousPluginIndex = currentPluginIndex;
             scriptElement.onload = event => { 
                 if (previousPluginIndex == currentPluginIndex) {
-                    console.log(event.target);
                     const filename = definitionSet.plugin.filenameFromURI(event.srcElement.src);
-                    unRegisteredplugins.push(filename);
+                    const mapItem = pluginMap.get(filename);
+                    if (mapItem)
+                        mapItem.status.failedRegistration = true;
                 }; //if
                 loadScript();
             }; // this way, the order is preserved as in plugins
@@ -39,38 +38,37 @@ const pluginProcessor = (() => {
         } //item
     }; //processPlugins
 
-    const normalizeInvalidPlugins = () => {
+    const showUnregisteredPlugins = () => {
         if (pluginMap.size < 1) return;
-        for (let index = 0; index < pluginFileNamesWithError.length; ++index) {
-            const name = pluginFileNamesWithError[index]
-            const mapItem = pluginMap.get(name);
-            const error = mapItem ? mapItem.status.error : definitionSet.empty;
-            const menuItem = menu.subscribe(currentPluginIndex.toString(), (actionRequested, _itemAction, itemData) => {
-                if (!actionRequested)
-                    return true;
-                else
-                    modalDialog.show(definitionSet.plugin.exceptionExplanation(itemData.name, itemData.error));
-            }, { name, error });
-            menuItem.userData = { name, error };
-            definitionSet.plugin.styleMenuItem(menuItem, false, true);
-            currentPluginIndex++;
-            menuItem.changeText(definitionSet.plugin.excepton);
-        } //loop
-        for (let index = currentPluginIndex; index < pluginMap.size; ++index) {
-            console.log(index);
-            const menuItem = menu.subscribe(index.toString(), actionRequested => {
-                if (actionRequested)
-                    modalDialog.show(definitionSet.plugin.invalidExplanation());
-            });
-            menuItem.changeText(definitionSet.plugin.invalid);
-            definitionSet.plugin.styleMenuItem(menuItem, false, true);
-        } //loop
+        //currentPluginIndex = 0;
+        for (let [filename, value] of pluginMap) {
+            if (value.status.error) { // priority over failedRegistration
+                const errorMenuItem = menu.subscribe(currentPluginIndex.toString(), (actionRequested, _itemAction, itemData) => {
+                    if (!actionRequested)
+                        return true;
+                    else
+                        modalDialog.show(definitionSet.plugin.exceptionExplanation(itemData.filename, itemData.error));
+                }, { filename, error: value.status.error });
+                errorMenuItem.changeText(definitionSet.plugin.excepton);
+                definitionSet.plugin.styleMenuItem(errorMenuItem, false, true);
+            } else if (value.status.failedRegistration) {
+                const invalidMenuItem = menu.subscribe(currentPluginIndex.toString(), (actionRequested, _itemAction, itemData) => {
+                    if (!actionRequested)
+                        return true;
+                    else
+                        modalDialog.show(definitionSet.plugin.unregisteredExplanation(itemData.filename, itemData.error));
+                }, { filename });
+                definitionSet.plugin.styleMenuItem(invalidMenuItem, false, true);
+                invalidMenuItem.changeText(definitionSet.plugin.invalid);
+                definitionSet.plugin.styleMenuItem(invalidMenuItem, false, true);                
+            } //if
+            if (value.status.failedRegistration) ++currentPluginIndex;
+        } //loop pluginMap
         pluginMap.clear();
-    }; //normalizeInvalidPlugins
+    }; //showUnregisteredPlugins
 
     window.onerror = (message, source, line, column, error) => {
         const filename = definitionSet.plugin.filenameFromURI(source);
-        pluginFileNamesWithError.push(filename);
         const mapItem = pluginMap.get(filename);
         if (mapItem == null) return;
         mapItem.status.error = error;
@@ -85,7 +83,7 @@ const pluginProcessor = (() => {
         if (!isValidPlugin) return;
         const menuItem = menu.subscribe(index.toString(), actionRequested => {
             if (!actionRequested) {
-                normalizeInvalidPlugins();
+                showUnregisteredPlugins();
                 if (!isValidPlugin) return true;
                 if (!plugin.handler) return false; // sic! group label: no matter what plugin.isEnabled returns
                 if (plugin.isEnabled) return plugin.isEnabled(elementSet.editorAPI);
