@@ -40,9 +40,9 @@ A plugin can be registered if `handler` is `undefined` (or `null`). In this case
 The argument passed to `handler` and `isEnabled` (in the example above, `api`) has the following properties:
 
 1. `scrollTo(start, end, select)`
-1. `scrollToSelection`
-1. `editor` read-only
-    `isModified`
+1. `scrollToSelection()`
+1. `editor` read-only instance of `HTMLTextAreaElement`
+1. `isModified` boolean read-write property
 1. `currentLines` read-only
 1. `nextLine` read-only
 1. `previousLine` read-only
@@ -53,3 +53,7 @@ The argument passed to `handler` and `isEnabled` (in the example above, `api`) h
 1. `empty` read-only
 1. `blankSpace` read-only
 1. `selectionLength` read-only
+
+The properties `currentLines`, `nextLine`, `previousLine`, `currentWord`, `nextWord`, and `previousWord` return the array of two integer elements: the start and the end of the editor position for the found word or line. These properties always return valid positions. If the requested word or line is not found, the current editor selection is returned.
+
+The property `isModified` returns the current modified state of the editor. The plugins are supposed to determine if their operations modify the editor text and assign `true` to the property `isModified`. This is extremely important point, because the modified state affects the operations where the editor text could be potentially lost, for example, opening new file or termination of the application.
