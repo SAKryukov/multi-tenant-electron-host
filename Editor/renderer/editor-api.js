@@ -20,7 +20,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
             event.preventDefault();
         }); //window.addEventListener Tab fix
 
-        const wordRegex = /[0123456789\w]+/g;
+        const wordRegexString = "[0123456789\\w]+";
         const api = {
             subscribeToModified: handler => editor.addEventListener(modifiedEventName, handler),
             scrollTo: (start, end, select) =>
@@ -79,6 +79,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
                     const slice = editor.value.slice(lines[0], lines[1]);
                     const position = editor.selectionStart - lines[0];
                     let array;
+                    const wordRegex = new RegExp(wordRegexString, "g");
                     while ((array = wordRegex.exec(slice)) !== null) {
                         if (array.index <= position && position <= array.index + array[0].length)
                             return [lines[0] + array.index, lines[0] + array.index + array[0].length];
@@ -93,10 +94,11 @@ const createEditorAPI = (elementSet, searchAPI) => {
                         return [editor.selectionStart, editor.selectionEnd];
                     const lines = this.currentLines;
                     const slice = editor.value.slice(lines[0], lines[1]);
-                    const position = editor.selectionStart - lines[0];
+                    const position = editor.selectionStart - lines[0] + 1;
                     let array;
+                    const wordRegex = new RegExp(wordRegexString, "g");
                     while ((array = wordRegex.exec(slice)) !== null) {
-                        if (array.index > position)
+                        if (array.index >= position)
                             return [lines[0] + array.index, lines[0] + array.index + array[0].length];
                     } //loop
                     return [editor.selectionStart, editor.selectionEnd];
@@ -104,9 +106,28 @@ const createEditorAPI = (elementSet, searchAPI) => {
                 enumerable: true,
             }, //nextWord
             previousWord: {
-                get() { throw "Error: to be implemented"; }, //return [editor.selectionStart, editor.selectionEnd]; },
+                get() {
+                   if (editor.selectionStart >= editor.textLength - 1)
+                        return [editor.selectionStart, editor.selectionEnd];
+                    const lines = this.currentLines;
+                    const slice = editor.value.slice(lines[0], lines[1]);
+                    const position = editor.selectionStart - lines[0] - 1;
+                    let array;
+                    const findings = [];
+                    const wordRegex = new RegExp(wordRegexString, "g");
+                    while ((array = wordRegex.exec(slice)) !== null)
+                        findings.push({ index: array.index, length: array[0].length });
+                    if (findings.length < 0)
+                        return [editor.selectionStart, editor.selectionEnd];
+                    for (let index = findings.length - 1; index >= 0; --index) {
+                        const finding = findings[index];
+                        if (finding.index <= position)
+                            return [lines[0] + finding.index, lines[0] + finding.index + finding.length];
+                    } //loop
+                    return [editor.selectionStart, editor.selectionEnd];
+                }, //previousWord getter
                 enumerable: true,
-            },
+            }, //previousWord
             newLine: { get() { return definitionSet.newLine; }, enumerable: true, },
             empty: { get() { return definitionSet.empty; }, enumerable: true, },
             blankSpace: { get() { return definitionSet.blankSpace; }, enumerable: true, },
