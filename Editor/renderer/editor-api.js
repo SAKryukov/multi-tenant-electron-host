@@ -1,8 +1,8 @@
 "use strict";
 
-const createEditorAPI = elementSet => {
+const createEditorAPI = (elementSet, searchAPI) => {
 
-    elementSet.editorAPI = (editor => {
+    elementSet.editorAPI = ((editor, searchAPI) => {
 
         let isModifiedFlag = false;
         const modifiedEventName = definitionSet.events.editorTextModified;
@@ -31,6 +31,9 @@ const createEditorAPI = elementSet => {
                     editor.selectionStart,
                     editor.selectionEnd),
             isCaseSensitive: text => text.toLowerCase() != text.toUpperCase(),
+            find: pattern => searchAPI.find(pattern),
+            findNext: () => searchAPI.findNextPrevious(false),
+            findPrevious: () => searchAPI.findNextPrevious(true),
         }; //api
 
         editor.addEventListener(definitionSet.events.input, () => api.isModified = true);
@@ -104,6 +107,12 @@ const createEditorAPI = elementSet => {
             selectionLength: {
                 get() { return editor.selectionEnd - editor.selectionStart; },
             }, //selectionLength
+            selectedText: {
+                get() { return editor.value.slice(editor.selectionStart, editor.selectionEnd); },
+            }, //selectedText
+            canFindNextPrevious: {
+                get() { return searchAPI.canFindNextPrevious(); }
+            }, //canFindNextPrevious
             isModified: {
                 get() { return isModifiedFlag; },
                 set(value) {
@@ -115,6 +124,6 @@ const createEditorAPI = elementSet => {
 
         return api;
         
-    })(elementSet.editor);
+    })(elementSet.editor, searchAPI);
 
 };

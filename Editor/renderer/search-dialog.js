@@ -189,6 +189,10 @@ const createSearchDialog = (definitionSet, elementSet) => {
         return result;
     }; //result
 
+    const findAllAPI = pattern => {
+        findings = findAll(pattern);
+    }; //findAllAPI
+
     const find = notFinal => {
         const value = elementSet.editor.value;
         if (!value) return;
@@ -249,6 +253,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
         findNext,
         replace,
     }; //searchDialog
-    return searchDialog;
+    
+    return { searchDialog, api: { find: findAllAPI, canFindNextPrevious: canFindNext, findNextPrevious: findNext } };
 
 };

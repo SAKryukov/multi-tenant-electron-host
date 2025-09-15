@@ -27,7 +27,7 @@ const getDefinitionSet = () => {
             filenameFromURI: uri => uri.substring("file:///".length),
             errorStyle: `style="color: red"`,
             invalid: `Unregistered plugin ${String.fromCharCode(0x2014)} click to see the explanation`,
-            excepton: `Failed plugin registration ${String.fromCharCode(0x2014)} click to see the explanation.`,
+            excepton: `Failed plugin registration ${String.fromCharCode(0x2014)} click to see the explanation`,
             unregisteredExplanation: function (file, error) {
                 const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
                 const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
