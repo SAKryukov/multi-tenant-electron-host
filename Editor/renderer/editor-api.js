@@ -30,7 +30,6 @@ const createEditorAPI = (elementSet, searchAPI) => {
                     editor,
                     editor.selectionStart,
                     editor.selectionEnd),
-            isCaseSensitive: text => text.toLowerCase() != text.toUpperCase(),
             find: pattern => searchAPI.find(pattern),
             findNext: () => searchAPI.findNextPrevious(false),
             findPrevious: () => searchAPI.findNextPrevious(true),
@@ -58,15 +57,19 @@ const createEditorAPI = (elementSet, searchAPI) => {
         Object.defineProperties(api, {
             editor: {
                 get() { return editor;  },
+                enumerable: true,
             },
             currentLines: {
                 get() { return getRangeLines(editor.selectionStart, editor.selectionEnd); },
+                enumerable: true,
             }, //currentLines
             nextLine: {
                 get() { return gotoNextPreviousLine(1, 1, position => position >= editor.textLength); },
+                enumerable: true,
             }, //nextLine
             previousLine: {
                 get() { return gotoNextPreviousLine(0, -1, position => position <= 0); },
+                enumerable: true,
             }, //previousLine
             currentWord: {
                 get() {
@@ -82,6 +85,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
                     } //loop
                     return [editor.selectionStart, editor.selectionEnd];
                 }, //currentWord getter
+                enumerable: true,
             }, //currentWord
             nextWord: {
                 get() {
@@ -97,21 +101,26 @@ const createEditorAPI = (elementSet, searchAPI) => {
                     } //loop
                     return [editor.selectionStart, editor.selectionEnd];
                  }, //nextWord getter
+                enumerable: true,
             }, //nextWord
             previousWord: {
                 get() { throw "Error: to be implemented"; }, //return [editor.selectionStart, editor.selectionEnd]; },
+                enumerable: true,
             },
-            newLine: { get() { return definitionSet.newLine; }},
-            empty: { get() { return definitionSet.empty; }},
-            blankSpace: { get() { return definitionSet.blankSpace; }},
+            newLine: { get() { return definitionSet.newLine; }, enumerable: true, },
+            empty: { get() { return definitionSet.empty; }, enumerable: true, },
+            blankSpace: { get() { return definitionSet.blankSpace; }, enumerable: true, },
             selectionLength: {
                 get() { return editor.selectionEnd - editor.selectionStart; },
+                enumerable: true, 
             }, //selectionLength
             selectedText: {
                 get() { return editor.value.slice(editor.selectionStart, editor.selectionEnd); },
+                enumerable: true, 
             }, //selectedText
             canFindNextPrevious: {
-                get() { return searchAPI.canFindNextPrevious(); }
+                get() { return searchAPI.canFindNextPrevious(); },
+                enumerable: true, 
             }, //canFindNextPrevious
             isModified: {
                 get() { return isModifiedFlag; },
@@ -119,6 +128,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
                     isModifiedFlag = value;
                     editor.dispatchEvent(modifiedEvent, isModifiedFlag);
                 },
+                enumerable: true, 
             }, //isModified
         }); // API properties
 

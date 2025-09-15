@@ -37,23 +37,38 @@ A plugin can be registered if `handler` is `undefined` (or `null`). In this case
 
 ### Editor API
 
-The argument passed to `handler` and `isEnabled` (in the example above, `api`) has the following properties:
+The argument passed to `handler` and `isEnabled` (in the example above, `api`) has the following properties and methods:
 
+Properties:
+
+1. `editor`: read-only instance of `HTMLTextAreaElement`
+1. `isModified`: read-write boolean property
+1. `currentLines`: read-only array
+1. `nextLine`: read-only array
+1. `previousLine`: read-only array
+1. `currentWord`: read-only array
+1. `nextWord`: read-only array
+1. `previousWord`: read-only array
+1. `newLine`: the string constant
+1. `empty`: the string constant
+1. `blankSpace`: the string constant
+1. `selectionLength`: read-only string value
+1. `selectedText`: read-only integer value
+1. `canFindNextPrevious`: boolean property
+
+Methods:
+
+1. `find(pattern)`
+1. `findNext()`
+1. `findPrevious()`
 1. `scrollTo(start, end, select)`
 1. `scrollToSelection()`
-1. `editor` read-only instance of `HTMLTextAreaElement`
-1. `isModified` read-write boolean property
-1. `currentLines` read-only array
-1. `nextLine` read-only array
-1. `previousLine` read-only array
-1. `currentWord` read-only array
-1. `nextWord` read-only array
-1. `previousWord` read-only array
-1. `newLine` the string constant
-1. `empty` the string constant
-1. `blankSpace` the string constant
-1. `selectionLength` read-only integer value
+1. `subscribeToModified(handler)` where `handler` 
 
 The properties `currentLines`, `nextLine`, `previousLine`, `currentWord`, `nextWord`, and `previousWord` return the array of two integer elements: the start and the end of the editor position for the found word or line. These properties always return valid positions. If the requested word or line is not found, the current editor selection is returned.
 
 The property `isModified` returns the current modified state of the editor. The plugins are supposed to determine if their operations modify the editor text and assign `true` to the property `isModified`. This is an extremely important point, because the modified state affects the operations where the editor text could be potentially lost, for example, opening a file, or the termination of the application.
+
+The values returned by the property `canFindNextPrevious` depends on the state of the search system. It is updated by the call to the method `find`, depending on the number of occurences found, and when the editor text is modified. Normally, this property is used to disable or enable the menu item that invokes the `handler` where the methods `findNext` or `findPrevious` can be used.
+
+The methods `find`, `findNext` and `findPrevious` reproduces the behavior of the Find dialog.
