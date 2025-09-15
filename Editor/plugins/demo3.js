@@ -1,11 +1,11 @@
 "use strict";
 
 pluginProcessor.registerPlugin({
-    name: "Test 2",
-    description: "Test 2",
+    name: "Select Current Word",
+    description: "Select current word",
     handler: api => {
-	api.editor.value = "This is the second plugin operation";
-        api.isModified = true;
+        const point = api.currentWord;
+        api.scrollTo(point[0], point[1], true);
     },
-    menuItemIndent: 3,
+    menuItemIndent: demoGroupIndent,
 });
