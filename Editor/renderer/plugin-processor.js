@@ -8,6 +8,7 @@ const pluginProcessor = (() => {
     let currentPluginIndex = 0;
     const pluginMap = new Map();
     const pluginFileNamesWithError = [];
+    const unRegisteredplugins = [];
 
     const processPlugins = (theDefinitionSet, theElementSet, theMenu, plugins) => {
         definitionSet = theDefinitionSet;
@@ -19,7 +20,13 @@ const pluginProcessor = (() => {
             if (index > plugins.length) return;
             const scriptElement = document.createElement(definitionSet.elements.script);
             scriptElement.src = plugin;
-            scriptElement.onload = () => { 
+            const previousPluginIndex = currentPluginIndex;
+            scriptElement.onload = event => { 
+                if (previousPluginIndex == currentPluginIndex) {
+                    console.log(event.target);
+                    const filename = definitionSet.plugin.filenameFromURI(event.srcElement.src);
+                    unRegisteredplugins.push(filename);
+                }; //if
                 loadScript();
             }; // this way, the order is preserved as in plugins
             document.head.appendChild(scriptElement);
