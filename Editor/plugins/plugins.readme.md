@@ -39,15 +39,3 @@ The argument passed to `handler` and `isEnabled` (in the example above, `api`) h
 1. `editor`
 1. `isMofified`
 1. ???
-
-### Known bugs
-
-Do the round-trip starting with a word ***prepended by a blankspace***: Split -> Camel -> Split, The result is wrong.
-
-The bug is in the split. To reproduce, start with
-
-~~~
-constCreateSearchDialog
-~~~
-
-If selected is `CreateSearchDialog`, the result is unexpected.
