@@ -52,8 +52,8 @@ Properties:
 1. `newLine`: the string constant
 1. `empty`: the string constant
 1. `blankSpace`: the string constant
-1. `selectionLength`: read-only string value
-1. `selectedText`: read-only integer value
+1. `selectionLength`: read-only integer value
+1. `selectedText`: read-only string value
 1. `canFindNextPrevious`: boolean property
 
 Methods:
@@ -71,4 +71,4 @@ The property `isModified` returns the current modified state of the editor. The 
 
 The values returned by the property `canFindNextPrevious` depends on the state of the search system. It is updated by the call to the method `find`, depending on the number of occurences found, and when the editor text is modified. Normally, this property is used to disable or enable the menu item that invokes the `handler` where the methods `findNext` or `findPrevious` can be used.
 
-The methods `find`, `findNext` and `findPrevious` reproduces the behavior of the Find dialog.
+The methods `find`, `findNext` and `findPrevious` reproduce the behavior of the Find dialog.
