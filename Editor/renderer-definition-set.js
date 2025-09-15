@@ -70,13 +70,13 @@ const getDefinitionSet = () => {
             message: `<p>Do you want to save the changes?</p><br>
                 <small>
                 <p>The changes will be lost if you don't save them.</p>
-                <p>You can save them now and repeat the operation later, or cancel.</p>
+                <p>You can save them now, or cancel.</p>
                 </small>
                 </br>`,
             messageClosingApplication: `<p>Do you want to save the changes before closing the application?</p><br>
                 <small>
                 <p>The changes will be lost if you don't save them.</p>
-                <p>You can save them now and close the application later, or cancel.</p>
+                <p>You can save them now, or cancel.</p>
                 </small>
                 </br>`,
             buttons: (saveAction, dontSaveAction) => [
