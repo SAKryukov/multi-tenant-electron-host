@@ -63,7 +63,7 @@ Methods:
 1. `findPrevious()`
 1. `scrollTo(start, end, select)`
 1. `scrollToSelection()`
-1. `subscribeToModified(handler)` where `handler` 
+1. `subscribeToModified(handler)`, where the single parameter, the editor's *modified* state is passed to the `handler`; the `handler` is invoked every time `isModified` flag is changed to `true` or `false`.
 
 The properties `currentLines`, `nextLine`, `previousLine`, `currentWord`, `nextWord`, and `previousWord` return the array of two integer elements: the start and the end of the editor position for the found word or line. These properties always return valid positions. If the requested word or line is not found, the current editor selection is returned.
 
