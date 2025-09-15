@@ -1,10 +1,10 @@
 "use strict";
-
+??
 pluginProcessor.registerPlugin({
-    name: "Select Current Word",
-    description: "Select current word",
+    name: "Select Previous Word",
+    description: "Select previous word",
     handler: api => {
-        const point = api.currentWord;
+        const point = api.previousWord;
         api.scrollTo(point[0], point[1], true);
     },
     menuItemIndent: demoGroupIndent,

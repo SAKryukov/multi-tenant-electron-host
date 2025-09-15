@@ -20,6 +20,7 @@ const createEditorAPI = elementSet => {
             event.preventDefault();
         }); //window.addEventListener Tab fix
 
+        const wordRegex = /[0123456789\w]+/g;
         const api = {
             subscribeToModified: handler => editor.addEventListener(modifiedEventName, handler),
             scrollTo: (start, end, select) =>
@@ -29,53 +30,79 @@ const createEditorAPI = elementSet => {
                     editor,
                     editor.selectionStart,
                     editor.selectionEnd),
-            isLetter: character => character.toLowerCase() != character.toUpperCase(),
-            isWordCharacter: function(character) {
-                return "0123456789".indexOf(character) >= 0 || this.isLetter(character);
-            }, //isWordCharacter
+            isCaseSensitive: text => text.toLowerCase() != text.toUpperCase(),
         }; //api
 
         editor.addEventListener(definitionSet.events.input, () => api.isModified = true);
+
+        const getRangeLines = (start, end) => {
+            const text = editor.value;
+            let left = text.lastIndexOf(definitionSet.newLine, start - 1);
+            if (left < 0) left = 0; else left += 1;
+            let right = text.indexOf(definitionSet.newLine, end);
+            if (right < 0) right = editor.textLength - 1;
+            return [left, right];
+        }; //getRangeLines
+
+        const gotoNextPreviousLine = (currentIndex, increment, condition) => {
+            const current = api.currentLines;
+            let position = current[currentIndex] + increment;
+            if (condition(position))
+                return current;
+            return getRangeLines(position, position);
+        }; //gotoNextPreviousLine
+
         Object.defineProperties(api, {
             editor: {
                 get() { return editor;  },
             },
             currentLines: {
-                get() {
-                    const text = editor.value;
-                    let left = text.lastIndexOf(definitionSet.newLine, editor.selectionStart - 1);
-                    if (left < 0) left = 0; else left += 1;
-                    let right = text.indexOf(definitionSet.newLine, editor.selectionEnd);
-                    if (right < 0) right = editor.textLength - 1;
-                    return [left, right];
-                }, // currentLine getter
+                get() { return getRangeLines(editor.selectionStart, editor.selectionEnd); },
             }, //currentLines
+            nextLine: {
+                get() { return gotoNextPreviousLine(1, 1, position => position >= editor.textLength); },
+            }, //nextLine
+            previousLine: {
+                get() { return gotoNextPreviousLine(0, -1, position => position <= 0); },
+            }, //previousLine
             currentWord: {
                 get() {
-                    if (this.editor.selectionStart >= this.editor.textLength - 1)
-                        return [this.editor.selectionStart, this.editor.selectionEnd];
-                    const nextLetter = this.editor.value.slice(
-                        this.editor.selectionStart,
-                        this.editor.selectionStart + 1);
-                    if (!this.isWordCharacter(nextLetter))
-                        return [this.editor.selectionStart, this.editor.selectionEnd];
-                    const line = this.currentLines;
-                    const regex = /[^\w\s0123456789']/g;
-                    const backRegex = /(!<=([\w\s0123456789']))/g;
-                    let sliceForward = this.editor.value.slice(this.editor.selectionStart, line[1]);
-                    let forward = sliceForward.search(regex);
-                    if (forward < 0) forward = line[1];
-                    let sliceBackward = this.editor.value.slice(line[0], this.editor.selectionStart);
-                    let backward = sliceBackward.search(backRegex);
-                    if (backward < 0) backward = line[0];
-                    return [line[0] + backward, this.editor.selectionEnd + forward];
-                }, //wordOnRight getter
-            }, //wordOnRight
+                    if (editor.selectionStart >= editor.textLength - 1)
+                        return [editor.selectionStart, editor.selectionEnd];
+                    const lines = this.currentLines;
+                    const slice = editor.value.slice(lines[0], lines[1]);
+                    const position = editor.selectionStart - lines[0];
+                    let array;
+                    while ((array = wordRegex.exec(slice)) !== null) {
+                        if (array.index <= position && position <= array.index + array[0].length)
+                            return [lines[0] + array.index, lines[0] + array.index + array[0].length];
+                    } //loop
+                    return [editor.selectionStart, editor.selectionEnd];
+                }, //currentWord getter
+            }, //currentWord
+            nextWord: {
+                get() {
+                   if (editor.selectionStart >= editor.textLength - 1)
+                        return [editor.selectionStart, editor.selectionEnd];
+                    const lines = this.currentLines;
+                    const slice = editor.value.slice(lines[0], lines[1]);
+                    const position = editor.selectionStart - lines[0];
+                    let array;
+                    while ((array = wordRegex.exec(slice)) !== null) {
+                        if (array.index > position)
+                            return [lines[0] + array.index, lines[0] + array.index + array[0].length];
+                    } //loop
+                    return [editor.selectionStart, editor.selectionEnd];
+                 }, //nextWord getter
+            }, //nextWord
+            previousWord: {
+                get() { throw "Error: to be implemented"; }, //return [editor.selectionStart, editor.selectionEnd]; },
+            },
             newLine: { get() { return definitionSet.newLine; }},
             empty: { get() { return definitionSet.empty; }},
             blankSpace: { get() { return definitionSet.blankSpace; }},
             selectionLength: {
-                get() { return this.editor.selectionEnd - this.editor.selectionStart; },
+                get() { return editor.selectionEnd - editor.selectionStart; },
             }, //selectionLength
             isModified: {
                 get() { return isModifiedFlag; },
@@ -84,9 +111,10 @@ const createEditorAPI = elementSet => {
                     editor.dispatchEvent(modifiedEvent, isModifiedFlag);
                 },
             }, //isModified
-        });
+        }); // API properties
 
         return api;
+        
     })(elementSet.editor);
 
 };
