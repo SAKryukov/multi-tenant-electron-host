@@ -42,17 +42,17 @@ The argument passed to `handler` and `isEnabled` (in the example above, `api`) h
 1. `scrollTo(start, end, select)`
 1. `scrollToSelection()`
 1. `editor` read-only instance of `HTMLTextAreaElement`
-1. `isModified` boolean read-write property
-1. `currentLines` read-only
-1. `nextLine` read-only
-1. `previousLine` read-only
-1. `currentWord` read-only
-1. `nextWord` read-only
-1. `previousWord` read-only
-1. `newLine` read-only
-1. `empty` read-only
-1. `blankSpace` read-only
-1. `selectionLength` read-only
+1. `isModified` read-write boolean property
+1. `currentLines` read-only array
+1. `nextLine` read-only array
+1. `previousLine` read-only array
+1. `currentWord` read-only array
+1. `nextWord` read-only array
+1. `previousWord` read-only array
+1. `newLine` the string constant
+1. `empty` the string constant
+1. `blankSpace` the string constant
+1. `selectionLength` read-only integer value
 
 The properties `currentLines`, `nextLine`, `previousLine`, `currentWord`, `nextWord`, and `previousWord` return the array of two integer elements: the start and the end of the editor position for the found word or line. These properties always return valid positions. If the requested word or line is not found, the current editor selection is returned.
 
