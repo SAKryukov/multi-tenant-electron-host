@@ -154,7 +154,7 @@ function menuGenerator (container) {
             menuItem.textContent = menuItemData.shadowButtonText + menuItemData.shadowText;
         }; //setBox
         Object.defineProperties(this, {
-            subscribeToHotKey: {
+            subscribeToShortcut: {
                 get() {
                     return hotkey => {
                         window.addEventListener(definitionSet.events.keyDown, event => {
@@ -168,7 +168,7 @@ function menuGenerator (container) {
                         }); //window.addEventListener
                     }; //window.addEventListener
                 }, enumerable: true,
-            }, //subscribeToHotKey
+            }, //subscribeToShortcut
             changeText: {
                 get() {
                     return text => {

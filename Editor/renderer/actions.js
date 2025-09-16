@@ -81,7 +81,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         return !fileSystemStatus.isModified;
     }); //subscribeToApplicationClose
 
-    const fileNewMenuItem = menu.subscribe(elementSet.menuItems.file.newFile.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.file.newFile.textContent, actionRequest => {
         if (!actionRequest) return fileSystemStatus.isModified || currentFilename != null;
         actionOnConfirmation(() => {
             currentFilename = null;
@@ -91,18 +91,16 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             window.bridgeFileIO.resetApplicationTitle();
         }); //actionOnConfirmation
         return true;
-    }); //file.newFile
-    fileNewMenuItem.subscribeToHotKey({ key: "KeyN", prefix: ["ctrlKey"]});
+    }).subscribeToShortcut(definitionSet.menuShortcuts.fileNew); //file.newFile
 
-    const fileOpenMenuItem = menu.subscribe(elementSet.menuItems.file.open.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.file.open.textContent, actionRequest => {
         if (!actionRequest) return true;
         actionOnConfirmation(() => {
             window.bridgeFileIO.openFile((filename, text, error) =>
             handleFileOperationResult(filename, text, error));
         });
         return true;
-    }); //file.open
-    fileOpenMenuItem.subscribeToHotKey({ key: "KeyO", prefix: ["ctrlKey"]});
+    }).subscribeToShortcut(definitionSet.menuShortcuts.fileOpen); //file.open
 
     const saveAs = () =>
         window.bridgeFileIO.saveFileAs(elementSet.editor.value,
@@ -142,31 +140,28 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
                 handleFileOperationResult(filename, null, error, true),
             true);
 
-    const fileSaveAsMenuItem = menu.subscribe(elementSet.menuItems.file.saveAs.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.file.saveAs.textContent, actionRequest => {
         if (!actionRequest) return true;
         saveAs();
         return true;
-    }); //file.saveAs
-    fileSaveAsMenuItem.subscribeToHotKey({ key: "KeyS", prefix: ["ctrlKey", "shiftKey"]});
+    }).subscribeToShortcut(definitionSet.menuShortcuts.fileSaveAs); //file.saveAs
 
-    const fileSaveExistingFileMenuItem = menu.subscribe(elementSet.menuItems.file.saveExisting.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.file.saveExisting.textContent, actionRequest => {
         if (!actionRequest) return fileSystemStatus.isModified;
         if (currentFilename)
             saveExistingFile();
         else
             saveAs();
         return true;
-    }); //file.saveExisting
-    fileSaveExistingFileMenuItem.subscribeToHotKey({ key: "KeyS", prefix: ["ctrlKey"]});
+    }).subscribeToShortcut(definitionSet.menuShortcuts.fileSaveExisting); //file.saveExisting
 
     // Help:
 
-    const helpAboutMenuItem = menu.subscribe(elementSet.menuItems.help.about.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.help.about.textContent, actionRequest => {
         if (!actionRequest) return true;
         modalDialog.show(definitionSet.aboutDialog(metadata));
         return true;
-    }); //help.about
-    helpAboutMenuItem.subscribeToHotKey({ key: "F1", prefix: []});
+    }).subscribeToShortcut(definitionSet.menuShortcuts.helpAbout); //help.about
 
     menu.subscribe(elementSet.menuItems.help.sourceCode.textContent, actionRequest => {
         if (!actionRequest) return true;

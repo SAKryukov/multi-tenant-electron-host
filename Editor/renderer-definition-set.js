@@ -189,6 +189,13 @@ const getDefinitionSet = () => {
                         : `line ${lines[0]}`,
             }, //replaceConfirmation
         }, //search
+        menuShortcuts: {
+            fileNew: { key: "KeyN", prefix: ["ctrlKey"]},
+            fileOpen: { key: "KeyO", prefix: ["ctrlKey"]},
+            fileSaveAs: { key: "KeyS", prefix: ["ctrlKey", "shiftKey"]},
+            fileSaveExisting: { key: "KeyS", prefix: ["ctrlKey"]},
+            helpAbout: { key: "F1", prefix: []},
+        }, //menuShortcuts
         isShortcut : (event, shortcut) => {
             if (event.code != shortcut.key) return false;
             if (!shortcut.prefix || shortcut.prefix.length < 1)
