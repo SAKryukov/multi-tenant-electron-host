@@ -79,6 +79,14 @@ function menuGenerator (container) {
             return true;
         }, //goodKeyboardActivationPrefix
         toString: text => `${text == null ? "" : text}`,
+        isShortcut: (event, shortcut) => {
+            if (event.code != shortcut.key) return false;
+            if (!shortcut.prefix || shortcut.prefix.length < 1)
+                return !(event.shiftKey || event.ctrlKey || event.metaKey || event.altKey);
+            for (const prefixElement of shortcut.prefix)
+                if (!event[prefixElement]) return false;
+            return true;
+        }, //isShortcut
     } //const definitionSet
     Object.freeze(definitionSet);
     const menuItemButtonState = {
@@ -146,6 +154,21 @@ function menuGenerator (container) {
             menuItem.textContent = menuItemData.shadowButtonText + menuItemData.shadowText;
         }; //setBox
         Object.defineProperties(this, {
+            subscribeToHotKey: {
+                get() {
+                    return hotkey => {
+                        window.addEventListener(definitionSet.events.keyDown, event => {
+                            if (!definitionSet.isShortcut(event, hotkey))
+                                return;
+                            const menuItemData = elementMap.get(menuItem);
+                            const actionMapValue = actionMap.get(menuItemData.shadowValue);
+                            const action = actionMapValue.action;
+                            if (action(false, null, menuItemData.customItemData))
+                                action(true, null, menuItemData.customItemData);
+                        }); //window.addEventListener
+                    }; //window.addEventListener
+                }, enumerable: true,
+            }, //subscribeToHotKey
             changeText: {
                 get() {
                     return text => {

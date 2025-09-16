@@ -30,8 +30,8 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgeFileIO, { // to be used only in 
 
 contextBridge.exposeInMainWorld(bridgeAPI.bridgePlugin, {
     subscribeToPlugin: handler => 
-        ipcRenderer.on(ipcChannel.plugin.loadAll, (_event, text) => {
-            handler(text);
+        ipcRenderer.once(ipcChannel.plugin.loadAll, (_event, plugins, pluginsKeyword) => {
+            handler(plugins, pluginsKeyword);
         }),
 }); //contextBridge.exposeInMainWorld
 

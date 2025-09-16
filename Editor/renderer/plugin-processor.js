@@ -7,8 +7,10 @@ const pluginProcessor = (() => {
     let menu = null;
     let currentPluginIndex = 0;
     const pluginMap = new Map();
+    let pluginKeywordReference;
 
-    const processPlugins = (theDefinitionSet, theElementSet, theMenu, plugins) => {
+    const processPlugins = (theDefinitionSet, theElementSet, theMenu, plugins, pluginKeyword) => {
+        pluginKeywordReference = pluginKeyword;
         definitionSet = theDefinitionSet;
         elementSet = theElementSet;
         menu = theMenu;
@@ -21,8 +23,8 @@ const pluginProcessor = (() => {
             const previousPluginIndex = currentPluginIndex;
             scriptElement.onload = event => { 
                 if (previousPluginIndex == currentPluginIndex) {
-                    const filename = definitionSet.plugin.filenameFromURI(event.srcElement.src);
-                    const mapItem = pluginMap.get(filename);
+                    const key = definitionSet.plugin.fileUriToKey(event.srcElement.src, pluginKeyword);
+                    const mapItem = pluginMap.get(key);
                     if (mapItem)
                         mapItem.status.failedRegistration = true;
                 }; //if
@@ -33,22 +35,21 @@ const pluginProcessor = (() => {
         loadScript();
         for (let index = 0; index < plugins.length; ++index) {
             const item = menu.subscribe(index.toString(), null);
-            const fixedName = definitionSet.plugin.normalizeFilename(plugins[index]);
-            pluginMap.set(fixedName, { index, item, status: {} });
+            const key = definitionSet.plugin.fileUriToKey(plugins[index], pluginKeyword);
+            pluginMap.set(key, { index, item, originalFilename: plugins[index], status: {} });
         } //item
     }; //processPlugins
 
     const showUnregisteredPlugins = () => {
         if (pluginMap.size < 1) return;
-        //currentPluginIndex = 0;
-        for (let [filename, value] of pluginMap) {
+        for (let [key, value] of pluginMap) {
             if (value.status.error) { // priority over failedRegistration
                 const errorMenuItem = menu.subscribe(currentPluginIndex.toString(), (actionRequested, _itemAction, itemData) => {
                     if (!actionRequested)
                         return true;
                     else
                         modalDialog.show(definitionSet.plugin.exceptionExplanation(itemData.filename, itemData.error));
-                }, { filename, error: value.status.error });
+                }, { filename: value.originalFilename, error: value.status.error });
                 errorMenuItem.changeText(definitionSet.plugin.excepton);
                 definitionSet.plugin.styleMenuItem(errorMenuItem, false, true);
             } else if (value.status.failedRegistration) {
@@ -57,7 +58,7 @@ const pluginProcessor = (() => {
                         return true;
                     else
                         modalDialog.show(definitionSet.plugin.unregisteredExplanation(itemData.filename, itemData.error));
-                }, { filename });
+                }, { filename: value.originalFilename });
                 definitionSet.plugin.styleMenuItem(invalidMenuItem, false, true);
                 invalidMenuItem.changeText(definitionSet.plugin.invalid);
                 definitionSet.plugin.styleMenuItem(invalidMenuItem, false, true);                
@@ -68,8 +69,8 @@ const pluginProcessor = (() => {
     }; //showUnregisteredPlugins
 
     window.onerror = (message, source, line, column, error) => {
-        const filename = definitionSet.plugin.filenameFromURI(source);
-        const mapItem = pluginMap.get(filename);
+        const key = definitionSet.plugin.fileUriToKey(source, pluginKeywordReference);
+        const mapItem = pluginMap.get(key);
         if (mapItem == null) return;
         mapItem.status.error = error;
         mapItem.status.errorMessage = message;

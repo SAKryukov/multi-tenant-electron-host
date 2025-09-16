@@ -81,7 +81,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         return !fileSystemStatus.isModified;
     }); //subscribeToApplicationClose
 
-    menu.subscribe(elementSet.menuItems.file.newFile.textContent, actionRequest => {
+    const fileNewMenuItem = menu.subscribe(elementSet.menuItems.file.newFile.textContent, actionRequest => {
         if (!actionRequest) return fileSystemStatus.isModified || currentFilename != null;
         actionOnConfirmation(() => {
             currentFilename = null;
@@ -92,8 +92,9 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         }); //actionOnConfirmation
         return true;
     }); //file.newFile
+    fileNewMenuItem.subscribeToHotKey({ key: "KeyN", prefix: ["ctrlKey"]});
 
-    menu.subscribe(elementSet.menuItems.file.open.textContent, actionRequest => {
+    const fileOpenMenuItem = menu.subscribe(elementSet.menuItems.file.open.textContent, actionRequest => {
         if (!actionRequest) return true;
         actionOnConfirmation(() => {
             window.bridgeFileIO.openFile((filename, text, error) =>
@@ -101,6 +102,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         });
         return true;
     }); //file.open
+    fileOpenMenuItem.subscribeToHotKey({ key: "KeyO", prefix: ["ctrlKey"]});
 
     const saveAs = () =>
         window.bridgeFileIO.saveFileAs(elementSet.editor.value,
@@ -140,13 +142,14 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
                 handleFileOperationResult(filename, null, error, true),
             true);
 
-    menu.subscribe(elementSet.menuItems.file.saveAs.textContent, actionRequest => {
+    const fileSaveAsMenuItem = menu.subscribe(elementSet.menuItems.file.saveAs.textContent, actionRequest => {
         if (!actionRequest) return true;
         saveAs();
         return true;
     }); //file.saveAs
+    fileSaveAsMenuItem.subscribeToHotKey({ key: "KeyS", prefix: ["ctrlKey", "shiftKey"]});
 
-    menu.subscribe(elementSet.menuItems.file.saveExisting.textContent, actionRequest => {
+    const fileSaveExistingFileMenuItem = menu.subscribe(elementSet.menuItems.file.saveExisting.textContent, actionRequest => {
         if (!actionRequest) return fileSystemStatus.isModified;
         if (currentFilename)
             saveExistingFile();
@@ -154,14 +157,16 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             saveAs();
         return true;
     }); //file.saveExisting
+    fileSaveExistingFileMenuItem.subscribeToHotKey({ key: "KeyS", prefix: ["ctrlKey"]});
 
     // Help:
 
-    menu.subscribe(elementSet.menuItems.help.about.textContent, actionRequest => {
+    const helpAboutMenuItem = menu.subscribe(elementSet.menuItems.help.about.textContent, actionRequest => {
         if (!actionRequest) return true;
         modalDialog.show(definitionSet.aboutDialog(metadata));
         return true;
     }); //help.about
+    helpAboutMenuItem.subscribeToHotKey({ key: "F1", prefix: []});
 
     menu.subscribe(elementSet.menuItems.help.sourceCode.textContent, actionRequest => {
         if (!actionRequest) return true;

@@ -7,7 +7,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
     elementSet = getElementSet(document);
 
     if (window.bridgePlugin)
-        window.bridgePlugin.subscribeToPlugin(async plugins => {
+        window.bridgePlugin.subscribeToPlugin(async (plugins, pluginsKeyword) => {
             const metadata = window.bridgeMetadata.pushedMetadata();
             for (let index = 0; index < plugins.length; ++index) {
                 const option = document.createElement(definitionSet.elements.option);
@@ -21,7 +21,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
             const searchDialogObject = createSearchDialog(definitionSet, elementSet);
             createEditorAPI(elementSet, searchDialogObject.api);
             subscribe(elementSet, menu, searchDialogObject.searchDialog, metadata);
-            pluginProcessor.processPlugins(definitionSet, elementSet, menu, plugins);
+            pluginProcessor.processPlugins(definitionSet, elementSet, menu, plugins, pluginsKeyword);
         });
 
     if (!window.bridgePlugin)

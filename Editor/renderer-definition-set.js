@@ -23,16 +23,15 @@ const getDefinitionSet = () => {
                 if (group)
                     item.fontWeight = "bold";
             }, //styleMenuItem
-            normalizeFilename: filename => filename.replaceAll("\\", "/"),
-            filenameFromURI: uri => uri.substring("file:///".length),
+            fileUriToKey: (name, keyword) => name.slice(name.indexOf(keyword)).replaceAll("\\", "/"),
             errorStyle: `style="color: red"`,
             invalid: `Unregistered plugin ${String.fromCharCode(0x2014)} click to see the explanation`,
             excepton: `Failed plugin registration ${String.fromCharCode(0x2014)} click to see the explanation`,
             unregisteredExplanation: function (file, error) {
                 const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
                 const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
-                return `<p>This plugin did not register itself:<br/>
-                    <span ${this.errorStyle}>${fileName}</span></p>
+                return `<p><span ${this.errorStyle}>This plugin did not register itself:</span><br/>
+                    <span>${fileName}</span></p>
                     ${errorText}
                     <br/>A valid plugin should register itself using
                     <br/><code style="font-family: monospace; font-size:140%; color: green">pluginProcessor.registerPlugin(pluginProperties)</code>.

@@ -19,7 +19,7 @@ module.exports.pluginProvider = (() => {
                     if (path.extname(name).toLowerCase() == definitionSet.plugin.pluginFileSuffix)
                         plugins.push(path.join(directory, name));
             } //if plugin directory exists
-            window.webContents.send(channel, plugins);
+            window.webContents.send(channel, plugins, definitionSet.plugin.directory);
         }, //sendScripts
     }; //pluginProvider
 
