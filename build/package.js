@@ -57,7 +57,7 @@ let copyright = ""
 if (metadata && metadata.copyright)
     copyright = metadata.copyright;
 if (copyright)
-    copyright = `--appCopyright="${copyright}`;
+    copyright = `--appCopyright="${copyright}"`;
 
 const command = `npx @electron/packager ../Editor --overwrite --platform=${parsedArguments.platform} --arch=${parsedArguments.architecture} ${exe} ${copyright} --asar`;
 
