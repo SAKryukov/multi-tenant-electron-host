@@ -22,15 +22,16 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
             createEditorAPI(elementSet, searchDialogObject.api);
             subscribe(elementSet, menu, searchDialogObject.searchDialog, metadata);
             pluginProcessor.processPlugins(definitionSet, elementSet, menu, plugins, pluginsKeyword);
+            elementSet.editor.addEventListener(definitionSet.events.selectionchange, event => {
+                const position = elementSet.editorAPI.positionToCursor(event.target.selectionStart);
+                elementSet.statusBar.cursorPositionIndicator.innerHTML =
+                    definitionSet.status.cursorPosition(position[0], position[1]);
+            }); //editor.onselectionchange
         });
 
     if (!window.bridgePlugin)
         return definitionSet.standaloneExecutionProtection();
-    elementSet.editor.addEventListener(definitionSet.events.selectionchange, event => {
-        elementSet.statusBar.cursorPositionIndicator.innerHTML =
-            definitionSet.status.cursorPosition(event.target.value, event.target.selectionStart);
-    }); //editor.onselectionchange
-    
+
     elementSet.editor.focus();
 
 }); //DOMContentLoaded

@@ -103,12 +103,8 @@ const getDefinitionSet = () => {
         },
         status: {
             modified: "Modified",
-            cursorPosition: (text, offset) => {
-                const lines = text.substring(0, offset).split("\n");
-                const row = lines.length;
-                const column = lines[lines.length-1].length + 1;
-                return `${row}&thinsp;:&thinsp;${column}`;
-            }, //cursorPosition
+            cursorPosition: (row, column) =>
+                `${row}&thinsp;:&thinsp;${column}`,
             line: (text, offset) => {
                 const lines = text.substring(0, offset).split("\n");
                 return lines.length;

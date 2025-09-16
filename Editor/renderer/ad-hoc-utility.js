@@ -42,7 +42,8 @@ const adHocUtility = (() => {
                 if (event.key && event.key.length == 1 && characters.indexOf(event.key) < 0)
                     event.preventDefault();
             }, //filter out
-        goto: function(editor) {
+        goto: function() {
+            const editor = elementSet.editor;
             const section = document.createElement(definitionSet.elements.section);
             const createLine = (text, title, value) => {
                 const line = document.createElement(definitionSet.elements.p);
@@ -81,22 +82,9 @@ const adHocUtility = (() => {
                             if (!column) column = 1;
                             line = parseInt(line);
                             column = parseInt(column);
-                            if (line < 0) line = 1;
-                            if (column < 0) column = 1;
-                            const lines = editor.value.substring(0).split("\n");
-                            if (line > lines.length)
-                                line = lines.length;
-                            if (lines < 1) return;
-                            let position = 0;
-                            for (let index = 0; index < line - 1; ++index)
-                                position += lines[index].length + 1;
-                            const maxLength = lines[line - 1].length;
-                            if (column > maxLength)
-                                column = maxLength + 1;
-                            position += column - 1;
+                            const position = elementSet.editorAPI.cursorToPosition(line, column);
                             editor.focus();
-                            editor.selectionStart = editor.selectionEnd = position;
-                            this.scrollTo(editor, position, position);
+                            this.scrollTo(editor, position, position, true);
                             persistGotoLine = lineLine.input.value.trim();
                             persistGotoLineColumn = lineColumn.input.value.trim();
                             lineColumn.line.value = persistGotoLineColumn;

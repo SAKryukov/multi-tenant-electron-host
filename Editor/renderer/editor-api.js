@@ -24,6 +24,28 @@ const createEditorAPI = (elementSet, searchAPI) => {
         const wordRegexString = "[0123456789\\w]+";
         const api = {
             subscribeToModified: handler => editor.addEventListener(modifiedEventName, handler),
+            cursorToPosition: (line, column) => {
+                if (line < 0) line = 1;
+                if (column < 0) column = 1;
+                const lines = editor.value.substring(0).split(definitionSet.newLine);
+                if (line > lines.length)
+                    line = lines.length;
+                if (lines < 1) return;
+                let position = 0;
+                for (let index = 0; index < line - 1; ++index)
+                    position += lines[index].length + 1;
+                const maxLength = lines[line - 1].length;
+                if (column > maxLength)
+                    column = maxLength + 1;
+                position += column - 1;
+                return position;
+            }, //cursorToPosition
+            positionToCursor: position => {
+                const lines = editor.value.substring(0, position).split(definitionSet.newLine);
+                const row = lines.length;
+                const column = lines[lines.length-1].length + 1;
+                return [row, column];
+            }, //positionToCursor
             scrollTo: (start, end, select) =>
                 adHocUtility.scrollTo(editor, start, end, select),
             scrollToSelection: () =>

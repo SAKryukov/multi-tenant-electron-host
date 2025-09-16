@@ -302,7 +302,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     menu.subscribe(elementSet.menuItems.search.goto.textContent, actionRequest => {
         if (!actionRequest) return elementSet.editor.textLength > 0;
-        adHocUtility.goto(elementSet.editor);
+        adHocUtility.goto();
     }); //search.goto
 
 }; //subscribe
