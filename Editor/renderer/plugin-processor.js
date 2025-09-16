@@ -106,6 +106,8 @@ const pluginProcessor = (() => {
         currentPluginIndex++;
         menuItem.changeText(definitionSet.plugin.nameInMenu(plugin.name));
         menuItem.title = plugin.description;
+        if (plugin.shortcut)
+            menuItem.subscribeToShortcut(plugin.shortcut);
         if (!plugin.handler)
             definitionSet.plugin.styleMenuItem(menuItem, true, false);
         if (plugin.menuItemIndent != null)
