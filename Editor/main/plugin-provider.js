@@ -14,7 +14,7 @@ module.exports.pluginProvider = (() => {
             const directory = path.join(applicationPath, definitionSet.plugin.directory);
             const plugins = [];
             if (fs.existsSync(directory)) {
-                const names = fs.readdirSync(directory);
+                const names = fs.readdirSync(directory, { recursive: true });
                 for (const name of names)
                     if (path.extname(name).toLowerCase() == definitionSet.plugin.pluginFileSuffix)
                         plugins.push(path.join(directory, name));
