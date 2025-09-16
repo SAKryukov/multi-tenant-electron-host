@@ -33,7 +33,7 @@ The registration method `pluginProcessor.registerPlugin` accepts one argument, t
 1. `handler`: a function accepting the editor API used to perform the job with the editor
 1. `isEnabled`: a function accepting the editor API used to enable or disable the menu item, depending on the current condition of the editor
 1. `shortcut`: a structure used to define the shortcut for calling `isEnabled` and then `handler`. It has two properties: string `key` and array `prefix` with four valid items: `metaKey`, `altKey`, `ctrlKey`, and `shiftKey`.
-1. `menuItemIndent`: integer value determines the additional indent of the menu item; it can be used to structure plugins in the menu.
+1. `menuItemIndent`: integer value determines the additional indent of the menu item; it can be used to structure the plugins in the menu.
 
 A plugin can be registered if `handler` is `undefined` (or `null`). In this case, the menu item is always disabled, and the return of the `isEnabled` function, if any, is ignored. Such a plugin could be used as a group header for the plugins found lexicographically below it. In this case, it is shown in the menu in a special, recognizable style.
 
@@ -44,7 +44,7 @@ The argument passed to `handler` and `isEnabled` (in the example above, `api`) h
 Properties:
 
 1. `editor`: read-only instance of `HTMLTextAreaElement`
-1. `isModified`: read-write boolean property
+1. `isModified`: read-write Boolean property
 1. `currentLines`: read-only array
 1. `nextLine`: read-only array
 1. `previousLine`: read-only array
@@ -56,12 +56,12 @@ Properties:
 1. `blankSpace`: the string constant
 1. `selectionLength`: read-only integer value
 1. `selectedText`: read-only string value
-1. `canFindNextPrevious`: boolean property
+1. `canFindNextPrevious`: Boolean property
 
 Methods:
 
-1. `cursorToPosition(line, column)` calculates position in file based on the cursor position; if `line` of `column` are valid but incorrct integer values, the closest position is returned
-1. `positionToCursor(position)` calculates cursor position as an array `[line, column]` based on the position in file
+1. `cursorToPosition(line, column)` calculates the position in the file based on the cursor position; if `line` or `column` values are incorrect, the closest position is returned
+1. `positionToCursor(position)` calculates the cursor position as an array `[line, column]` based on the position in the file
 1. `find(pattern)`
 1. `findNext()`
 1. `findPrevious()`
@@ -76,6 +76,6 @@ The properties `currentLines`, `nextLine`, `previousLine`, `currentWord`, `nextW
 
 The property `isModified` returns the current modified state of the editor. The plugins are supposed to determine if their operations modify the editor text and assign `true` to the property `isModified`. This is an extremely important point, because the modified state affects the operations where the editor text could be potentially lost, for example, opening a file, or the termination of the application.
 
-The values returned by the property `canFindNextPrevious` depends on the state of the search system. It is updated by the call to the method `find`, depending on the number of occurences found, and when the editor text is modified. Normally, this property is used to disable or enable the menu item that invokes the `handler` where the methods `findNext` or `findPrevious` can be used.
+The value returned by the property `canFindNextPrevious` depends on the state of the search system. It is updated by the call to the method `find`, depending on the number of occurrences found, and when the editor text is modified. Normally, this property is used to disable or enable the menu item that invokes the `handler` that can potentially use the methods `findNext` or `findPrevious`.
 
-The methods `find`, `findNext` and `findPrevious` reproduce the behavior of the Find dialog.
+The methods `find`, `findNext`, and `findPrevious` reproduce the behavior of the Find dialog.
