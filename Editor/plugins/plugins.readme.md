@@ -60,11 +60,17 @@ Properties:
 
 Methods:
 
+1. `cursorToPosition(line, column)` calculates position in file based on the cursor position; if `line` of `column` are valid but incorrct integer values, the closest position is returned
+1. `positionToCursor(position)` calculates cursor position as an array `[line, column]` based on the position in file
 1. `find(pattern)`
 1. `findNext()`
 1. `findPrevious()`
 1. `scrollTo(start, end, select)`
 1. `scrollToSelection()`
+1. `pushSelection()` pushes the current selection onto the selection stack
+1. `popSelection(toMove)` pops the current selection out of the selection stack and returns it as an array `[selectionStart, selectionEnd]`; if `toMove` is specified, the returned array is used to set the editor selection and scroll it to the selection
+1. `clearSelectionStack()` removes all data from the selection stack; this is done before the `handler` call
+
 1. `subscribeToModified(handler)`, where the single parameter, the editor's *modified* state is passed to the `handler`; the `handler` is invoked every time `isModified` flag is changed to `true` or `false`.
 
 The properties `currentLines`, `nextLine`, `previousLine`, `currentWord`, `nextWord`, and `previousWord` return the array of two integer elements: the start and the end of the editor position for the found word or line. These properties always return valid positions. If the requested word or line is not found, the current editor selection is returned.

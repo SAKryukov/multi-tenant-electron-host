@@ -32,8 +32,7 @@ pluginProcessor.registerPlugin({
             } //loop
             apiItems.push(name);
         } //loop
-        apiItems.push(api.newLine);
-        api.editor.value = apiItems.join(api.newLine);
+        api.editor.value = apiItems.join(api.newLine) + api.newLine;
         api.isModified = true;
     }, //handler
     isEnabled: true,
