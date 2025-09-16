@@ -17,6 +17,7 @@ pluginProcessor.registerPlugin({
         api.isModified = true;
     },
     isEnabled: api => api.selectionLength > 0,
+    shortcut: { key: "Insert", prefix: ["metaKey", "altKey"]},
     menuItemIndent: 3,
 });
 ~~~
@@ -31,6 +32,7 @@ The registration method `pluginProcessor.registerPlugin` accepts one argument, t
 1. `description`: a string used to define the title of the menu item; the title is shown by hovering over the menu item
 1. `handler`: a function accepting the editor API used to perform the job with the editor
 1. `isEnabled`: a function accepting the editor API used to enable or disable the menu item, depending on the current condition of the editor
+1. `shortcut`: a structure used to define the shortcut for calling `isEnabled` and then `handler`. It has two properties: string `key` and array `prefix` with four valid items: `metaKey`, `altKey`, `ctrlKey`, and `shiftKey`.
 1. `menuItemIndent`: integer value determines the additional indent of the menu item; it can be used to structure plugins in the menu.
 
 A plugin can be registered if `handler` is `undefined` (or `null`). In this case, the menu item is always disabled, and the return of the `isEnabled` function, if any, is ignored. Such a plugin could be used as a group header for the plugins found lexicographically below it. In this case, it is shown in the menu in a special, recognizable style.
