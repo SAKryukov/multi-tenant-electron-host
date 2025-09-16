@@ -56,7 +56,7 @@ Properties:
 1. `blankSpace`: the string constant
 1. `selectionLength`: read-only integer value
 1. `selectedText`: read-only string value
-1. `canFindNextPrevious`: Boolean property
+1. `canFindNextPrevious`: read-only Boolean property
 
 Methods:
 
