@@ -252,7 +252,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         elementSet.statusBar.all.style.display = definitionSet.view.statusBarStyle(isStatusBarVisible);
         return true;
     }); //view.statusBar
-    viewStatusBarItem.setCheckBox();
+    viewStatusBarItem.setCheckedCheckBox();
     //setCheckedCheckBox
 
     viewFullscreenItem = menu.subscribe(elementSet.menuItems.view.fullscreen.textContent, actionRequest => {

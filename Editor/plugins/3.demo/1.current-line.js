@@ -1,7 +1,7 @@
 "use strict";
 
 pluginProcessor.registerPlugin({
-    name: `Select Current Line (Meta+Alt+Insert)`,
+    name: `Select Current Lines (Meta+Alt+Insert)`,
     description: "Select current line",
     handler: api => {
         const point = api.currentLines;
