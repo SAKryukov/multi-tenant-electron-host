@@ -5,11 +5,11 @@ pluginProcessor.registerPlugin({
     description: "Trim Line Ends",
     handler: api => {
         const oldLength = api.editor.textLength;
-        const oldSelectionEnd = api.editor.selectionEnd; //SA???
+        api.pushSelection();
         api.editor.value = api.editor.value.split(api.newLine)
             .map(line => line.trimEnd())
             .join(api.newLine);
-        api.scrollTo(oldSelectionEnd, oldSelectionEnd, true); //SA???
+        api.popSelection(true);
         if (oldLength != api.editor.textLength)
             api.isModified = true;
     },

@@ -91,12 +91,12 @@ const pluginProcessor = (() => {
                 return true;
             } //if
             if (plugin.handler) {
-                try
-                {
-                const pluginReturn = plugin.handler(elementSet.editorAPI);
+                try {
+                    elementSet.editorAPI.clearSelectionStack();
+                    const pluginReturn = plugin.handler(elementSet.editorAPI);
                     if (pluginReturn != null)
                         modalDialog.show(definitionSet.plugin.returnResult(plugin.name, pluginReturn.toString()));
-                } catch(e) {
+                } catch (e) {
                     modalDialog.show(definitionSet.plugin.returnResult(plugin.name, e.toString(), true));
                 } //exception
             } //if

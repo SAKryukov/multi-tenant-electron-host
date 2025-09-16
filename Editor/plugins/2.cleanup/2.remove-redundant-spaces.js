@@ -5,11 +5,11 @@ pluginProcessor.registerPlugin({
     description: "Remove repeated blankspaces but preserve line indentation",
     handler: api => {
         const oldLength = api.editor.textLength;
-        const oldSelectionEnd = api.editor.selectionEnd; //SA???
+        api.pushSelection();
         const lines = api.editor.value.split(api.newLine);
         const newLines = [];
         for (const line of lines) {
-            let copy = line;
+            let copy = line;o
             const oldLength = copy.length;
             copy = copy.trimLeft();
             const shift = oldLength - copy.length;
@@ -23,7 +23,7 @@ pluginProcessor.registerPlugin({
             newLines.push(line.slice(0, shift) + right);
         } //loop
         api.editor.value = newLines.join(api.newLine);
-        api.scrollTo(oldSelectionEnd, oldSelectionEnd, true); //SA???
+        api.popSelection(true);
         if (oldLength != api.editor.textLength)
             api.isModified = true;        
     },

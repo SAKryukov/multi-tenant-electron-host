@@ -1,7 +1,7 @@
 "use strict";
 
 pluginProcessor.registerPlugin({
-    name: "Camel",
+    name: "Camel (Ctrl+~)",
     description: "Join words in selection with camel case",
     handler: api => {
         const slice = api.editor.value.slice(api.editor.selectionStart, api.editor.selectionEnd);
@@ -19,5 +19,6 @@ pluginProcessor.registerPlugin({
         api.scrollToSelection();
     },
     isEnabled: api => api.selectionLength > 0,
+    shortcut: { key: "Backquote", prefix: ["ctrlKey"]},
     menuItemIndent: caseGroupIndent,
 });

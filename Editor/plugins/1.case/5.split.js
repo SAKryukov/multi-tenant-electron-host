@@ -1,7 +1,7 @@
 "use strict";
 
 pluginProcessor.registerPlugin({
-    name: "Split",
+    name: "Split (Ctrl+!)",
     description: "Split selection into words where the case is changed",
     handler: api => {
         const isLetter = sample => sample.toLowerCase() != sample.toUpperCase;
@@ -22,5 +22,6 @@ pluginProcessor.registerPlugin({
         api.scrollToSelection();
     },
     isEnabled: api => api.selectionLength > 0,
+    shortcut: { key: "Digit1", prefix: ["ctrlKey"]},
     menuItemIndent: caseGroupIndent,
 });

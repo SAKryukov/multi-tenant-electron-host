@@ -7,6 +7,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
         let isModifiedFlag = false;
         const modifiedEventName = definitionSet.events.editorTextModified;
         const modifiedEvent = new Event(modifiedEventName);
+        const selectionStack = [];
 
         // ad-hoc Tab fix:
         window.addEventListener(definitionSet.events.keydown, event => {
@@ -33,6 +34,14 @@ const createEditorAPI = (elementSet, searchAPI) => {
             find: pattern => searchAPI.find(pattern),
             findNext: () => searchAPI.findNextPrevious(false),
             findPrevious: () => searchAPI.findNextPrevious(true),
+            pushSelection: () => selectionStack.push([editor.selectionStart, editor.selectionEnd]),
+            popSelection: toMove => {
+                const location = selectionStack.pop();
+                if (toMove)
+                    adHocUtility.scrollTo(editor, location[0], location[1], true);
+                return location;
+            }, //popSelection
+            clearSelectionStack: () => selectionStack.length = 0,
         }; //api
 
         editor.addEventListener(definitionSet.events.input, () => api.isModified = true);
