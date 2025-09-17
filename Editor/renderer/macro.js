@@ -22,7 +22,7 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
     } //getDelta
 
     const perfomSmartIndentation = event => {
-        let data = definitionSet.empty;
+        let mockEvent = null;
         const entering = event.inputType == definitionSet.macro.specialInputTypeNewLine.recorded;
         const backspace = event.inputType == definitionSet.macro.backspace;
         if (!entering && !backspace) return null;
@@ -39,7 +39,7 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
                 return null;
             const indent = definitionSet.blankSpace.repeat(indentSize);
             editor.setRangeText(indent);
-            data = indent; //SA???
+            mockEvent = { data: definitionSet.newLine + indent, target: event.target };
             location += indentSize;
             editor.setSelectionRange(location, location);
         } else if (backspace) {
@@ -62,13 +62,17 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
             const deleteCount = currentIndent - requiredIndent;
             editor.setSelectionRange(location - deleteCount, location);
             editor.setRangeText(definitionSet.empty);
+            mockEvent = { target: event.target };
         } //if
-        return data;
+        return mockEvent;
     }; //perfomSmartIndentation
 
     // record macro
     editor.addEventListener(definitionSet.events.input, event => {
-        if (!recordingMacro)
+        if (recordingMacro) {
+            const mockEvent = perfomSmartIndentation(event);
+            if (mockEvent != null) event = mockEvent;
+        } else
             return perfomSmartIndentation(event);
         const currentState = getState(event.target);
         const delta = getDelta(previousState, currentState);
