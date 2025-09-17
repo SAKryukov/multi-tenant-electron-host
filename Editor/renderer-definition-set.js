@@ -116,8 +116,9 @@ const getDefinitionSet = () => {
         macro: {
             specialInputTypeNewLine: { // ugly special case
                 recorded: "insertLineBreak", 
-                replaced: "\n"
+                replaced: "\n",
             },
+            backspace: "deleteContentBackward", //for smart indentation
         }, //macro
         errorHandling: {
             format: (errorKind, errorMessage) => `${errorKind}:<br/><br/><span style="color: red">${errorMessage}</span>`,

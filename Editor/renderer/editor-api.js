@@ -184,6 +184,49 @@ const createEditorAPI = (elementSet, searchAPI) => {
             }, //isModified
         }); // API properties
 
+        // smart indentation:
+        editor.addEventListener(definitionSet.events.input, event => {
+            const entering = event.inputType == definitionSet.macro.specialInputTypeNewLine.recorded;
+            const backspace = event.inputType == definitionSet.macro.backspace;
+            if (!entering && !backspace) return;
+            let location = editor.selectionStart;
+            if (location != editor.selectionEnd) return;
+            const currentLinePosition = api.currentLines;
+            if (entering) {
+                const previousLine = api.previousLine;
+                if (event.target.value.slice(currentLinePosition[0], currentLinePosition[1]).trim().length > 0)
+                    return;
+                const slice = event.target.value.slice(previousLine[0], previousLine[1]);
+                const indentSize = slice.length - slice.trimLeft().length;
+                if (!indentSize)
+                    return;
+                const indent = definitionSet.blankSpace.repeat(indentSize);
+                editor.setRangeText(indent);
+                location += indentSize;
+                editor.setSelectionRange(location, location);
+            } else if (backspace) {
+                const currentIndentBuffer = event.target.value.slice(currentLinePosition[0], location);
+                const currentIndent = currentIndentBuffer.length;
+                if (currentIndentBuffer.trim().length > 0) return;
+                const linesBuffer = event.target.value.slice(0, location);
+                const lines = linesBuffer.split(definitionSet.newLine);
+                let requiredIndent = null;
+                for (let index = lines.length - 1; index >= 0; --index) {
+                    const line = lines[index];
+                    const indent = line.length - line.trimLeft().length;
+                    if (indent < currentIndent) {
+                        requiredIndent = indent;
+                        break;
+                    } //if
+                } //loop
+                if (requiredIndent == null)
+                    requiredIndent = 0;
+                const deleteCount = currentIndent - requiredIndent;
+                editor.setSelectionRange(location - deleteCount, location);
+                editor.setRangeText(definitionSet.empty);
+            } //if
+        }); //editor.addEventListener smart indentation
+
         return api;
         
     })(elementSet.editor, searchAPI);
