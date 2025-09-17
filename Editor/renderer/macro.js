@@ -21,31 +21,31 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
         };
     } //getDelta
 
-    // smart indentation:
-    editor.addEventListener(definitionSet.events.input, event => {
-        if (recordingMacro) return;
+    const perfomSmartIndentation = event => {
+        let data = definitionSet.empty;
         const entering = event.inputType == definitionSet.macro.specialInputTypeNewLine.recorded;
         const backspace = event.inputType == definitionSet.macro.backspace;
-        if (!entering && !backspace) return;
+        if (!entering && !backspace) return null;
         let location = editor.selectionStart;
-        if (location != editor.selectionEnd) return;
+        if (location != editor.selectionEnd) return null;
         const currentLinePosition = editorAPI.currentLines;
         if (entering) {
             const previousLine = editorAPI.previousLine;
             if (event.target.value.slice(currentLinePosition[0], currentLinePosition[1]).trim().length > 0)
-                return;
+                return null;
             const slice = event.target.value.slice(previousLine[0], previousLine[1]);
             const indentSize = slice.length - slice.trimLeft().length;
             if (!indentSize)
-                return;
+                return null;
             const indent = definitionSet.blankSpace.repeat(indentSize);
             editor.setRangeText(indent);
+            data = indent; //SA???
             location += indentSize;
             editor.setSelectionRange(location, location);
         } else if (backspace) {
             const currentIndentBuffer = event.target.value.slice(currentLinePosition[0], location);
             const currentIndent = currentIndentBuffer.length;
-            if (currentIndentBuffer.trim().length > 0) return;
+            if (currentIndentBuffer.trim().length > 0) return null;
             const linesBuffer = event.target.value.slice(0, location);
             const lines = linesBuffer.split(definitionSet.newLine);
             let requiredIndent = null;
@@ -63,11 +63,13 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
             editor.setSelectionRange(location - deleteCount, location);
             editor.setRangeText(definitionSet.empty);
         } //if
-    }); //editor.addEventListener smart indentation
+        return data;
+    }; //perfomSmartIndentation
 
     // record macro
     editor.addEventListener(definitionSet.events.input, event => {
-        if (!recordingMacro) return;        
+        if (!recordingMacro)
+            return perfomSmartIndentation(event);
         const currentState = getState(event.target);
         const delta = getDelta(previousState, currentState);
         previousState = currentState;
