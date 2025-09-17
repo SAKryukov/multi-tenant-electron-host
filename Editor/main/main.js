@@ -37,11 +37,11 @@ const subscribeToEvents = (window, baseTitle) => {
         } //if
     }); //metadata.source
     utilitySet.setup({ definitionSet, dialog, fs, window });
-    ipcMain.on(ipcChannel.fileIO.openFile, () => {
+    ipcMain.on(ipcChannel.fileIO.openFile, (event_, defaultPath) => {
         utilitySet.openFile((filename, text, error) => {
             window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
             return window.webContents.send(ipcChannel.fileIO.openFile, filename, text, error);
-        });
+        }, defaultPath);
     });
     const closeApplicationAfterSaving = (condition, error) => {
         if (condition && !error) {
@@ -49,12 +49,12 @@ const subscribeToEvents = (window, baseTitle) => {
             window.close();
         } //if
     }; //closeApplicationAfterSaving
-    ipcMain.on(ipcChannel.fileIO.saveFileAs, (_event, text, closeApplicationRequest) => {
+    ipcMain.on(ipcChannel.fileIO.saveFileAs, (_event, text, defaultPath, closeApplicationRequest) => {
         utilitySet.saveFileAs(text, (filename, error) => {
             window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
             window.webContents.send(ipcChannel.fileIO.saveFileAs, filename, error);
             closeApplicationAfterSaving(closeApplicationRequest, error);
-        });
+        }, defaultPath);
     });
     ipcMain.on(ipcChannel.fileIO.saveExistingFile, (_event, filename, text, closeApplicationRequest) => {
         utilitySet.saveExistingFile(filename, text, (filename, error) => {

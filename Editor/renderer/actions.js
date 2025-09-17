@@ -4,6 +4,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     elementSet.copyright.innerHTML = metadata?.package?.metadata?.copyright;
     let currentFilename = null;
+    const defaultPath = () => currentFilename == null ? definitionSet.empty : currentFilename;
 
     const fileSystemStatus = (() => {
         elementSet.statusBar.modifiedFlag.innerHTML = definitionSet.status.modified;
@@ -97,7 +98,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         if (!actionRequest) return true;
         actionOnConfirmation(() => {
             window.bridgeFileIO.openFile((filename, text, error) =>
-            handleFileOperationResult(filename, text, error));
+            handleFileOperationResult(filename, text, error), defaultPath());
         });
         return true;
     }).subscribeToShortcut(definitionSet.menuShortcuts.fileOpen); //file.open
@@ -106,19 +107,19 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         window.bridgeFileIO.saveFileAs(elementSet.editor.value,
             (filename, error) =>
                 handleFileOperationResult(filename, null, error, true),
-            false);
+            defaultPath(), false);
     const saveAsAndContinue = action =>
         window.bridgeFileIO.saveFileAs(elementSet.editor.value,
             (filename, error) => {
                 action();
                 handleFileOperationResult(filename, null, error, true);
             },
-            false);
+            defaultPath(), false);
     const saveAsAndCloseApplication = () =>
         window.bridgeFileIO.saveFileAs(elementSet.editor.value,
             (filename, error) =>
                 handleFileOperationResult(filename, null, error, true),
-            true);
+            defaultPath(), true);
     const saveExistingFile = () =>
         window.bridgeFileIO.saveExistingFile(currentFilename,
             elementSet.editor.value,

@@ -22,15 +22,15 @@ module.exports.utilitySet = (() => {
                 fs.readFile(filename, {}, (error, data) =>
                     useData(data?.toString(), error));
         }, //openKnownFile
-        openFile: useData => {
-            dialog.showOpenDialog(window, { title: definitionSet.utility.fileDialog.titleOpenFile }).then(event => {
+        openFile: (useData, defaultPath) => {
+            dialog.showOpenDialog(window, { defaultPath, title: definitionSet.utility.fileDialog.titleOpenFile }).then(event => {
                 if (event.canceled) return;
                 fs.readFile(event.filePaths[0], {}, (error, data) =>
                     useData(event.filePaths[0], data?.toString(), error));            
             }); //dialog.showOpenDialog
         }, //openFile
-        saveFileAs: (text, handler) => {
-            dialog.showSaveDialog(window, { title: definitionSet.utility.fileDialog.titleSaveFile }).then(event => {
+        saveFileAs: (text, handler, defaultPath) => {
+            dialog.showSaveDialog(window, { defaultPath, title: definitionSet.utility.fileDialog.titleSaveFile }).then(event => {
                 if (event.canceled) return;
                 fs.writeFile(event.filePath, text, {}, error =>
                     handler(event.filePath, error));
