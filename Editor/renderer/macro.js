@@ -21,23 +21,9 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
         };
     } //getDelta
 
-    editor.addEventListener(definitionSet.events.input, event => {
-        if (!recordingMacro) return;        
-        const currentState = getState(event.target);
-        const delta = getDelta(previousState, currentState);
-        previousState = currentState;
-        let data = event.data ? event.data : definitionSet.empty;
-        if (!data && event.inputType == definitionSet.macro.specialInputTypeNewLine.recorded) // ugly special case
-            data = definitionSet.macro.specialInputTypeNewLine.replaced;
-        macro.push({
-            data: data,
-            state: currentState,
-            delta: delta,
-        });
-    }); //editor input
-
     // smart indentation:
     editor.addEventListener(definitionSet.events.input, event => {
+        if (recordingMacro) return;
         const entering = event.inputType == definitionSet.macro.specialInputTypeNewLine.recorded;
         const backspace = event.inputType == definitionSet.macro.backspace;
         if (!entering && !backspace) return;
@@ -78,6 +64,22 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
             editor.setRangeText(definitionSet.empty);
         } //if
     }); //editor.addEventListener smart indentation
+
+    // record macro
+    editor.addEventListener(definitionSet.events.input, event => {
+        if (!recordingMacro) return;        
+        const currentState = getState(event.target);
+        const delta = getDelta(previousState, currentState);
+        previousState = currentState;
+        let data = event.data ? event.data : definitionSet.empty;
+        if (!data && event.inputType == definitionSet.macro.specialInputTypeNewLine.recorded) // ugly special case
+            data = definitionSet.macro.specialInputTypeNewLine.replaced;
+        macro.push({
+            data: data,
+            state: currentState,
+            delta: delta,
+        });
+    }); //editor input record macro
 
     const playMacro = () => {
         if (recordingMacro) return;
