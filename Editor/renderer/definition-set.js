@@ -5,10 +5,6 @@ const getDefinitionSet = () => {
     const definitionSet = {
         empty: "", blankSpace: " ", newLine: "\n",
         tabReplacement: " ".repeat(4),
-        SA: `<a href="https://www.SAKryukov.org">Sergey A Kryukov</a>`,
-        copyright: function() {
-            return `Copyright &copy; 2025 by ${this.SA}`
-        },
         standaloneExecutionProtection: function() {
             const electron = `<a href="https://www.electronjs.org">Electron</a>`;
             document.body.innerHTML = `<aside>This HTML only works under ${electron}</aside>
@@ -92,7 +88,7 @@ const getDefinitionSet = () => {
             input: 0,
             //custom:
             editorTextModified: 0,
-        },
+        }, //events
         keys: {
             KeyP: 0,
             KeyR: 0,
