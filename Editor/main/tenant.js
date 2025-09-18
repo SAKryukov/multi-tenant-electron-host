@@ -46,7 +46,7 @@ module.exports.tenant = tenantRoot => {
             } //if
         }); //metadata.source
         utilitySet.setup({ definitionSet, dialog, fs, window });
-        ipcMain.on(ipcChannel.fileIO.openFile, (event_, defaultPath) => {
+        ipcMain.on(ipcChannel.fileIO.openFile, (_event, defaultPath) => {
             utilitySet.openFile((filename, text, error) => {
                 window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
                 return window.webContents.send(ipcChannel.fileIO.openFile, filename, text, error);
