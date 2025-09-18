@@ -24,7 +24,6 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     // File I/O:
 
-    //elementSet.editor.addEventListener(definitionSet.events.input, () => fileSystemStatus.isModified = true);
     elementSet.editorAPI.subscribeToModified(() => fileSystemStatus.isModified = true);
     const reportError = (error, errorKind) =>
         modalDialog.show(definitionSet.errorHandling.format(errorKind, error.message));
@@ -161,12 +160,14 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     menu.subscribe(elementSet.menuItems.help.about.textContent, actionRequest => {
         if (!actionRequest) return true;
         modalDialog.show(definitionSet.aboutDialog(metadata));
+        elementSet.editor.focus();
         return true;
     }).subscribeToShortcut(definitionSet.menuShortcuts.helpAbout); //help.about
 
     menu.subscribe(elementSet.menuItems.help.sourceCode.textContent, actionRequest => {
         if (!actionRequest) return true;
         window.bridgeMetadata.showSource();
+        elementSet.editor.focus();
         return true;
     }); //help.sourceCode
 
