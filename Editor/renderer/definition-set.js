@@ -47,6 +47,9 @@ const getDefinitionSet = () => {
             },
             nameInMenu: name => `${name}`,
         },
+        defaultMessageDialog: {
+            defaultButton: "Close",
+        },
         aboutDialog: metadata => {
             const hostVersionLine =
                 metadata?.package?.applicationHostDescription
@@ -82,10 +85,10 @@ const getDefinitionSet = () => {
                 <p>You can save them now, or cancel.</p>
                 </small>
                 </br>`,
-            buttons: (saveAction, dontSaveAction) => [
+            buttons: (saveAction, dontSaveAction, cancelAction) => [
                 { text: "Save", action: saveAction, },
                 { text: "Don't Save", action : dontSaveAction },
-                { isDefault: true, isEscape: true, text: "Cancel" }],
+                { isDefault: true, isEscape: true, text: "Cancel", action: cancelAction }],
         }, //modifiedTextOperationConfirmation
         events: {
             DOMContentLoaded: 0,

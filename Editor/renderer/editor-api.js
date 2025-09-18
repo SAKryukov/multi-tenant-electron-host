@@ -52,7 +52,8 @@ const createEditorAPI = (elementSet, searchAPI) => {
                 adHocUtility.scrollTo(
                     editor,
                     editor.selectionStart,
-                    editor.selectionEnd),
+                    editor.selectionEnd,
+                    true),
             find: pattern => searchAPI.find(pattern),
             findNext: () => searchAPI.findNextPrevious(false),
             findPrevious: () => searchAPI.findNextPrevious(true),

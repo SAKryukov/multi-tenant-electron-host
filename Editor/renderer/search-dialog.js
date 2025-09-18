@@ -78,6 +78,8 @@ const createSearchDialog = (definitionSet, elementSet) => {
                         elementSet.editorAPI.isModified = true;
                     } //loop
                     resetFindings();
+                    elementSet.editor.focus();
+                    adHocUtility.scrollTo(elementSet.editor, 0, 0, true);                   
                     return;
                 } //if
                 const finding = findings[replacementIndex];
@@ -98,6 +100,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
                     () => { //breakAction
                         replacementIndex = findings.length;  baseAction(); },
                 ); //adHocUtility.replaceConfirmation
+                
             } //handler
         ); //subscribeToReplaceConfirmation
         const replaceOneByOne = () => {
@@ -224,16 +227,16 @@ const createSearchDialog = (definitionSet, elementSet) => {
         } //if
     }; //elementSet.search.inputReplace.onkeydown
 
-    window.addEventListener(definitionSet.events.keydown, event => {
-        if (definitionSet.isShortcut(event, definitionSet.search.shorcutFindNext))
-            findNext();
-        else if (definitionSet.isShortcut(event, definitionSet.search.shorcutFindPrevious))
-            findNext(true);
-        else if (definitionSet.isShortcut(event, definitionSet.search.shorcutClose))
-            elementSet.search.dialog.close();
-    }); //window on keydown
-    elementSet.search.closeCross.onclick = () =>
+    const closeDialog = () => {
         elementSet.search.dialog.close();
+        elementSet.editor.focus();
+    }; //closeDialog
+
+    window.addEventListener(definitionSet.events.keydown, event => {
+        if (definitionSet.isShortcut(event, definitionSet.search.shorcutClose))
+            closeDialog();
+    }); //window on keydown
+    elementSet.search.closeCross.onclick = closeDialog;
 
     elementSet.search.dialog.onclose = () => isShown = false;
 

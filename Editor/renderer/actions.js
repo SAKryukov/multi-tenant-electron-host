@@ -26,7 +26,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     elementSet.editorAPI.subscribeToModified(() => fileSystemStatus.isModified = true);
     const reportError = (error, errorKind) =>
-        modalDialog.show(definitionSet.errorHandling.format(errorKind, error.message));
+        showMessage(definitionSet.errorHandling.format(errorKind, error.message), elementSet.editor);
 
     const handleFileOperationResult = (filename, text, error, isSave) => {
         if (!error) {
@@ -59,9 +59,12 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         const noSaveAction = () => {
             if (closingApplication)
                 window.bridgeFileIO.closeApplication();
-            else
+            else {
                 action();
+                setTimeout(() => elementSet.editor.focus());
+            } //if
         } //noSaveAction
+        const cancelAction = () => elementSet.editor.focus();
         if (fileSystemStatus.isModified) {
             const message = closingApplication
                 ? definitionSet.modifiedTextOperationConfirmation.messageClosingApplication
@@ -69,7 +72,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             modalDialog.show(
                 message, {
                     buttons: definitionSet.modifiedTextOperationConfirmation.buttons(
-                        saveBeforeAction, noSaveAction),
+                        saveBeforeAction, noSaveAction, cancelAction),
                 });
         } else
             action();
@@ -99,6 +102,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             window.bridgeFileIO.openFile((filename, text, error) =>
             handleFileOperationResult(filename, text, error), defaultPath());
         });
+        elementSet.editor.focus();
         return true;
     }).subscribeToShortcut(definitionSet.menuShortcuts.fileOpen); //file.open
 
@@ -143,6 +147,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     menu.subscribe(elementSet.menuItems.file.saveAs.textContent, actionRequest => {
         if (!actionRequest) return true;
         saveAs();
+        elementSet.editor.focus();
         return true;
     }).subscribeToShortcut(definitionSet.menuShortcuts.fileSaveAs); //file.saveAs
 
@@ -152,24 +157,9 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
             saveExistingFile();
         else
             saveAs();
+        elementSet.editor.focus();
         return true;
     }).subscribeToShortcut(definitionSet.menuShortcuts.fileSaveExisting); //file.saveExisting
-
-    // Help:
-
-    menu.subscribe(elementSet.menuItems.help.about.textContent, actionRequest => {
-        if (!actionRequest) return true;
-        modalDialog.show(definitionSet.aboutDialog(metadata));
-        elementSet.editor.focus();
-        return true;
-    }).subscribeToShortcut(definitionSet.menuShortcuts.helpAbout); //help.about
-
-    menu.subscribe(elementSet.menuItems.help.sourceCode.textContent, actionRequest => {
-        if (!actionRequest) return true;
-        window.bridgeMetadata.showSource();
-        elementSet.editor.focus();
-        return true;
-    }); //help.sourceCode
 
     // Macro:
 
@@ -203,7 +193,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         const length = elementSet.editor.selectionEnd - elementSet.editor.selectionStart;
         if (!actionRequest) return length > 0;
         selectionToClipboard(length);
-        elementSet.editor.setRangeText("");
+        elementSet.editor.setRangeText(definitionSet.empty);
         elementSet.editor.focus();
         return true;
     }); //edit.cut
@@ -230,13 +220,6 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         elementSet.editor.select();
         return true;
     }); //edit.selectAll
-
-    window.addEventListener(definitionSet.events.keydown, event => {
-        if (definitionSet.isShortcut(event, definitionSet.search.shorcutFind))
-            searchDialog.show(false);
-        else if (definitionSet.isShortcut(event, definitionSet.search.shorcutReplace))
-            searchDialog.show(true);
-    }); //window.addEventListener
 
     // View:
 
@@ -285,26 +268,41 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     menu.subscribe(elementSet.menuItems.search.find.textContent, actionRequest => {
         if (!actionRequest) return true;
         searchDialog.show(false);
-    }); //search.Find
+    }).subscribeToShortcut(definitionSet.search.shorcutFind); //search.Find
 
     menu.subscribe(elementSet.menuItems.search.replace.textContent, actionRequest => {
         if (!actionRequest) return true;
         searchDialog.show(true);
         return false;
-    }); //search.Replace
+    }).subscribeToShortcut(definitionSet.search.shorcutReplace); //search.Replace
 
     menu.subscribe(elementSet.menuItems.search.findNext.textContent, actionRequest => {
         if (!actionRequest) return searchDialog.canFindNext();
         searchDialog.findNext(false);
-    }); //search.findNextс
+    }).subscribeToShortcut(definitionSet.search.shorcutFindNext); //search.findNext
     menu.subscribe(elementSet.menuItems.search.findPrevious.textContent, actionRequest => {
         if (!actionRequest) return searchDialog.canFindNext();
         searchDialog.findNext(true);
-    }); //edit.findPrevious
+    }).subscribeToShortcut(definitionSet.search.shorcutFindPrevious); //edit.findPrevious
 
     menu.subscribe(elementSet.menuItems.search.goto.textContent, actionRequest => {
         if (!actionRequest) return elementSet.editor.textLength > 0;
         adHocUtility.goto();
     }); //search.goto
+
+    // Help:
+
+    menu.subscribe(elementSet.menuItems.help.about.textContent, actionRequest => {
+        if (!actionRequest) return true;
+        showMessage(definitionSet.aboutDialog(metadata), elementSet.editor);
+        return true;
+    }).subscribeToShortcut(definitionSet.menuShortcuts.helpAbout); //help.about
+
+    menu.subscribe(elementSet.menuItems.help.sourceCode.textContent, actionRequest => {
+        if (!actionRequest) return true;
+        window.bridgeMetadata.showSource();
+        elementSet.editor.focus();
+        return true;
+    }); //help.sourceCode
 
 }; //subscribe

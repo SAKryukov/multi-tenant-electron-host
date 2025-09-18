@@ -48,7 +48,7 @@ const pluginProcessor = (() => {
                     if (!actionRequested)
                         return true;
                     else
-                        modalDialog.show(definitionSet.plugin.exceptionExplanation(itemData.filename, itemData.error));
+                        showMessage(definitionSet.plugin.exceptionExplanation(itemData.filename, itemData.error), elementSet.editor);
                 }, { filename: value.originalFilename, error: value.status.error });
                 errorMenuItem.changeText(definitionSet.plugin.excepton);
                 definitionSet.plugin.styleMenuItem(errorMenuItem, false, true);
@@ -57,7 +57,7 @@ const pluginProcessor = (() => {
                     if (!actionRequested)
                         return true;
                     else
-                        modalDialog.show(definitionSet.plugin.unregisteredExplanation(itemData.filename, itemData.error));
+                        showMessage(definitionSet.plugin.unregisteredExplanation(itemData.filename, itemData.error), elementSet.editor);
                 }, { filename: value.originalFilename });
                 definitionSet.plugin.styleMenuItem(invalidMenuItem, false, true);
                 invalidMenuItem.changeText(definitionSet.plugin.invalid);
@@ -95,9 +95,9 @@ const pluginProcessor = (() => {
                     elementSet.editorAPI.clearSelectionStack();
                     const pluginReturn = plugin.handler(elementSet.editorAPI);
                     if (pluginReturn != null)
-                        modalDialog.show(definitionSet.plugin.returnResult(plugin.name, pluginReturn.toString()));
+                        showMessage(definitionSet.plugin.returnResult(plugin.name, pluginReturn.toString()), elementSet.editor);
                 } catch (e) {
-                    modalDialog.show(definitionSet.plugin.returnResult(plugin.name, e.toString(), true));
+                    showMessage(definitionSet.plugin.returnResult(plugin.name, e.toString(), true), elementSet.editor);
                 } //exception
             } //if
             elementSet.editor.focus();

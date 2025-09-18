@@ -90,7 +90,7 @@ const adHocUtility = (() => {
                             lineColumn.line.value = persistGotoLineColumn;
                         }, //goto action
                     }, // button Go to
-                    { text: "Close", isEscape: true, },
+                    { text: "Close", isEscape: true, action: () => editor.focus() },
                 ],
                 options: { initialFocus: lineLine.input },
             });
@@ -145,9 +145,9 @@ const adHocUtility = (() => {
                 { text: "Yes", isDefault: true, action: yesAction, },
                 { text: "No", action: noAction, },
                 { text: "Complete Replacements", action: breakAction, },
-                { isEscape: true, text: "Cancel All Replacements" },
+                { isEscape: true, text: "Cancel All Replacements", action: () => elementSet.editor.focus() },
             ]});
-        }, //
+        }, //replaceConfirmation
     }; //implementation
 
     return implementation;
