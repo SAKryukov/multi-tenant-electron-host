@@ -19,14 +19,21 @@ module.exports.tenant = tenantRoot => {
     }; //handlePlugins
 
     const applicationPackage = (() => {
-        const getJSON = filename => {
-            const fullName = path.join(app.getAppPath(), tenantRoot, filename);
+        const getJSON = (filename, host) => {
+            const fullName = 
+                host 
+                    ? path.join(app.getAppPath(), filename)
+                    : path.join(app.getAppPath(), tenantRoot, filename);
             if (fs.existsSync(fullName))
                 return JSON.parse(fs.readFileSync(fullName));
         };
         const packageJSON = getJSON(definitionSet.paths.package);
         const metadataJSON = getJSON(definitionSet.paths.metadata);
         packageJSON.metadata = metadataJSON;
+        if (tenantRoot) {
+            const hostApplicationPackage = getJSON(definitionSet.paths.package, true);
+            packageJSON.applicationHostDescription = hostApplicationPackage.description;
+        } //if
         return packageJSON;
     })(); //applicationPackage
 

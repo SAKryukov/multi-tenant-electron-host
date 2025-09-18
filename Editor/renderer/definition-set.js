@@ -47,9 +47,14 @@ const getDefinitionSet = () => {
             },
             nameInMenu: name => `${name}`,
         },
-        aboutDialog: metadata =>
-            `<h4><img src="../images/editor.png"/>${metadata?.package?.description}</h4>
-            <br/>Application version: ${metadata.applicationVersion}
+        aboutDialog: metadata => {
+            const hostVersionLine =
+                metadata?.package?.applicationHostDescription
+                    ? `<br/>${metadata.package.applicationHostDescription} version: ${metadata.applicationVersion}`
+                    : "";
+            return `<h4><img src="../images/editor.png"/>${metadata?.package?.description}</h4>
+            <br/>Application version: ${metadata.package.version}
+            ${hostVersionLine}
             <br/>
             <br/>Platform: ${metadata.platform}
             <br/>CPU architecture: ${metadata.architecture}
@@ -59,7 +64,8 @@ const getDefinitionSet = () => {
             <br/>Node.js: v.&thinsp;${metadata.versions.node}
             <br/>
             <br/>${metadata?.package?.metadata?.copyright}
-            <br/><br/>`,
+            <br/><br/>`
+        }, //aboutDialog
         modifiedTextOperationConfirmation: {
             saveAsEvent: new Event("save-as"),
             saveExistingEvent: new Event("save-existing"),
