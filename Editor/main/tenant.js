@@ -20,7 +20,7 @@ module.exports.tenant = tenantRoot => {
 
     const applicationPackage = (() => {
         const getJSON = (filename, host) => {
-            const fullName = 
+            const fullName =
                 host 
                     ? path.join(app.getAppPath(), filename)
                     : path.join(app.getAppPath(), tenantRoot, filename);

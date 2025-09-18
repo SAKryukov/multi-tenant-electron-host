@@ -3,7 +3,9 @@ const fs = require("fs");
 const { argv } = require("node:process");
 const path = require("node:path");
 
-const medatadaFile = "../Editor/metadata.json";
+const application = "Editor"; // can be changed to "" to build multi-tenant-host
+
+const medatadaFile = `../${application}/metadata.json`;
 const supportedCombinations =[
     "darwin arm64",
     "darwin x64",
@@ -57,9 +59,9 @@ let copyright = ""
 if (metadata && metadata.copyright)
     copyright = metadata.copyright;
 if (copyright)
-    copyright = `--appCopyright="${copyright}"`;
+    copyright = `--appCopyright="${copyright}"`.replace("&copy;", String.fromCharCode(0xA9));
 
-const command = `npx @electron/packager ../Editor --overwrite --platform=${parsedArguments.platform} --arch=${parsedArguments.architecture} ${exe} ${copyright} --asar`;
+const command = `npx @electron/packager ../${application} --overwrite --platform=${parsedArguments.platform} --arch=${parsedArguments.architecture} ${exe} ${copyright} --asar`;
 
 exec(command, (error, stdout, stderr) => {
     if (error) {
