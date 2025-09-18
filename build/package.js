@@ -4,6 +4,9 @@ const { argv } = require("node:process");
 const path = require("node:path");
 
 const application = "Editor"; // can be changed to "" to build multi-tenant-host
+//const application = "";
+// with "Editor", the error is:
+// cannot find ../../agnostic/main/definitionSet
 
 const medatadaFile = `../${application}/metadata.json`;
 const supportedCombinations =[

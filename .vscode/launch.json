@@ -31,8 +31,9 @@
       "name": "Build",
       "type": "node",
       "program": "${workspaceFolder}/build/package.js",
+      "cwd": "${workspaceFolder}/build",
       "request": "launch",
-      "args": ["linux", "x64"],
+      "args": ["win32", "ia32"],
       "skipFiles": [
         "<node_internals>/**"
       ],
