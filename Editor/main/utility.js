@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports.utilitySet = (() => {
 
     let definitionSet, BrowserWindow, dialog, fs, window, path, Menu;
@@ -17,7 +19,7 @@ module.exports.utilitySet = (() => {
                 ? process.argv[process.argv.length - 1]
                 : null;
             if (!fileSystem.existsSync(filename)) return null;
-            const lstat = fileSystem.lstatSync(filename);
+            const lstat = fileSystem.statSync(filename);
             if (!lstat.isFile()) return null; // to prevent failure with the application directory passed to electron
             return filename;
         }, //processCommandLine

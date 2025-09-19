@@ -1,3 +1,5 @@
+"use strict";
+
 const definitionSet = {
     events: {
         activate: 0,

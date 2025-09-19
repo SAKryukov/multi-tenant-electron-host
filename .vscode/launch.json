@@ -28,6 +28,19 @@
       "file": "${workspaceFolder}/Editor/renderer/index.html", 
     },
     {
+      "name": "Multi-tenant Host",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "c:/app/Node.js/node_modules/.bin/electron.cmd",
+      "windows": {
+        "runtimeExecutable": "c:/app/Node.js/node_modules/electron/dist/electron.exe"
+      },
+      "args" : ["${workspaceFolder}", "--trace-warnings", "${workspaceFolder}/test.txt"],
+      "outputCapture": "std"
+    },
+
+    {
       "name": "Build",
       "type": "node",
       "program": "${workspaceFolder}/build/package.js",
