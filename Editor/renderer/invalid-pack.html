@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root {
+            --padding: 0.4em;
+        }
+        * { font-family: sans-serif; }
+        section { color: red; font-size: 14pt; }
+        ol, ul { color: black; }
+        code {
+            font-family: monospace; font-size: 16pt;
+            background-color: antiquewhite;
+            padding-left: var(--padding);
+            padding-right: var(--padding);
+        }
+    </style>
+</head>
+<body>
+    <section>
+        This application pack cannot work as a stand-alone application. Here are the valid alternatives:
+        <ol>
+            <li>Pack the application multi-tenant-host. Use it with the command-line argument <code>&lt;Editor&gt;</code>.</li>
+            <li>Execute the application under electron: <code>electron .</code></li>
+        </ol>
+    </section>
+</body>
+</html>

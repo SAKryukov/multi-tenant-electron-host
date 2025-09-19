@@ -45,7 +45,7 @@ module.exports.tenant = tenantRoot => {
                     shell.openExternal(source);
             } //if
         }); //metadata.source
-        utilitySet.setup({ definitionSet, dialog, fs, window });
+        utilitySet.setup({ window });
         ipcMain.on(ipcChannel.fileIO.openFile, (_event, defaultPath) => {
             utilitySet.openFile((filename, text, error) => {
                 window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
@@ -132,6 +132,8 @@ module.exports.tenant = tenantRoot => {
     }; //createWindow
 
     app.whenReady().then(() => {
+        utilitySet.setup({ definitionSet, BrowserWindow, dialog, fs, path, Menu });
+        //if (utilitySet.handleInvalidApplicationPack(app)) return; //SA!!! provision for future multi-tenant use
         const filename = utilitySet.processCommandLine(fs);
         const baseTitle = applicationPackage?.description;
         const title = filename

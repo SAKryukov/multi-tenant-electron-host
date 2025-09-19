@@ -1,12 +1,15 @@
 module.exports.utilitySet = (() => {
 
-    let definitionSet, dialog, fs, window;
+    let definitionSet, BrowserWindow, dialog, fs, window, path, Menu;
     const utilitySet = {
         setup: values => {
-            definitionSet = values.definitionSet;
-            dialog = values.dialog;
-            fs = values.fs;
-            window = values.window;
+            if (values.definitionSet) definitionSet = values.definitionSet;
+            if (values.BrowserWindow) BrowserWindow = values.BrowserWindow;
+            if (values.dialog) dialog = values.dialog;
+            if (values.fs) fs = values.fs;
+            if (values.path) path = values.path;
+            if (values.window) window = values.window;
+            if (values.Menu) Menu = values.Menu;
         }, //setup
         processCommandLine: fileSystem => {
             if (!fileSystem) fileSystem = fs; // this way, this function can be called with or without setup
@@ -40,6 +43,18 @@ module.exports.utilitySet = (() => {
                 fs.writeFile(filenane, text, {}, error =>
                     handler(filenane, error));
         }, //saveExistingFile
+        handleInvalidApplicationPack: app => {
+            const applicationPath = app.getAppPath();
+            const result = definitionSet.invalidApplicationPack.isInvalid(applicationPath);
+            if (result) {
+                const window = new BrowserWindow(
+                    definitionSet.invalidApplicationPack.createWindowProperties(
+                        path.join(applicationPath, definitionSet.applicationIcon)));
+                window.loadFile(path.join(applicationPath, definitionSet.invalidApplicationPack.pathHTML));
+                Menu.setApplicationMenu(null);
+            } //if
+            return result;
+        }, //handleInvalidApplicationPack
     }; //utilitySet
 
     return utilitySet;
