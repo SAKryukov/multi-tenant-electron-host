@@ -25,7 +25,7 @@ pluginProcessor.registerPlugin({
         let newValue = newLines.join(api.newLine);
         newValue = newValue.replace(/^\s+|\s+$/g, '') + api.newLine;
         api.editor.value = newValue;
-        api.scrollTo(oldSelectionEnd, oldSelectionEnd, true); //SA???
+        api.scrollTo(oldSelectionEnd, oldSelectionEnd); //SA???
         if (oldLength != api.editor.textLength)
             api.isModified = true;        
     },

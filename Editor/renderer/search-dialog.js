@@ -79,7 +79,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
                     } //loop
                     resetFindings();
                     elementSet.editor.focus();
-                    adHocUtility.scrollTo(elementSet.editor, 0, 0, true);                   
+                    adHocUtility.scrollTo(elementSet.editor, 0, 0);                   
                     return;
                 } //if
                 const finding = findings[replacementIndex];
@@ -174,7 +174,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
         if (bestIndex == null)
             return;
         elementSet.editor.focus();
-        adHocUtility.scrollTo(elementSet.editor, findings[bestIndex][0], findings[bestIndex][1], true);
+        adHocUtility.scrollTo(elementSet.editor, findings[bestIndex][0], findings[bestIndex][1]);
     }; //findNext
 
     const findAll = pattern => {

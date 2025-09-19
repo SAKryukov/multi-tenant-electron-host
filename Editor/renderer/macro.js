@@ -94,7 +94,7 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
             let currentState = getState(editor);
             const range = currentState.position + element.delta.position;
             editor.setRangeText(element.data, range - element.data.length, range - element.delta.length);
-            adHocUtility.scrollTo(editor, range, range, true);
+            adHocUtility.scrollTo(editor, range, range);
             editorAPI.isModified = true;
         } //loop
         editor.setSelectionRange(lastSelection[0] + delta, lastSelection[1] + delta);

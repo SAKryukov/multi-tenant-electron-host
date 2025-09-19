@@ -46,14 +46,13 @@ const createEditorAPI = (elementSet, searchAPI) => {
                 const column = lines[lines.length-1].length + 1;
                 return [row, column];
             }, //positionToCursor
-            scrollTo: (start, end, select) =>
-                adHocUtility.scrollTo(editor, start, end, select),
+            scrollTo: (start, end) =>
+                adHocUtility.scrollTo(editor, start, end),
             scrollToSelection: () =>
                 adHocUtility.scrollTo(
                     editor,
                     editor.selectionStart,
-                    editor.selectionEnd,
-                    true),
+                    editor.selectionEnd),
             find: pattern => searchAPI.find(pattern),
             findNext: () => searchAPI.findNextPrevious(false),
             findPrevious: () => searchAPI.findNextPrevious(true),
@@ -61,7 +60,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
             popSelection: toMove => {
                 const location = selectionStack.pop();
                 if (toMove)
-                    adHocUtility.scrollTo(editor, location[0], location[1], true);
+                    adHocUtility.scrollTo(editor, location[0], location[1]);
                 return location;
             }, //popSelection
             clearSelectionStack: () => selectionStack.length = 0,

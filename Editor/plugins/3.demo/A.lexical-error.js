@@ -5,7 +5,7 @@ pluginProcessor.registerPlugin({
     description: "Select previous word",
     handler: api => {
         const point = api.previousWord;
-        api.scrollTo(point[0], point[1], true);
+        api.scrollTo(point[0], point[1]);
     },
     menuItemIndent: demoGroupIndent,
 });

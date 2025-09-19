@@ -7,7 +7,7 @@ pluginProcessor.registerPlugin({
         const pattern = api.selectedText;
         api.editor.setSelectionRange(api.editor.selectionStart, api.editor.selectionStart);
         api.find(pattern);
-        api.scrollTo(0, 0, true);
+        api.scrollTo(0, 0);
     },
     isEnabled: api =>  api.selectionLength > 0,
     menuItemIndent: demoGroupIndent,

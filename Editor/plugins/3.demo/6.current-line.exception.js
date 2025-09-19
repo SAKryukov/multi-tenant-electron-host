@@ -5,7 +5,7 @@ pluginProcessor.registerPlugin({
     description: "Current Line demonstrates exception handling by the editor API",
     handler: api => {
         point = api.currentLines;
-        api.scrollTo(point[0], point[1], true);
+        api.scrollTo(point[0], point[1]);
     },
     isEnabled: api => api.editor.textLength > 0,
     menuItemIndent: demoGroupIndent,
