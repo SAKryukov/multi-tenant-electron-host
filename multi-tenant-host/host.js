@@ -9,16 +9,16 @@ const tenants = (() => {
     const applicationPath = app.getAppPath();
     const entries = fs.readdirSync(applicationPath);
     const result = new Map();
+    const currentDirectory = process.cwd();
     for (const entry of entries) {
         const filename = path.join(applicationPath, entry);
-        //const lstat = fs.lstatSync(filename); //statSync(path) //SA??? deprecated
-        //if (lstat.isFile()) continue;
         const packageFile = path.join(filename, definitionSet.paths.package);
         if (!fs.existsSync(packageFile)) continue;
         const tenantFile = path.join(filename, definitionSet.paths.tenant(path.join));
         if (!fs.existsSync(tenantFile)) continue;
         result.set(entry, tenantFile);
     } //loop
+    process.chdir(currentDirectory);
     return result;
 })();
 const tenantChoices = (tenants => {
