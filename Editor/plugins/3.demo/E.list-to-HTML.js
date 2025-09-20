@@ -14,6 +14,7 @@ pluginProcessor.registerPlugin({
             position += line.length + 1;
         } //loop
         for (let index = starts.length - 1; index >= 0; --index) {
+            if (lines[index].trim().length < 1) continue;
             const start = starts[index];
             const left = "<li>"; const right = "</li>";
             const rightPosition = start + lines[index].length;
