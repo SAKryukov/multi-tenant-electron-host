@@ -114,8 +114,8 @@ const getDefinitionSet = () => {
                 const lines = text.substring(0, offset).split("\n");
                 return lines.length;
             },
-            macroRecording: "Recording keyboard macro&hellip; press Ctrl+Shift+R to stop",
-            macroAvailable: "Keyboard macro is ready to play, press Ctrl+Shift+P",
+            macroRecording: "Recording macro&hellip; press Ctrl+Shift+R to stop",
+            macroAvailable: "Macro is ready to play, press Ctrl+Shift+P",
             macroIndicatorAnimation: "blinker 0.9s ease-out infinite",
         }, //status
         macro: {
