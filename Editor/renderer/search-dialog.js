@@ -29,6 +29,12 @@ const createSearchDialog = (definitionSet, elementSet) => {
         };
     })(definitionSet.search.optionClassName.up, definitionSet.search.optionClassName.down);
 
+    const replaceSpecialCharacters = value => {
+        for (const replacement of definitionSet.search.specialCharacterReplacements)
+            value = value.replaceAll(replacement[0], replacement[1]);
+        return value;
+    }; //replaceSpecialCharacters
+
     let isShown = false;
     let findings, replacementIndex;
     const resetFindings = () => {
@@ -40,7 +46,10 @@ const createSearchDialog = (definitionSet, elementSet) => {
     const prepareRegexp = (pattern, global) => {
         const ignoreCase = !searchOptionSet.matchCase.value;
         const useRegularExpression = searchOptionSet.useRegularExpression.value;
+        const useSpecialCharacters = searchOptionSet.useSpecialCharacters.value;
         const flags = definitionSet.search.regularExpressionFlags(ignoreCase, global);
+        if (useSpecialCharacters)
+            pattern = replaceSpecialCharacters(pattern);
         if (!useRegularExpression)
             pattern = RegExp.escape(pattern);
         if (searchOptionSet.matchWholeWord.value)
@@ -132,8 +141,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
         let replaceString = elementSet.search.inputReplace.value;
         if (!replaceString) return;
         if (searchOptionSet.useSpecialCharacters.value)
-            for (const replacement of definitionSet.search.specialCharacterReplacements)
-                replaceString = replaceString.replaceAll(replacement[0], replacement[1]);
+            replaceString = replaceSpecialCharacters(replaceString);
         if (searchOptionSet.askConfirmation.value) {
             confirmationReplacer.replaceString = replaceString;
             confirmationReplacer.replaceOneByOne();
