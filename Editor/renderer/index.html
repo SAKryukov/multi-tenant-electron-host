@@ -42,7 +42,8 @@
             white-space: nowrap;
             background-color: white;
         }
-        textarea, #measure-big, #measure-small { font-size: 14pt; font-family: monospace; }
+        /* size should be obly on pixels in the line below: */
+        textarea, #measure-big, #measure-small { font-family: monospace; font-size: 20px; line-height: 22px; }
         #measure-big, #measure-small { visibility: hidden; top:0; right:0; padding:0; position: absolute; }            
         header { background-color: aliceblue; }
         footer { background-color: linen; }
@@ -56,7 +57,7 @@
 </head>
 <body>
     <!--Important! measures for scrollTo(elementSet.editor...): -->
-    <p id="measure"><p><span  id="measure-big">ab<br>|</span></p><p><span id="measure-small">c</span></p></p>
+    <p id="measure"><p><span  id="measure-big">ab<br/>|</span></p><p><span id="measure-small">c</span></p></p>
     <header>
             <menu>
                 <li>

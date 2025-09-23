@@ -10,7 +10,7 @@ const adHocUtility = (() => {
             if (this.measure == null) {
                 const measureBig = elementSet.search.measure.big;
                 const measureSmall = elementSet.search.measure.small;
-                const lineHeight = measureBig.offsetHeight - measureSmall.offsetHeight;
+                let lineHeight = measureBig.offsetHeight - measureSmall.offsetHeight;
                 const columnWidth = measureBig.offsetWidth - measureSmall.offsetWidth;
                 this.measure = { lineHeight, columnWidth };
                 Object.freeze(implementation);
@@ -23,7 +23,7 @@ const adHocUtility = (() => {
             let sliceX = text.slice(left, end);
             let sliceY = text.substring(0, end);
             sliceY = sliceY.split(definitionSet.newLine);
-            let scrollTop = (sliceY.length + 1) * lineHeight;
+            let scrollTop = (sliceY.length + 2) * lineHeight;
             let scrollLeft = (sliceX.length + 1) * columnWidth;
             const editorHeight = editor.clientHeight;
             const editorWidth = editor.clientWidth;

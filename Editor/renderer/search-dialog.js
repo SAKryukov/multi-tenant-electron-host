@@ -172,9 +172,10 @@ const createSearchDialog = (definitionSet, elementSet) => {
         const location = previous ? elementSet.editor.selectionStart : elementSet.editor.selectionEnd;
         const bestIndex = binaryBestSearch(location, previous);
         if (bestIndex == null)
-            return;
+            return false;
         elementSet.editor.focus();
         adHocUtility.scrollTo(elementSet.editor, findings[bestIndex][0], findings[bestIndex][1]);
+        return true;
     }; //findNext
 
     const findAll = pattern => {
@@ -209,7 +210,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
         if (!findings.length) return;
         if (elementSet.editor.selectionEnd != elementSet.editor.selectionStart)
             elementSet.editor.selectionEnd = elementSet.editor.selectionStart;
-        findNext();
+        if (!findNext()) findNext(true);
     }; //find
 
     elementSet.search.inputFind.oninput = resetFindings;
