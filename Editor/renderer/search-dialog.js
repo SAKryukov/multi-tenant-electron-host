@@ -37,16 +37,21 @@ const createSearchDialog = (definitionSet, elementSet) => {
     }; //resetFindings
     resetFindings();
 
-    const prepareRegexp = (searchString, global) => {
+    const prepareRegexp = (pattern, global) => {
         const ignoreCase = !searchOptionSet.matchCase.value;
         const useRegularExpression = searchOptionSet.useRegularExpression.value;
         const flags = definitionSet.search.regularExpressionFlags(ignoreCase, global);
         if (!useRegularExpression)
-            searchString = RegExp.escape(searchString);
+            pattern = RegExp.escape(pattern);
         if (searchOptionSet.matchWholeWord.value)
-            searchString = definitionSet.search.regularExpressionWholeWord(searchString);
-        searchString = new RegExp(searchString, flags);
-        return searchString;
+            pattern = definitionSet.search.regularExpressionWholeWord(pattern);
+        try {
+            pattern = new RegExp(pattern, flags);
+        } catch (exception) {
+            definitionSet.search.regularExpressionException(exception, elementSet.editor);
+            return null;
+        } //exception
+        return pattern;
     }; //prepareRegexp
 
     const replaceAll = replaceString => {
@@ -68,15 +73,16 @@ const createSearchDialog = (definitionSet, elementSet) => {
             () => { //handler
                 if (replacementIndex >= findings.length) {
                     const pattern = prepareRegexp(elementSet.search.inputFind.value, false); // non-global
-                    for (let index = findings.length - 1; index >= 0; --index) {
-                        const finding = findings[index];
-                        if (!finding[2]) continue; // false, that is, not confirmed
-                        const sliceFirst = elementSet.editor.value.substring(0, finding[0]);
-                        let sliceSecond = elementSet.editor.value.substring(finding[0]);
-                        sliceSecond = sliceSecond.replace(pattern, replaceString);
-                        elementSet.editor.value = sliceFirst + sliceSecond;
-                        elementSet.editorAPI.isModified = true;
-                    } //loop
+                    if (pattern)
+                        for (let index = findings.length - 1; index >= 0; --index) {
+                            const finding = findings[index];
+                            if (!finding[2]) continue; // false, that is, not confirmed
+                            const sliceFirst = elementSet.editor.value.substring(0, finding[0]);
+                            let sliceSecond = elementSet.editor.value.substring(finding[0]);
+                            sliceSecond = sliceSecond.replace(pattern, replaceString);
+                            elementSet.editor.value = sliceFirst + sliceSecond;
+                            elementSet.editorAPI.isModified = true;
+                        } //loop
                     resetFindings();
                     elementSet.editor.focus();
                     adHocUtility.scrollTo(elementSet.editor, 0, 0);                   
@@ -99,8 +105,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
                         replacementIndex++;  baseAction(); },
                     () => { //breakAction
                         replacementIndex = findings.length;  baseAction(); },
-                ); //adHocUtility.replaceConfirmation
-                
+                ); //adHocUtility.replaceConfirmation                
             } //handler
         ); //subscribeToReplaceConfirmation
         const replaceOneByOne = () => {

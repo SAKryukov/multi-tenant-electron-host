@@ -190,6 +190,10 @@ const getDefinitionSet = () => {
                         ? `lines ${lines[0]}-${lines[1]}`
                         : `line ${lines[0]}`,
             }, //replaceConfirmation
+            regularExpressionException: (exception, editor) => showMessage(
+                `<p style="color:red">Regular Expression Error:<br/><br/>${exception.toString()}</p><br/>`,
+                editor
+            ), //regularExpressionException
         }, //search
         menuShortcuts: {
             fileNew: { key: "KeyN", prefix: ["ctrlKey"]},
