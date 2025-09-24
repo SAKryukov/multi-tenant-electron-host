@@ -3,8 +3,6 @@
 const createSearchDialog = (definitionSet, elementSet) => {
 
     const searchOptionSet = ((cssClassUp, cssClassDown) => {
-        definitionSet.search.showLegend(elementSet.search.options.specialCaseLegend, false);
-        definitionSet.search.showLegend(elementSet.search.options.regularExpressionReplacementLegend, false);
         const twoStateMatchCase =
             createTwoStateButton(elementSet.search.options.matchCase, cssClassUp, cssClassDown, true);
         const twoStateRegularExpression =
