@@ -19,6 +19,7 @@
 }
 #id-search-dialog:hover, 
 #id-search-dialog:focus-within { opacity: 1; }
+#id-search-dialog:focus-within { background-color: linen; border-color: hsl(30, 67%, 60%); border-width: 2px; }
 
 #id-search-dialog p { margin-top: 0.3em; }
 #id-search-dialog p:first-of-type { margin-top: 0; }

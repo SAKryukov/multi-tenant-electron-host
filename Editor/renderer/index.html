@@ -44,6 +44,8 @@
         }
         /* size should be obly on pixels in the line below: */
         textarea, #measure-big, #measure-small { font-family: monospace; font-size: 20px; line-height: 22px; }
+        textarea { background-color: hsl(0, 0%, 84%); }
+        textarea:focus { background-color: white; }
         #measure-big, #measure-small { visibility: hidden; top:0; right:0; padding:0; position: absolute; }            
         header { background-color: aliceblue; }
         footer { background-color: linen; }
@@ -52,7 +54,7 @@
                 padding: var(--status-delta-Y);
                 padding-left: var(--status-delta-X); padding-right: var(--status-delta-X); }
         #id-modified-flag, #id-macro-flag { display: none; } /* initial state */
-        @keyframes blinker { 50% { opacity: 0;  } }                
+        @keyframes blinker { 50% { opacity: 0;  } }
     </style>
 </head>
 <body>
