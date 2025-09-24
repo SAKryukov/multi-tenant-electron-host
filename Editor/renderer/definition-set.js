@@ -108,8 +108,10 @@ const getDefinitionSet = () => {
         },
         status: {
             modified: "Modified",
-            cursorPosition: (row, column) =>
-                `${row}&thinsp;:&thinsp;${column}`,
+            cursorPosition: (start, end) =>
+                (start[0] == end[0] && start[1] == end[1])
+                    ? `${start[0]}&thinsp;:&thinsp;${start[1]}`
+                    : `<span style="background-color: blue; color: white">&thinsp;${start[0]}&thinsp;:&thinsp;${start[1]}&emsp;${String.fromCharCode(0x21D4)}&emsp;${end[0]}&thinsp;:&thinsp;${end[1]}&thinsp;</span>`,
             line: (text, offset) => {
                 const lines = text.substring(0, offset).split("\n");
                 return lines.length;

@@ -23,9 +23,10 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
             subscribe(elementSet, menu, searchDialogObject.searchDialog, metadata);
             pluginProcessor.processPlugins(definitionSet, elementSet, menu, plugins, pluginsKeyword);
             elementSet.editor.addEventListener(definitionSet.events.selectionchange, event => {
-                const position = elementSet.editorAPI.positionToCursor(event.target.selectionStart);
+                const start = elementSet.editorAPI.positionToCursor(event.target.selectionStart);
+                const end = elementSet.editorAPI.positionToCursor(event.target.selectionEnd);
                 elementSet.statusBar.cursorPositionIndicator.innerHTML =
-                    definitionSet.status.cursorPosition(position[0], position[1]);
+                    definitionSet.status.cursorPosition(start, end);
             }); //editor.onselectionchange
         });
 
