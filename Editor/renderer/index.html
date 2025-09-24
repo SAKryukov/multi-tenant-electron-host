@@ -134,24 +134,36 @@
             <button id="id-search-match-case" title="Match case">&Alpha;&alpha;</button>
             <button id="id-search-whole-word" title="Match  whole word">&#x2223;&MediumSpace;&#x2223;</button>
             <button id="id-search-regexp" title="Use regular expression"><small>&#x2736;</small></button>
-            <button id="id-search-special" title="Use  special characters"><small>\</small></button>
+            <button id="id-search-special" title="Use  special cases"><small>\</small></button>
             <button id="id-search-confirmation" title="Ask  confirmation"><small>?</small></button>
         </p>
+        <section id="id-search-replacement-legend">
+            Use in replacement string:
+            <br/>
+            <table>
+                <tr><td>$$</td><td>Inserts a &ldquo;$&rdquo; itself</td></tr>
+                <tr><td>$&</td><td>Inserts the matched substring</td></tr>
+                <tr><td>$`</td><td>Inserts the portion of the string<br/>that precedes the matched substring</td></tr>
+                <tr><td>$'</td><td>Inserts the portion of the string<br/>that follows the matched substring</td></tr>
+                <tr><td>$<b>n</b></td><td>Inserts the <b>n</b>th (1-indexed)<br/>capturing group<br/>where <b>n</b> is a positive integer<br/>less than 100</td></tr>
+                <tr><td>$&lt;<b>Name</b>&gt;&emsp;</td><td>Inserts the named capturing group<br/>where <b>Name</b> is the group name</td></tr>
+            </table>
+        </section>
         <section id="id-search-special-legend">
             Special cases:
             <br/>
             <table>
-                <tr><td>\\</td><td>:</td><td>backslash (\) itself</td></tr>
+                <tr><td>\\</td><td>:</td><td>backslash &lsquo;<b>\</b>&rsquo; itself</td></tr>
                 <tr><td>\n</td><td>:</td><td>new line</td></tr>
                 <tr><td>\t</td><td>:</td><td>tab</td></tr>
-                <tr><td>\---</td><td>:</td><td>em dash (&mdash;)</td></tr>
-                <tr><td>\--</td><td>:</td><td>en dash (&ndash;)</td></tr>
-                <tr><td>\(</td><td>:</td><td>left single quotation mark (&#x2018;)</td></tr>
-                <tr><td>\)</td><td>:</td><td>right single quotation mark (&#x2019;)</td></tr>
-                <tr><td>\[</td><td>:</td><td>left double quotation mark (&#x201C;)</td></tr>
-                <tr><td>\]</td><td>:</td><td>right double quotation mark (&#x201D;)</td></tr>
-                <tr><td>\<<</td><td>:</td><td>left angle quotation mark (&#x00AB;)</td></tr>
-                <tr><td>\>></td><td>:</td><td>right angle quotation mark (&#x00BB;)</td></tr>
+                <tr><td>\---</td><td>:</td><td>em dash <b>&mdash;</b></b></td></tr>
+                <tr><td>\--</td><td>:</td><td>en dash <b>&ndash;</b></td></tr>
+                <tr><td>\(</td><td>:</td><td>left single quotation mark <b>&#x2018;</b></td></tr>
+                <tr><td>\)</td><td>:</td><td>right single quotation mark <b>&#x2019;</b></td></tr>
+                <tr><td>\[</td><td>:</td><td>left double quotation mark <b>&#x201C;</b></td></tr>
+                <tr><td>\]</td><td>:</td><td>right double quotation mark <b>&#x201D;</b></td></tr>
+                <tr><td>\<<</td><td>:</td><td>left angle quotation mark <b>&#x00AB;</b></td></tr>
+                <tr><td>\>></td><td>:</td><td>right angle quotation mark <b>&#x00BB;</b></td></tr>
             </table>
         </section>
     </dialog>

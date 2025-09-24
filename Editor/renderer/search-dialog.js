@@ -3,7 +3,8 @@
 const createSearchDialog = (definitionSet, elementSet) => {
 
     const searchOptionSet = ((cssClassUp, cssClassDown) => {
-        definitionSet.search.showLegend(elementSet.search.options.legend, false);
+        definitionSet.search.showLegend(elementSet.search.options.specialCaseLegend, false);
+        definitionSet.search.showLegend(elementSet.search.options.regularExpressionReplacementLegend, false);
         const twoStateMatchCase =
             createTwoStateButton(elementSet.search.options.matchCase, cssClassUp, cssClassDown, true);
         const twoStateRegularExpression =
@@ -11,21 +12,31 @@ const createSearchDialog = (definitionSet, elementSet) => {
         const twoStateSpecial =
             createTwoStateButton(elementSet.search.options.useSpecialCharacters, cssClassUp, cssClassDown);
         twoStateSpecial.onchangeState = value => {
-            definitionSet.search.showLegend(elementSet.search.options.legend, value);
-            if (value) twoStateRegularExpression.value = false;
-        } //twoStateSpecial.onchange
+            definitionSet.search.showLegend(elementSet.search.options.specialCaseLegend, value);
+            if (value) {
+                twoStateRegularExpression.value = false;
+                definitionSet.search.showLegend(elementSet.search.options.regularExpressionReplacementLegend, false);
+            } //if
+        }; //twoStateSpecial.onchange
+        const adjustRegularExpressionReplacementLegendVisibility = () => {
+            definitionSet.search.showLegend(elementSet.search.options.regularExpressionReplacementLegend,
+                twoStateRegularExpression.value && elementSet.search.inputReplace.checkVisibility());
+        }; //adjustRegularExpressionReplacementLegendVisibility
         twoStateRegularExpression.onchangeState = value => {
+            definitionSet.search.showLegend(elementSet.search.options.regularExpressionReplacementLegend,
+                value && elementSet.search.inputReplace.checkVisibility());
             if (value) {
                 twoStateSpecial.value = false;
-                definitionSet.search.showLegend(elementSet.search.options.legend, false);
+                definitionSet.search.showLegend(elementSet.search.options.specialCaseLegend, false);
             } //if
-        } //twoStateRegularExpression.onchange
+        }; //twoStateRegularExpression.onchange
         return {
             matchCase: twoStateMatchCase,
             matchWholeWord: createTwoStateButton(elementSet.search.options.matchWholeWord, cssClassUp, cssClassDown),
             useRegularExpression: twoStateRegularExpression,
             useSpecialCharacters: twoStateSpecial,
             askConfirmation: createTwoStateButton(elementSet.search.options.askConfirmation, cssClassUp, cssClassDown, true),
+            adjustRegularExpressionReplacementLegendVisibility,
         };
     })(definitionSet.search.optionClassName.up, definitionSet.search.optionClassName.down);
 
@@ -258,6 +269,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
         show: isReplaceView => {
             definitionSet.search.showInput(elementSet.search.inputReplace, isReplaceView);
             definitionSet.search.showButton(searchOptionSet.askConfirmation.element, isReplaceView);
+            searchOptionSet.adjustRegularExpressionReplacementLegendVisibility();
             if (!isShown)
                 elementSet.search.dialog.show();
             const focusControl = isReplaceView && !!elementSet.search.inputFind.value

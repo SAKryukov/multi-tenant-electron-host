@@ -21,7 +21,8 @@ const getElementSet = document => {
                 useRegularExpression: document.querySelector("#id-search-regexp"),
                 useSpecialCharacters: document.querySelector("#id-search-special"),
                 askConfirmation: document.querySelector("#id-search-confirmation"),
-                legend: document.querySelector("#id-search-special-legend"),
+                specialCaseLegend: document.querySelector("#id-search-special-legend"),
+                regularExpressionReplacementLegend: document.querySelector("#id-search-replacement-legend"),
             }, //options
         }, //search
         statusBar: {

@@ -50,7 +50,7 @@
     border-top-color: black; border-left-color: black;
 }
 
-section#id-search-special-legend {
+section#id-search-special-legend, section#id-search-replacement-legend {
     display: none;
     padding-left: 0;
     padding-top: 0.4em;
@@ -62,10 +62,16 @@ section#id-search-special-legend {
     padding-bottom: 0;
 }
 
-section#id-search-special-legend > table {
+section#id-search-special-legend > table, section#id-search-replacement-legend > table {
     display: block;
     margin-left: 1em;
     margin-top: 0em;
+}
+section#id-search-special-legend > table td, section#id-search-replacement-legend > table td {
+    vertical-align: top;
+}
+section#id-search-special-legend > table b, section#id-search-replacement-legend > table b {
+    color: blue;
 }
 
 section#id-search-special-legend > table td:nth-last-of-type(2) { padding-right: 1em; }
