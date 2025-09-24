@@ -305,4 +305,22 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         return true;
     }); //help.sourceCode
 
+    if (GravitySensor) {
+        navigator.permissions.query({ name: definitionSet.status.gravitySensor.permissionName }).then(permission => {
+            if (permission.state == definitionSet.status.gravitySensor.permissionState) {                
+                let shown = false;
+                const sensor = new GravitySensor({ frequency: definitionSet.status.gravitySensor.frequency });
+                const showTilt = (x, y) => {
+                    const tilt = definitionSet.status.gravitySensor.tilt(x, y);
+                    if (!shown)
+                        definitionSet.ui.showInline(elementSet.statusBar.tiltFlag, !shown);
+                    elementSet.statusBar.tiltFlag.textContent = tilt;
+                    shown = true;
+                }; //showTilt
+                sensor.addEventListener(definitionSet.events.reading, event => showTilt(event.target.x, event.target.y)); sensor.start();
+                sensor.start();
+            } //if granted
+        }); //permissions query
+    } //if GravitySensor
+
 }; //subscribe

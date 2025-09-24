@@ -53,7 +53,7 @@
             { background-color: hsl(30, 67%, 80%);
                 padding: var(--status-delta-Y);
                 padding-left: var(--status-delta-X); padding-right: var(--status-delta-X); }
-        #id-modified-flag, #id-macro-flag { display: none; } /* initial state */
+        #id-modified-flag, #id-macro-flag, #id-tilt-flag { display: none; } /* initial state */
         @keyframes blinker { 50% { opacity: 0;  } }
     </style>
 </head>
@@ -121,7 +121,7 @@
     <main><textarea spellcheck="false"></textarea></main>
     <footer>
         <span>
-            <span id="id-position-indicator" title="Cursor/selection  location"></span>&nbsp;<span id="id-modified-flag"></span>&nbsp;<span id="id-macro-flag"></span>
+            <span id="id-position-indicator" title="Cursor/selection  location"></span>&nbsp;<span id="id-modified-flag"></span>&nbsp;<span id="id-macro-flag"></span>&nbsp;<span id="id-tilt-flag"></span>
         </span>
         <small id="id-copyright"></small>
     </footer>

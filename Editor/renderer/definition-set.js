@@ -95,6 +95,7 @@ const getDefinitionSet = () => {
             keydown: 0,
             selectionchange: 0,
             input: 0,
+            reading: 0, // Sensor: GravitySensor, Accelerometer...
             //custom:
             editorTextModified: 0,
         }, //events
@@ -109,9 +110,20 @@ const getDefinitionSet = () => {
         status: {
             modified: "Modified",
             cursorPosition: (start, end) =>
-                (start[0] == end[0] && start[1] == end[1])
-                    ? `${start[0]}&thinsp;:&thinsp;${start[1]}`
-                    : `<span style="background-color: blue; color: white">&thinsp;${start[0]}&thinsp;:&thinsp;${start[1]}&emsp;${String.fromCharCode(0x21D4)}&emsp;${end[0]}&thinsp;:&thinsp;${end[1]}&thinsp;</span>`,
+                start == undefined
+                    ? `${1}&thinsp;:&thinsp;${1}`
+                    : ((start[0] == end[0] && start[1] == end[1])
+                        ? `${start[0]}&thinsp;:&thinsp;${start[1]}`
+                        : `<span style="background-color: blue; color: white">&thinsp;${start[0]}&thinsp;:&thinsp;${start[1]}&emsp;${String.fromCharCode(0x21D4)}&emsp;${end[0]}&thinsp;:&thinsp;${end[1]}&thinsp;</span>`),
+            gravitySensor: {
+                frequency: 10,
+                permissionName: "accelerometer",
+                permissionState: "granted",
+                tilt: (x, y) => {
+                    const angle = y == 0 ? 0 : Math.round(Math.atan(x/y) * 1800 / Math.PI) / 10;
+                    return `${angle}${String.fromCharCode(0xB0)}`.replace("-", String.fromCharCode(0x2212));
+                }, //tilt
+            }, //gravitySensor
             line: (text, offset) => {
                 const lines = text.substring(0, offset).split("\n");
                 return lines.length;
