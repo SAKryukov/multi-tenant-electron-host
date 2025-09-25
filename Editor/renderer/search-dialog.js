@@ -103,7 +103,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
                         } //loop
                     resetFindings();
                     elementSet.editor.focus();
-                    adHocUtility.scrollTo(elementSet.editor, 0, 0);                   
+                    adHocUtility.scrollTo(elementSet.editor, 0, 0);
                     return;
                 } //if
                 const finding = findings[replacementIndex];
@@ -120,10 +120,10 @@ const createSearchDialog = (definitionSet, elementSet) => {
                     () => { //yesAction
                         findings[replacementIndex++].push(true); baseAction(); },
                     () => { //noAction
-                        replacementIndex++;  baseAction(); },
+                        replacementIndex++; baseAction(); },
                     () => { //breakAction
-                        replacementIndex = findings.length;  baseAction(); },
-                ); //adHocUtility.replaceConfirmation                
+                        replacementIndex = findings.length; baseAction(); },
+                ); //adHocUtility.replaceConfirmation
             } //handler
         ); //subscribeToReplaceConfirmation
         const replaceOneByOne = () => {
@@ -133,7 +133,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
             replacementIndex = 0;
             elementSet.editor.dispatchEvent(definitionSet.search.replaceConfirmation.event);
         }; //replaceOneByOne
-        // prepare replacer:        
+        // prepare replacer:
         const replacer = { replaceOneByOne };
         Object.defineProperties(replacer, {
             replaceString: {
@@ -280,7 +280,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
         findNext,
         replace,
     }; //searchDialog
-    
+
     return { searchDialog, api: { find: findAllAPI, canFindNextPrevious: canFindNext, findNextPrevious: findNext } };
 
 };

@@ -32,7 +32,7 @@ const createTwoStateButton = (element, cssClassUp, cssClassDown, initialDown) =>
             event.preventDefault();
         } //if
     }; //element.onkeyup
-    
+
     Object.defineProperties(twoStateButton, {
         value: {
             get() { return twoStateButton.isDown; },
@@ -46,7 +46,7 @@ const createTwoStateButton = (element, cssClassUp, cssClassDown, initialDown) =>
         }, //onchangeState
         element: {
             get() { return element; }
-        }, 
+        },
     });
 
     return twoStateButton;

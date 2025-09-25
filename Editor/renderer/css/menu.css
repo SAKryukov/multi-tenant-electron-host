@@ -19,10 +19,10 @@ http://www.codeproject.com/Members/SAKryukov
     --border-radius-context-menu: 9px 9px 9px 9px;
 }
 
-header menu { display:  flex; flex-direction: row; }
+header menu { display: flex; flex-direction: row; }
 header { padding-left: 3px; }
 footer { padding: var(--padding-horizontal); }
-header menu { display:  table-row; border: none; outline: none; }
+header menu { display: table-row; border: none; outline: none; }
 header menu li { display: table-cell; }
 header menu header { padding: var(--padding); }
 header menu header.selected { background-color: lightgrey; color: black; border-radius: var(--border-radius-select-header); }

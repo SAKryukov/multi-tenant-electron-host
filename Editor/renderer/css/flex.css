@@ -1,4 +1,3 @@
 * { padding: 0; margin: 0; box-sizing: content-box; }
 body, html { display: flex; flex-flow: column; height: 100%; }
 main { overflow: auto; height: 100%; }
-

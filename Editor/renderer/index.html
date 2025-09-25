@@ -22,7 +22,7 @@
         @import url(css/flex.css);
         @import url(css/menu.css);
         @import url(css/search.css);
-        @import url(./ui/modal-dialog.css);        
+        @import url(./ui/modal-dialog.css);
         :root {
             --border: solid thin gray;
             --status-delta-Y: 0.1em;
@@ -46,7 +46,7 @@
         textarea, #measure-big, #measure-small { font-family: monospace; font-size: 20px; line-height: 22px; }
         textarea { background-color: hsl(0, 0%, 84%); }
         textarea:focus { background-color: white; }
-        #measure-big, #measure-small { visibility: hidden; top:0; right:0; padding:0; position: absolute; }            
+        #measure-big, #measure-small { visibility: hidden; top:0; right:0; padding:0; position: absolute; }
         header { background-color: aliceblue; }
         footer { background-color: linen; }
         footer > span > span, footer > small
@@ -54,12 +54,12 @@
                 padding: var(--status-delta-Y);
                 padding-left: var(--status-delta-X); padding-right: var(--status-delta-X); }
         #id-modified-flag, #id-macro-flag, #id-tilt-flag { display: none; } /* initial state */
-        @keyframes blinker { 50% { opacity: 0;  } }
+        @keyframes blinker { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
     <!--Important! measures for scrollTo(elementSet.editor...): -->
-    <p id="measure"><p><span  id="measure-big">ab<br/>|</span></p><p><span id="measure-small">c</span></p></p>
+    <p id="measure"><p><span id="measure-big">ab<br/>|</span></p><p><span id="measure-small">c</span></p></p>
     <header>
             <menu>
                 <li>
@@ -83,7 +83,7 @@
                         <option id="menu-stop-macro-recoding">Stop Macro Recording (Shift+Ctrl+R)</option>
                         <option id="menu-play-macro">Play Macro (Shift+Ctrl+P)</option>
                     </select>
-                </li>    
+                </li>
                 <li>
                     <header>View</header>
                     <select>
@@ -92,7 +92,7 @@
                         <option disabled="true" class="separator">──────────────</option>
                         <option id="menu-word-wrap">Word Wrap</option>
                     </select>
-                </li>    
+                </li>
                 <li>
                     <header>Search</header>
                     <select>
@@ -103,25 +103,25 @@
                         <option disabled="true" class="separator">────────────────────</option>
                         <option id="menu-goto">Go To&hellip;</option>
                     </select>
-                </li>    
+                </li>
                 <li>
                     <header>Plugin</header>
                     <select id="menu-plugins">
-                    </select>                    
-                </li>                    
+                    </select>
+                </li>
                 <li>
                     <header>Help</header>
                     <select>
                         <option id="menu-about">About (F1)</option>
                         <option id="menu-source-code">Source Code</option>
                     </select>
-                </li>    
+                </li>
             </menu>
     </header>
     <main><textarea spellcheck="false"></textarea></main>
     <footer>
         <span>
-            <span id="id-position-indicator" title="Cursor/selection  location"></span>&nbsp;<span id="id-modified-flag"></span>&nbsp;<span id="id-macro-flag"></span>&nbsp;<span id="id-tilt-flag"></span>
+            <span id="id-position-indicator" title="Cursor/selection location"></span>&nbsp;<span id="id-modified-flag"></span>&nbsp;<span id="id-macro-flag"></span>&nbsp;<span id="id-tilt-flag"></span>
         </span>
         <small id="id-copyright"></small>
     </footer>
@@ -132,10 +132,10 @@
         <p><input placeholder="Input a replacement string. Hit Enter to replace all" spellcheck="false" title="Replacement string"></input></p>
         <p>
             <button id="id-search-match-case" title="Match case">&Alpha;&alpha;</button>
-            <button id="id-search-whole-word" title="Match  whole word">&#x2223;&MediumSpace;&#x2223;</button>
+            <button id="id-search-whole-word" title="Match whole word">&#x2223;&MediumSpace;&#x2223;</button>
             <button id="id-search-regexp" title="Use regular expression"><small>&#x2736;</small></button>
-            <button id="id-search-special" title="Use  special cases"><small>\</small></button>
-            <button id="id-search-confirmation" title="Ask  confirmation"><small>?</small></button>
+            <button id="id-search-special" title="Use special cases"><small>\</small></button>
+            <button id="id-search-confirmation" title="Ask confirmation"><small>?</small></button>
         </p>
         <section id="id-search-replacement-legend">
             Use in replacement string:

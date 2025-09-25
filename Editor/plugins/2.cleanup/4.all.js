@@ -23,10 +23,10 @@ pluginProcessor.registerPlugin({
             } //loop
             newLines.push((left + right).trimEnd());
         } //loop
-        api.editor.value = newLines.join(api.newLine).trimEnd() + api.newLine;        
+        api.editor.value = newLines.join(api.newLine).trimEnd() + api.newLine;
         api.scrollTo(oldSelectionEnd, oldSelectionEnd); //SA???
         if (oldLength != api.editor.textLength)
-            api.isModified = true;        
+            api.isModified = true;
     },
     isEnabled: () => true,
     menuItemIndent: cleanupGroupIndent,

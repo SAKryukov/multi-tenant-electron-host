@@ -21,7 +21,7 @@ const pluginProcessor = (() => {
             const scriptElement = document.createElement(definitionSet.elements.script);
             scriptElement.src = plugin;
             const previousPluginIndex = currentPluginIndex;
-            scriptElement.onload = event => { 
+            scriptElement.onload = event => {
                 if (previousPluginIndex == currentPluginIndex) {
                     const key = definitionSet.plugin.fileUriToKey(event.srcElement.src, pluginKeyword);
                     const mapItem = pluginMap.get(key);
@@ -61,7 +61,7 @@ const pluginProcessor = (() => {
                 }, { filename: value.originalFilename });
                 definitionSet.plugin.styleMenuItem(invalidMenuItem, false, true);
                 invalidMenuItem.changeText(definitionSet.plugin.invalid);
-                definitionSet.plugin.styleMenuItem(invalidMenuItem, false, true);                
+                definitionSet.plugin.styleMenuItem(invalidMenuItem, false, true);
             } //if
             if (value.status.failedRegistration) ++currentPluginIndex;
         } //loop pluginMap

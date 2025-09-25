@@ -9,6 +9,6 @@ pluginProcessor.registerPlugin({
         api.find(pattern);
         api.scrollTo(0, 0);
     },
-    isEnabled: api =>  api.selectionLength > 0,
+    isEnabled: api => api.selectionLength > 0,
     menuItemIndent: demoGroupIndent,
 });

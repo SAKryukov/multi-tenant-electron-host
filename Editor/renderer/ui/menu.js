@@ -9,9 +9,9 @@ http://www.codeproject.com/Members/SAKryukov
 "use strict";
 
 function menuGenerator (container) {
-    
+
     const version = "1.2.0";
-    if (!new.target) return version; 
+    if (!new.target) return version;
 
     if (!container) return;
     const isContextMenu = container instanceof HTMLSelectElement;
@@ -22,7 +22,7 @@ function menuGenerator (container) {
             throw new MenuFailure(`
                 Menu container should be an ${HTMLElement.name} (${HTMLSelectElement.name} for context menu)`);
     } //if
-    
+
     const definitionSet = {
         selectionIndicator: "selected",
         events: { optionClick: "optionClick", keyUp: "keyup", keyDown: "keydown" },
@@ -114,7 +114,7 @@ function menuGenerator (container) {
         this.set(state.checkBox, texts.checkbox);
         this.set(state.checkedCheckbox, texts.checkedCheckbox);
         this.set(state.radioButton, texts.radioButton);
-        this.set(state.checkedRadioButton, texts.checkedRadioButton);    
+        this.set(state.checkedRadioButton, texts.checkedRadioButton);
     };
     boxMap.setup(menuItemButtonState, definitionSet.check);
 
@@ -179,20 +179,20 @@ function menuGenerator (container) {
                 }, enumerable: true
             },
             color: {
-                set(value) {  menuItem.style.color = value; }
+                set(value) { menuItem.style.color = value; }
             }, //color
             opacity: {
-                set(value) {  menuItem.style.opacity = value; }
+                set(value) { menuItem.style.opacity = value; }
             }, //opacity
             fontWeight: {
-                set(value) {  menuItem.style.fontWeight = value; }
+                set(value) { menuItem.style.fontWeight = value; }
             }, //v
             title: {
                 get() { return menuItem.title; },
                 set(value) { menuItem.title = value; },
             }, //title
             userData: {
-                get() { 
+                get() {
                     const menuItemData = elementMap.get(menuItem);
                     return menuItemData.userData;
                 }, //userData getter
@@ -222,7 +222,7 @@ function menuGenerator (container) {
         this.toString = function() { return describeSelfDocumentedAPI(this); };
         Object.freeze(this);
     }; // menuItemProxyApi
-    
+
     Object.defineProperties(this, { //menu API:
         subscribe: {
             get() {
@@ -239,7 +239,7 @@ function menuGenerator (container) {
                                 definitionSet.exceptions.menuItemSubscriptionFailure(value));
                         actionMapData.action = action;
                         return new menuItemProxyApi(actionMapData.menuItem);
-                    } //if            
+                    } //if
                 }
             }, //get subscribe
             enumerable: true
@@ -360,7 +360,7 @@ function menuGenerator (container) {
                 header.textContent = null;
                 header.appendChild(before);
                 header.appendChild(shortcutHtml);
-                header.appendChild(after);    
+                header.appendChild(after);
             })(header); //underline keyboard shortcut
         } //remapKeyboardShortcut
         let xPosition = 0;
@@ -369,7 +369,7 @@ function menuGenerator (container) {
         for (const character of menuOptions.keyboardShortcuts.excludes)
             keyboardMap.delete(definitionSet.keyToCode(character));
     }; //remapKeyboardShortcuts
-    
+
     const reset = () => {
         if (!menuOptions.afterActionBehavior.reset) return;
         if (row.length < 1) return;
@@ -392,7 +392,7 @@ function menuGenerator (container) {
             } else
                 updateStates(row[menuItemData.xPosition].element);
         } //if
-        if (menuOptions.afterActionBehavior.hide && current) 
+        if (menuOptions.afterActionBehavior.hide && current)
             select(current, false);
         reset();
     }); //container.optionClick
@@ -420,7 +420,7 @@ function menuGenerator (container) {
     }); //container.optionClick
 
     const updateStates = element => {
-        let hasDisabled = false;    
+        let hasDisabled = false;
         let menuItems;
         if (!isContextMenu) {
             const elementValue = elementMap.get(element);
@@ -462,7 +462,7 @@ function menuGenerator (container) {
         const eventData = elementMap.get(element);
         if (doSelect)
             eventData.header.classList.add(definitionSet.selectionIndicator);
-        else 
+        else
             eventData.header.classList.remove(definitionSet.selectionIndicator);
         eventData.select.style.display = doSelect
             ? definitionSet.css.show : definitionSet.css.hide;
@@ -476,7 +476,7 @@ function menuGenerator (container) {
             updateStates(element);
         isCurrentVisible = doSelect;
     }; //select
-    
+
     const goodForKeyboardHandling = () => {
         if (isContextMenu) return;
         if (menuOptions.keyboardShortcuts.activationPrefix == null) return;
@@ -564,7 +564,7 @@ function menuGenerator (container) {
         selectElement.onblur = event => {
             if (!isContextMenu) {
                 const data = elementMap.get(event.target);
-                select(data.element, false);    
+                select(data.element, false);
             }
                 else event.target.style.display = definitionSet.css.hide;
             if (onBlurHandler)
@@ -591,7 +591,7 @@ function menuGenerator (container) {
             actionMap.set(optionValue, { menuItem: option, xPosition: xPosition, action: null });
             data.menuItems.push(option);
             option.onpointerdown = optionHandler;
-        }; //setupOption           
+        }; //setupOption
         for (const option of selectElement.children) {
             if (option.constructor == HTMLOptionElement)
                 setupOption(option, row.length - 1, optionIndex++, option.value);
@@ -622,7 +622,7 @@ function menuGenerator (container) {
             else
                 select(row[0].element, true)
             if (onShownHandler != null) onShownHandler(container);
-       }; //container.onfocus    
+       }; //container.onfocus
     }; //if
 
     const startKeyboardHandling = handler => {
@@ -637,7 +637,7 @@ function menuGenerator (container) {
     }; //startKeyboardHandling
 
     startKeyboardHandling(event => {
-        const length = row.length;  
+        const length = row.length;
         if (keyboardMap.size < 1) return;
         if (length < 1) return;
         const index = keyboardMap.get(event.code);

@@ -136,8 +136,8 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
                 action();
                 handleFileOperationResult(filename, null, error, true);
             },
-            false);    
-    const saveExistingFileAndCloseApplication  = () =>
+            false);
+    const saveExistingFileAndCloseApplication = () =>
         window.bridgeFileIO.saveExistingFile(currentFilename,
             elementSet.editor.value,
             (filename, error) =>
@@ -307,7 +307,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     if (GravitySensor) {
         navigator.permissions.query({ name: definitionSet.status.gravitySensor.permissionName }).then(permission => {
-            if (permission.state == definitionSet.status.gravitySensor.permissionState) {                
+            if (permission.state == definitionSet.status.gravitySensor.permissionState) {
                 let shown = false;
                 const sensor = new GravitySensor({ frequency: definitionSet.status.gravitySensor.frequency });
                 const showTilt = (x, y) => {

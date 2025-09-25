@@ -10,14 +10,14 @@
 
 #id-search-dialog {
     opacity: 0.5;
-    border-left: gray thin solid; border-bottom: gray thin solid; 
-    position: absolute; top: 0; right: 0; left: auto; 
-    border-radius: 0; 
+    border-left: gray thin solid; border-bottom: gray thin solid;
+    position: absolute; top: 0; right: 0; left: auto;
+    border-radius: 0;
     border-bottom-left-radius: 0.4em;
     padding: 1em;
     padding-top: var(--vertical-gap); padding-bottom: var(--vertical-gap)
 }
-#id-search-dialog:hover, 
+#id-search-dialog:hover,
 #id-search-dialog:focus-within { opacity: 1; }
 #id-search-dialog:focus-within { background-color: linen; border-color: hsl(30, 67%, 60%); border-width: 2px; }
 
@@ -36,10 +36,10 @@
     width: var(--option-button-compensation-size);
     padding-top: var(--option-button-compensation-padding-top);
     padding-bottom: var(--option-button-compensation-padding-bottom);
-    background-color:  hsl(195, 53%, 89%);
+    background-color: hsl(195, 53%, 89%);
     border: solid thin gray;
-    margin: 0; background-color: hsl(195, 53%, 95%); 
-    font-size: 80%; padding: 0;  
+    margin: 0; background-color: hsl(195, 53%, 95%);
+    font-size: 80%; padding: 0;
     font-weight: bold;
 }
 

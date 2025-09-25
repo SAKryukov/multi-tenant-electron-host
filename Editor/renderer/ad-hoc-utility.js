@@ -71,8 +71,8 @@ const adHocUtility = (() => {
             section.appendChild(document.createElement(definitionSet.elements.br));
             modalDialog.show(section, {
                 buttons: [
-                    {   text: "Go to Line/Column",
-                        isDefault: true, isEnter: true, 
+                    { text: "Go to Line/Column",
+                        isDefault: true, isEnter: true,
                         action: () => {
                             let line = lineLine.input.value.trim();
                             let column = lineColumn.input.value.trim();
@@ -101,7 +101,7 @@ const adHocUtility = (() => {
             spanFirst.textContent = lineFirst;
             const spanMiddle = document.createElement(definitionSet.elements.span);
             spanMiddle.textContent = middle;
-            setTimeout(() =>  spanMiddle.scrollIntoView({ behavior: "smooth" })); 
+            setTimeout(() => spanMiddle.scrollIntoView({ behavior: "smooth" }));
             const spanLast = document.createElement(definitionSet.elements.span);
             spanLast.textContent = lineLast;
             const container = document.createElement(definitionSet.elements.p);
@@ -114,7 +114,7 @@ const adHocUtility = (() => {
             textArea.tabIndex = 0;
             textArea.readOnly = true;
             const fontFamily = "monospace";
-            const textAreaVerticalGap = "0.2em"; 
+            const textAreaVerticalGap = "0.2em";
             question.style.marginTop = "0.8em";
             question.style.marginBottom = "1em";
             for (const element of [textArea, spanFirst, spanMiddle, spanLast]) {
@@ -149,5 +149,5 @@ const adHocUtility = (() => {
     }; //implementation
 
     return implementation;
-    
+
 })(); //adHocUtility

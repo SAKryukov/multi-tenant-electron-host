@@ -26,7 +26,7 @@ pluginProcessor.registerPlugin({
         api.editor.value = newLines.join(api.newLine);
         api.popSelection(true);
         if (oldLength != api.editor.textLength)
-            api.isModified = true;        
+            api.isModified = true;
     },
     isEnabled: api => true,
     menuItemIndent: cleanupGroupIndent,

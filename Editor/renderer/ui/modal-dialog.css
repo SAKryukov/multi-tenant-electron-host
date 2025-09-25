@@ -16,7 +16,7 @@ dialog > section:first-of-type { background-color: floralWhite; padding-top: var
 dialog > section:last-of-type { background-color: hsl(300, 10%, 84%); border-top: darkviolet solid thin; display: flex; justify-content: space-around; }
 dialog button {
     background-color: ghostwhite;
-    border: solid thin darkviolet; 
+    border: solid thin darkviolet;
     padding-left: var(--horizontal-gap);
     padding-right: var(--horizontal-gap);
     padding-top: var(--vertical-gap);
@@ -29,7 +29,7 @@ dialog button:first-of-type { margin-left: 0; }
 dialog button:focus { outline: solid 3px ghostwhite; }
 dialog button:hover { background-color: rgb(220, 247, 255); }
 dialog button:active { background-color:slateblue; color: white; }
-::backdrop { background-color:  hsl(300, 30%, 15%, 100%); opacity: 0.5; }
+::backdrop { background-color: hsl(300, 30%, 15%, 100%); opacity: 0.5; }
 dialog aside { /* copy to clipboard element */
     width: var(--clipboard-size); height: var(--clipboard-size);
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IB2cksfwAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAEFJREFUOMtjZGBg+M9AGmBEFyDFAAy1TAwUgoE3gIVYv+KT+0+CAeji/4dBIFItFv6TGBOkJ1lc6gY+DBgp9AIDAMA4DhD6Up46AAAAAElFTkSuQmCC);
@@ -42,4 +42,3 @@ dialog aside { /* copy to clipboard element */
 }
 dialog aside:hover { opacity: 1; }
 dialog aside:active { background-color: salmon; }
-

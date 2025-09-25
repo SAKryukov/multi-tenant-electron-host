@@ -60,7 +60,7 @@ const getElementSet = document => {
                 wordWrap: document.querySelector("#menu-word-wrap"),
             },
             search: {
-                find:  document.querySelector("#menu-find"),
+                find: document.querySelector("#menu-find"),
                 replace: document.querySelector("#menu-replace"),
                 findNext: document.querySelector("#menu-find-next"),
                 findPrevious: document.querySelector("#menu-find-previous"),
@@ -70,5 +70,3 @@ const getElementSet = document => {
         },
     };
 }; //elementSet
-
-

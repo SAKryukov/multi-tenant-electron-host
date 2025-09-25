@@ -21,7 +21,7 @@ module.exports.tenant = tenantRoot => {
     const applicationPackage = (() => {
         const getJSON = (filename, host) => {
             const fullName =
-                host 
+                host
                     ? path.join(app.getAppPath(), filename)
                     : path.join(app.getAppPath(), tenantRoot, filename);
             if (fs.existsSync(fullName))

@@ -105,7 +105,7 @@ const getDefinitionSet = () => {
             Tab: 0,
         },
         elements: {
-            script: 0, option: 0, section: 0, p: 0, span: 0, input: 0, br: 0, pre: 0, 
+            script: 0, option: 0, section: 0, p: 0, span: 0, input: 0, br: 0, pre: 0,
         },
         status: {
             modified: "Modified",
@@ -134,7 +134,7 @@ const getDefinitionSet = () => {
         }, //status
         macro: {
             specialInputTypeNewLine: { // ugly special case
-                recorded: "insertLineBreak", 
+                recorded: "insertLineBreak",
                 replaced: "\n",
             },
             backspace: "deleteContentBackward", //for smart indentation
@@ -150,15 +150,15 @@ const getDefinitionSet = () => {
         },
         ui: {
             showInline: (element, doShow) =>
-                element.style.display = doShow ? "inline"  : "none",
+                element.style.display = doShow ? "inline" : "none",
         },
         search: {
             showInput: (element, doShow) =>
-                element.style.display = doShow ? "inline"  : "none",
+                element.style.display = doShow ? "inline" : "none",
             showButton: (element, doShow) =>
-                element.style.display = doShow ? "inline-block"  : "none",
+                element.style.display = doShow ? "inline-block" : "none",
             showLegend: (element, doShow) =>
-                element.style.display = doShow ? "block"  : "none",
+                element.style.display = doShow ? "block" : "none",
             specialCharacterReplacements: [
                 ["\\\\", "\\"],
                 ["\\n", "\n"],
@@ -220,7 +220,7 @@ const getDefinitionSet = () => {
             if (event.code != shortcut.key) return false;
             if (!shortcut.prefix || shortcut.prefix.length < 1)
                 return !(event.shiftKey || event.ctrlKey || event.metaKey || event.altKey);
-            for (const prefixElement of shortcut.prefix) 
+            for (const prefixElement of shortcut.prefix)
                 if (!event[prefixElement]) return false;
             return true;
         }, //isShortcut

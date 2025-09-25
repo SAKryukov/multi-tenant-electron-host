@@ -11,7 +11,7 @@ pluginProcessor.registerPlugin({
             inBrackets: content => `(${content})`,
         };
         const apiItems = [];
-        for (let index in api)  {
+        for (let index in api) {
             let name = index;
             if (api[index] instanceof Function) {
                 const code = api[index].toString();

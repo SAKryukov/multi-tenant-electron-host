@@ -25,7 +25,7 @@ const definitionSet = {
             title: "About Electron Application",
         },
         fileNaming: {
-            title:  (baseFilename, title) =>
+            title: (baseFilename, title) =>
                 `${baseFilename} ${String.fromCharCode(0x2014)} ${title}`,
         },
     }, //utility
@@ -64,7 +64,7 @@ const definitionSet = {
                 //nodeIntegration: true,
             } //webPreferences
         };
-    }, //createWindowProperties    
+    }, //createWindowProperties
 };
 
 for (const subset of [definitionSet.events])

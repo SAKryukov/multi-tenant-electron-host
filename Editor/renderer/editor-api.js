@@ -88,7 +88,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
 
         Object.defineProperties(api, {
             editor: {
-                get() { return editor;  },
+                get() { return editor; },
                 enumerable: true,
             },
             currentLines: {
@@ -165,15 +165,15 @@ const createEditorAPI = (elementSet, searchAPI) => {
             blankSpace: { get() { return definitionSet.blankSpace; }, enumerable: true, },
             selectionLength: {
                 get() { return editor.selectionEnd - editor.selectionStart; },
-                enumerable: true, 
+                enumerable: true,
             }, //selectionLength
             selectedText: {
                 get() { return editor.value.slice(editor.selectionStart, editor.selectionEnd); },
-                enumerable: true, 
+                enumerable: true,
             }, //selectedText
             canFindNextPrevious: {
                 get() { return searchAPI.canFindNextPrevious(); },
-                enumerable: true, 
+                enumerable: true,
             }, //canFindNextPrevious
             isModified: {
                 get() { return isModifiedFlag; },
@@ -181,12 +181,12 @@ const createEditorAPI = (elementSet, searchAPI) => {
                     isModifiedFlag = value;
                     editor.dispatchEvent(modifiedEvent, isModifiedFlag);
                 },
-                enumerable: true, 
+                enumerable: true,
             }, //isModified
         }); // API properties
 
         return api;
-        
+
     })(elementSet.editor, searchAPI);
 
 };
