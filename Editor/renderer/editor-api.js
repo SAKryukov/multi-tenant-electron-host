@@ -16,6 +16,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
             if (event.target != editor) return;
             const expectedTab = definitionSet.tabReplacement;
             event.target.setRangeText(expectedTab);
+            editor.dispatchEvent(modifiedEvent, true);
             const position = event.target.selectionStart + expectedTab.length;
             event.target.setSelectionRange(position, position);
             event.preventDefault();
