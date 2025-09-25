@@ -5,12 +5,17 @@ const getDefinitionSet = () => {
     const definitionSet = {
         empty: "", blankSpace: " ", newLine: "\n",
         tabReplacement: " ".repeat(4),
-        standaloneExecutionProtection: function() {
-            const electron = `<a href="https://www.electronjs.org">Electron</a>`;
-            document.body.innerHTML = `<aside>This HTML only works under ${electron}</aside>
-            <p>Conceptual Electron Editor, ${this.copyright()}</p>`;
-            window.stop();
-        }, //standalongExecutionProtection
+        standaloneExecutionProtection: {
+            copyright: "Copyright &copy; Sergey A Kryukov",
+            url: "https://github.com/SAKryukov/conceptual-electron-editor",
+            electron: "https://www.electronjs.org",
+            show: function() {
+                const electron = `<a href="${this.electron}">Electron</a>`;
+                document.body.innerHTML = `<aside>This HTML only works under ${electron}</aside>
+                <p><a href="${this.url}">Conceptual Electron Editor</a>, ${this.copyright}</p>`;
+                window.stop();
+            }, //show
+        }, //standaloneExecutionProtection
         plugin: {
             styleMenuItem: (item, group, error) => {
                 if (group || error)

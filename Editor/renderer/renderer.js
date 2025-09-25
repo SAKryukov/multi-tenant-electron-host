@@ -33,7 +33,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
         });
 
     if (!window.bridgePlugin)
-        return definitionSet.standaloneExecutionProtection();
+        return definitionSet.standaloneExecutionProtection.show();
 
     elementSet.editor.focus();
 
