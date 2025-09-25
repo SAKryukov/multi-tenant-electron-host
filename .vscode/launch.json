@@ -36,7 +36,7 @@
       "windows": {
         "runtimeExecutable": "c:/app/Node.js/node_modules/electron/dist/electron.exe"
       },
-      "args" : ["${workspaceFolder}", "--trace-warnings", "${workspaceFolder}/test.txt"],
+      "args" : ["${workspaceFolder}", "--trace-warnings", ":Editor", "${workspaceFolder}/test.txt"],
       "outputCapture": "std"
     },
 

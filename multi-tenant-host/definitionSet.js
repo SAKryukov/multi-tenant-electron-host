@@ -2,8 +2,8 @@
 
 const definitionSet = {
     processApplicationName: {
-        regex: /^\[(.*)\]$/g,
-        wrap: name => `[${name}]`,
+        regex: /^\:(.*)$/g,
+        wrap: name => `:${name}`,
         goodApplicationName: function(application) {
             const match = this.regex.exec(application);
             return match ? match[1] : null;
