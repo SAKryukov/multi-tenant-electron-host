@@ -14,7 +14,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
             if (event.code != definitionSet.keys.Tab) return;
             if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey) return;
             if (event.target != editor) return;
-            const expectedTab = definitionSet.tabReplacement;
+            const expectedTab = definitionSet.editorAPI.tabReplacement;
             event.target.setRangeText(expectedTab);
             editor.dispatchEvent(modifiedEvent, true);
             const position = event.target.selectionStart + expectedTab.length;
@@ -22,7 +22,6 @@ const createEditorAPI = (elementSet, searchAPI) => {
             event.preventDefault();
         }); //window.addEventListener Tab fix
 
-        const wordRegexString = "[0123456789\\w]+";
         const api = {
             subscribeToModified: handler => editor.addEventListener(modifiedEventName, handler),
             cursorToPosition: (line, column) => {
@@ -111,7 +110,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
                     const slice = editor.value.slice(lines[0], lines[1]);
                     const position = editor.selectionStart - lines[0];
                     let array;
-                    const wordRegex = new RegExp(wordRegexString, "g");
+                    const wordRegex = definitionSet.editorAPI.newGlobalRegExp();
                     while ((array = wordRegex.exec(slice)) !== null) {
                         if (array.index <= position && position <= array.index + array[0].length)
                             return [lines[0] + array.index, lines[0] + array.index + array[0].length];
@@ -128,7 +127,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
                     const slice = editor.value.slice(lines[0], lines[1]);
                     const position = editor.selectionStart - lines[0] + 1;
                     let array;
-                    const wordRegex = new RegExp(wordRegexString, "g");
+                    const wordRegex = definitionSet.editorAPI.newGlobalRegExp();
                     while ((array = wordRegex.exec(slice)) !== null) {
                         if (array.index >= position)
                             return [lines[0] + array.index, lines[0] + array.index + array[0].length];
@@ -146,7 +145,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
                     const position = editor.selectionStart - lines[0] - 1;
                     let array;
                     const findings = [];
-                    const wordRegex = new RegExp(wordRegexString, "g");
+                    const wordRegex = definitionSet.editorAPI.newGlobalRegExp();
                     while ((array = wordRegex.exec(slice)) !== null)
                         findings.push({ index: array.index, length: array[0].length });
                     if (findings.length < 0)

@@ -4,7 +4,6 @@ const getDefinitionSet = () => {
 
     const definitionSet = {
         empty: "", blankSpace: " ", newLine: "\n",
-        tabReplacement: " ".repeat(4),
         standaloneExecutionProtection: {
             copyright: "Copyright &copy; Sergey A Kryukov",
             url: "https://github.com/SAKryukov/conceptual-electron-editor",
@@ -16,6 +15,11 @@ const getDefinitionSet = () => {
                 window.stop();
             }, //show
         }, //standaloneExecutionProtection
+        editorAPI: {
+            tabReplacement: " ".repeat(4),
+            wordRegexString: "[0123456789\\w]+",
+            newGlobalRegExp: function () { return new RegExp(this.wordRegexString, "g"); },
+        }, //editorAPI
         plugin: {
             styleMenuItem: (item, group, error) => {
                 if (group || error)
