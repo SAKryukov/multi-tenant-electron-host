@@ -19,7 +19,7 @@ const getDefinitionSet = () => {
         plugin: {
             styleMenuItem: (item, group, error) => {
                 if (group || error)
-                    item.color = group ? "hsl(248, 53%, 20%, 100%)" : "red";
+                    item.color = group ? "darkblue" : "red";
                 item.opacity = 1;
                 if (group)
                     item.fontWeight = "bold";
