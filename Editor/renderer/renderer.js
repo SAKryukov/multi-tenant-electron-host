@@ -25,7 +25,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
             } //loop
             if (plugins.length < 1)
                 elementSet.menuItems.pluginParent.parentElement.remove();
-            const menu = new menuGenerator(elementSet.menu);
+            const menu = new menuGenerator(elementSet.menu, elementSet.editor);
             const searchDialogObject = createSearchDialog(definitionSet, elementSet);
             createEditorAPI(elementSet, searchDialogObject.api);
             subscribe(elementSet, menu, searchDialogObject.searchDialog, metadata);

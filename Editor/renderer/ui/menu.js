@@ -8,7 +8,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 "use strict";
 
-function menuGenerator (container) {
+function menuGenerator (container, focusElement) {
 
     const version = "1.2.0";
     if (!new.target) return version;
@@ -457,7 +457,7 @@ function menuGenerator (container) {
     }; //updateStates
 
     const select = (element, doSelect) => {
-        if (!element) return;
+        if (!element) return focusElement?.focus();
         element.style.zIndex = Number.MAX_SAFE_INTEGER;
         const eventData = elementMap.get(element);
         if (doSelect)
@@ -466,7 +466,7 @@ function menuGenerator (container) {
             eventData.header.classList.remove(definitionSet.selectionIndicator);
         eventData.select.style.display = doSelect
             ? definitionSet.css.show : definitionSet.css.hide;
-        if (!doSelect) return;
+        if (!doSelect) return focusElement?.focus();
         if (eventData.optionSize < 2) ++eventData.optionSize; // SA??? weird bug workaround
         eventData.select.size = eventData.optionSize;
         if (doSelect)
