@@ -6,15 +6,14 @@ module.exports.tenant = tenantRoot => {
     const { definitionSet } = require("./definition-set.js");
     const { utilitySet } = require("./utility.js");
     const { pluginProvider } = require("./plugin-provider.js");
-    const { app, dialog, BrowserWindow, Menu, ipcMain, nativeImage } = require('electron');
-    const fs = require('fs');
-    const path = require('node:path');
-    const shell = require('electron').shell;
+    const { app, dialog, BrowserWindow, Menu, ipcMain, nativeImage, shell } = require("electron");
+    const fs = require("node:fs");
+    const path = require("node:path");
 
     let permittedToCloseApplication = false;
 
     const handlePlugins = (applicationPath, window) => {
-        pluginProvider.setup({ definitionSet, fs, path, applicationPath, window });
+        pluginProvider.setup({ applicationPath, window });
         pluginProvider.sendScripts(ipcChannel.plugin.loadAll);
     }; //handlePlugins
 
@@ -45,9 +44,8 @@ module.exports.tenant = tenantRoot => {
                     shell.openExternal(source);
             } //if
         }); //metadata.source
-        utilitySet.setup({ window });
         ipcMain.on(ipcChannel.fileIO.openFile, (_event, defaultPath) => {
-            utilitySet.openFile((filename, text, error) => {
+            utilitySet.openFile(window, (filename, text, error) => {
                 window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
                 return window.webContents.send(ipcChannel.fileIO.openFile, filename, text, error);
             }, defaultPath);
@@ -59,7 +57,7 @@ module.exports.tenant = tenantRoot => {
             } //if
         }; //closeApplicationAfterSaving
         ipcMain.on(ipcChannel.fileIO.saveFileAs, (_event, text, defaultPath, closeApplicationRequest) => {
-            utilitySet.saveFileAs(text, (filename, error) => {
+            utilitySet.saveFileAs(window, text, (filename, error) => {
                 window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
                 window.webContents.send(ipcChannel.fileIO.saveFileAs, filename, error);
                 closeApplicationAfterSaving(closeApplicationRequest, error);
@@ -132,9 +130,8 @@ module.exports.tenant = tenantRoot => {
     }; //createWindow
 
     app.whenReady().then(() => {
-        utilitySet.setup({ definitionSet, BrowserWindow, dialog, fs, path, Menu });
         //if (utilitySet.handleInvalidApplicationPack(app)) return; //SA!!! provision for future multi-tenant use
-        const filename = utilitySet.processCommandLine(fs);
+        const filename = utilitySet.processCommandLine();
         const baseTitle = applicationPackage?.description;
         const title = filename
             ? definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle)

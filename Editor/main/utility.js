@@ -2,39 +2,33 @@
 
 module.exports.utilitySet = (() => {
 
-    let definitionSet, BrowserWindow, dialog, fs, window, path, Menu;
+    const { definitionSet } = require("./definition-set.js");
+    const { dialog, BrowserWindow, Menu } = require("electron");
+    const fs = require("node:fs");
+    const path = require("node:path");
+
     const utilitySet = {
-        setup: values => {
-            if (values.definitionSet) definitionSet = values.definitionSet;
-            if (values.BrowserWindow) BrowserWindow = values.BrowserWindow;
-            if (values.dialog) dialog = values.dialog;
-            if (values.fs) fs = values.fs;
-            if (values.path) path = values.path;
-            if (values.window) window = values.window;
-            if (values.Menu) Menu = values.Menu;
-        }, //setup
-        processCommandLine: fileSystem => {
-            if (!fileSystem) fileSystem = fs; // this way, this function can be called with or without setup
+        processCommandLine: () => {
             const filename = process.argv.length > 1
                 ? process.argv[process.argv.length - 1]
                 : null;
-            if (!fileSystem.existsSync(filename)) return null;
+            if (!fs.existsSync(filename)) return null;
             // to prevent failure with the application directory passed to electron:
-            if (!fileSystem.statSync(filename).isFile()) return null;
+            if (!fs.statSync(filename).isFile()) return null;
             return filename;
         }, //processCommandLine
         openKnownFile: (filename, useData) => {
                 fs.readFile(filename, {}, (error, data) =>
                     useData(data?.toString(), error));
         }, //openKnownFile
-        openFile: (useData, defaultPath) => {
+        openFile: (window, useData, defaultPath) => {
             dialog.showOpenDialog(window, { defaultPath, title: definitionSet.utility.fileDialog.titleOpenFile }).then(event => {
                 if (event.canceled) return;
                 fs.readFile(event.filePaths[0], {}, (error, data) =>
                     useData(event.filePaths[0], data?.toString(), error));
             }); //dialog.showOpenDialog
         }, //openFile
-        saveFileAs: (text, handler, defaultPath) => {
+        saveFileAs: (window, text, handler, defaultPath) => {
             dialog.showSaveDialog(window, { defaultPath, title: definitionSet.utility.fileDialog.titleSaveFile }).then(event => {
                 if (event.canceled) return;
                 fs.writeFile(event.filePath, text, {}, error =>

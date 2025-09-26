@@ -1,12 +1,13 @@
 module.exports.pluginProvider = (() => {
 
-    let definitionSet, fs, path, applicationPath, window;
+    const { definitionSet } = require("./definition-set.js");
+    const fs = require("node:fs");
+    const path = require("node:path");
+
+    let applicationPath, window;
 
     pluginProvider = {
         setup: environment => {
-            definitionSet = environment.definitionSet;
-            fs = environment.fs;
-            path = environment.path;
             applicationPath = environment.applicationPath;
             window = environment.window;
         }, //setup
