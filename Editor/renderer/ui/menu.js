@@ -10,7 +10,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 function menuGenerator (container, focusElement) {
 
-    const version = "1.2.0";
+    const version = "1.3.0";
     if (!new.target) return version;
 
     if (!container) return;
