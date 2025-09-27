@@ -6,7 +6,7 @@ module.exports.tenant = tenantRoot => {
     const { definitionSet } = require("./definition-set.js");
     const { utilitySet } = require("./utility.js");
     const { pluginProvider } = require("./plugin-provider.js");
-    const { app, dialog, BrowserWindow, Menu, ipcMain, nativeImage, shell } = require("electron");
+    const { app, BrowserWindow, Menu, ipcMain, nativeImage, shell } = require("electron");
     const fs = require("node:fs");
     const path = require("node:path");
 
