@@ -2,9 +2,9 @@
 
 module.exports.tenant = tenantRoot => {
 
-    const { ipcChannel } = require("../api/ipc-channels.js");
+    const { ipcChannel } = require("../../shared/IPC/ipc-channels.js");
+    const { utilitySet } = require("../../shared/main/utility.js");
     const { definitionSet } = require("./definition-set.js");
-    const { utilitySet } = require("./utility.js");
     const { pluginProvider } = require("./plugin-provider.js");
     const { app, BrowserWindow, Menu, ipcMain, nativeImage, shell } = require("electron");
     const fs = require("node:fs");

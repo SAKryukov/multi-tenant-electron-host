@@ -2,10 +2,23 @@
 
 module.exports.utilitySet = (() => {
 
-    const { definitionSet } = require("./definition-set.js");
     const { dialog, BrowserWindow, Menu } = require("electron");
     const fs = require("node:fs");
     const path = require("node:path");
+
+    const definitionSet = {
+        invalidApplicationPack: {
+            isInvalid: applicationPath => applicationPath.endsWith("app.asar"),
+            createWindowProperties: icon => {
+                return {
+                    title: "Invalid application pack",
+                    resizable: true,
+                    icon: icon,
+                };
+            }, //createInvalidPackMessageWindowProperties
+            pathHTML: "renderer/invalid-pack.html",
+        }, //invalidApplicationPack
+    }; //definitionSet
 
     const utilitySet = {
         processCommandLine: () => {

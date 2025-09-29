@@ -8,7 +8,7 @@ const definitionSet = {
         windowAllClosed: "window-all-closed",
     },
     paths: {
-        preload: "api/preload.js",
+        preload: "../shared/IPC/preload.js",
         image: "main/editor.png",
         index: "renderer/index.html",
         package: "package.json",
@@ -26,17 +26,6 @@ const definitionSet = {
     }, //plugin
     isDarwin: process => process.platform == 'darwin',
     applicationIcon: "images/editor.png",
-    invalidApplicationPack: {
-        isInvalid: applicationPath => applicationPath.endsWith("app.asar"),
-        createWindowProperties: icon => {
-            return {
-                title: "Invalid application pack",
-                resizable: true,
-                icon: icon,
-            };
-        }, //createInvalidPackMessageWindowProperties
-        pathHTML: "renderer/invalid-pack.html",
-    }, //invalidApplicationPack
     createWindowProperties: (title, icon, preloadScript) => {
         return { // see https://www.electronjs.org/docs/latest/api/base-window#new-basewindowoptions
             resizable: true,
