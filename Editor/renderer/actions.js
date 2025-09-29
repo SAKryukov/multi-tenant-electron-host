@@ -5,6 +5,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     elementSet.copyright.innerHTML = metadata?.package?.metadata?.copyright;
     let currentFilename = null;
     const defaultPath = () => currentFilename == null ? definitionSet.empty : currentFilename;
+    const filters = null; //SA??? [{ name: "Text files", extensions: ["json", "text"]}];
 
     const fileSystemStatus = (() => {
         elementSet.statusBar.modifiedFlag.innerHTML = definitionSet.status.modified;
@@ -100,7 +101,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         if (!actionRequest) return true;
         actionOnConfirmation(() => {
             window.bridgeFileIO.openFile((filename, text, error) =>
-            handleFileOperationResult(filename, text, error), defaultPath());
+            handleFileOperationResult(filename, text, error), definitionSet.fileDialog.titleOpenFile, defaultPath(), filters);
         });
         elementSet.editor.focus();
         return true;
@@ -110,19 +111,19 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         window.bridgeFileIO.saveFileAs(elementSet.editor.value,
             (filename, error) =>
                 handleFileOperationResult(filename, null, error, true),
-            defaultPath(), false);
+            definitionSet.fileDialog.titleSaveFile, defaultPath(), filters, false);
     const saveAsAndContinue = action =>
         window.bridgeFileIO.saveFileAs(elementSet.editor.value,
             (filename, error) => {
                 action();
                 handleFileOperationResult(filename, null, error, true);
             },
-            defaultPath(), false);
+            definitionSet.fileDialog.titleSaveFileAndContinue, defaultPath(), filters, false);
     const saveAsAndCloseApplication = () =>
         window.bridgeFileIO.saveFileAs(elementSet.editor.value,
             (filename, error) =>
                 handleFileOperationResult(filename, null, error, true),
-            defaultPath(), true);
+            definitionSet.fileDialog.titleSaveFileAndClose, defaultPath(), filters, true);
     const saveExistingFile = () =>
         window.bridgeFileIO.saveExistingFile(currentFilename,
             elementSet.editor.value,

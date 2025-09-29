@@ -6,16 +6,16 @@ let metadata = null;
 ipcRenderer.once(ipcChannel.metadata.metadataPush, (_event, received) => metadata = received);
 
 contextBridge.exposeInMainWorld(bridgeAPI.bridgeFileIO, { // to be used only in renderer loaded from HTML
-    openFile: (handler, defaultPath) => {
-            ipcRenderer.send(ipcChannel.fileIO.openFile, defaultPath);
+    openFile: (handler, dialogTitle, defaultPath, filters) => {
+            ipcRenderer.send(ipcChannel.fileIO.openFile, dialogTitle, defaultPath, filters);
             ipcRenderer.once(ipcChannel.fileIO.openFile, (_event, filename, text, error) => {
                 handler(filename, text, error);
             });
     }, //openFile
     subscribeToCommandLine: handler =>
         ipcRenderer.on(ipcChannel.fileIO.openFromCommandLine, (_event, filename, text, error) => handler(filename, text, error)),
-    saveFileAs: (text, handler, defaultPath, closeApplication) => {
-        ipcRenderer.send(ipcChannel.fileIO.saveFileAs, text, defaultPath, closeApplication);
+    saveFileAs: (text, handler, dialogTitle, defaultPath, filters, closeApplication) => {
+        ipcRenderer.send(ipcChannel.fileIO.saveFileAs, text, dialogTitle, defaultPath, filters, closeApplication);
         ipcRenderer.once(ipcChannel.fileIO.saveFileAs, (_event, filename, error) =>
                 handler(filename, error));
     }, //saveFileAs

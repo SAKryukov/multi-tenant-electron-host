@@ -44,11 +44,11 @@ module.exports.tenant = tenantRoot => {
                     shell.openExternal(source);
             } //if
         }); //metadata.source
-        ipcMain.on(ipcChannel.fileIO.openFile, (_event, defaultPath) => {
+        ipcMain.on(ipcChannel.fileIO.openFile, (_event, dialogTitle, defaultPath, filters) => {
             utilitySet.openFile(window, (filename, text, error) => {
                 window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
                 return window.webContents.send(ipcChannel.fileIO.openFile, filename, text, error);
-            }, defaultPath);
+            }, dialogTitle, defaultPath, filters);
         });
         const closeApplicationAfterSaving = (condition, error) => {
             if (condition && !error) {
@@ -56,12 +56,12 @@ module.exports.tenant = tenantRoot => {
                 window.close();
             } //if
         }; //closeApplicationAfterSaving
-        ipcMain.on(ipcChannel.fileIO.saveFileAs, (_event, text, defaultPath, closeApplicationRequest) => {
+        ipcMain.on(ipcChannel.fileIO.saveFileAs, (_event, text, dialogTitle, defaultPath, filters, closeApplicationRequest) => {
             utilitySet.saveFileAs(window, text, (filename, error) => {
                 window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
                 window.webContents.send(ipcChannel.fileIO.saveFileAs, filename, error);
                 closeApplicationAfterSaving(closeApplicationRequest, error);
-            }, defaultPath);
+            }, dialogTitle, defaultPath, filters);
         });
         ipcMain.on(ipcChannel.fileIO.saveExistingFile, (_event, filename, text, closeApplicationRequest) => {
             utilitySet.saveExistingFile(filename, text, (filename, error) => {

@@ -15,15 +15,6 @@ const definitionSet = {
         metadata: "metadata.json",
     },
     utility: {
-        fileDialog: {
-            titleOpenFile: `Open text file${String.fromCharCode(0x2026)}`,
-            titleSaveFile: `Save text file as${String.fromCharCode(0x2026)}`,
-            ioError: "File I/O error",
-        },
-        aboutDialog: {
-            buttons: ["Close"],
-            title: "About Electron Application",
-        },
         fileNaming: {
             title: (baseFilename, title) =>
                 `${baseFilename} ${String.fromCharCode(0x2014)} ${title}`,

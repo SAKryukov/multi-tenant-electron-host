@@ -36,4 +36,5 @@ for (const subset of [ipcChannel.fileIO, ipcChannel.plugin, bridgeAPI, ipcChanne
             subset[index] = index;
 Object.freeze(ipcChannel);
 
-module.exports = { bridgeAPI, ipcChannel };
+if (typeof module != typeof undefined)
+    module.exports = { bridgeAPI, ipcChannel };

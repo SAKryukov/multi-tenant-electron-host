@@ -58,6 +58,12 @@
         defaultMessageDialog: {
             defaultButton: "Close",
         },
+        fileDialog: {
+            titleOpenFile: `Open text file${String.fromCharCode(0x2026)}`,
+            titleSaveFile: `Save text file as${String.fromCharCode(0x2026)}`,
+            titleSaveFileAndContinue: `Save text file as${String.fromCharCode(0x2026)} and continue`,
+            titleSaveFileAndClose: `Save text file as${String.fromCharCode(0x2026)} and close application`,
+        }, //fileDialog
         aboutDialog: metadata => {
             const hostVersionLine =
                 metadata?.package?.applicationHostDescription
