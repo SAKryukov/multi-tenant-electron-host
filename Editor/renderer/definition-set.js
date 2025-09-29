@@ -1,14 +1,13 @@
 "use strict";
 
-const getDefinitionSet = () => {
-
-    const definitionSet = {
-        empty: "", blankSpace: " ", newLine: "\n",
+(() => {
+    
+    const definitionSetExtension = {
         standaloneExecutionProtection: {
             copyright: "Copyright &copy; Sergey A Kryukov",
             url: "https://github.com/SAKryukov/conceptual-electron-editor",
             electron: "https://www.electronjs.org",
-            show: function() {
+            show: function () {
                 const electron = `<a href="${this.electron}">Electron</a>`;
                 document.body.innerHTML = `<aside>This HTML only works under ${electron}</aside>
                 <p><a href="${this.url}">Conceptual Electron Editor</a>, ${this.copyright}</p>`;
@@ -96,7 +95,7 @@ const getDefinitionSet = () => {
                 </br>`,
             buttons: (saveAction, dontSaveAction, cancelAction) => [
                 { text: "Save", action: saveAction, },
-                { text: "Don't Save", action : dontSaveAction },
+                { text: "Don't Save", action: dontSaveAction },
                 { isDefault: true, isEscape: true, text: "Cancel", action: cancelAction }],
         }, //modifiedTextOperationConfirmation
         events: {
@@ -129,7 +128,7 @@ const getDefinitionSet = () => {
                 permissionName: "accelerometer",
                 permissionState: "granted",
                 tilt: (x, y) => {
-                    const angle = y == 0 ? 0 : Math.round(Math.atan(x/y) * 1800 / Math.PI) / 10;
+                    const angle = y == 0 ? 0 : Math.round(Math.atan(x / y) * 1800 / Math.PI) / 10;
                     return `${angle}${String.fromCharCode(0xB0)}`.replace("-", String.fromCharCode(0x2212));
                 }, //tilt
             }, //gravitySensor
@@ -206,7 +205,8 @@ const getDefinitionSet = () => {
                     if (startOfLine < 0) startOfLine = 0;
                     return {
                         line: text.slice(startOfLine, endOfLine),
-                        finding: [findingStart - startOfLine, findingEnd - startOfLine] };
+                        finding: [findingStart - startOfLine, findingEnd - startOfLine]
+                    };
                 }, //replacementPresentation
                 dialogMessageFormatLines: lines =>
                     lines.length == 2 && lines[0] != lines[1]
@@ -219,13 +219,13 @@ const getDefinitionSet = () => {
             ), //regularExpressionException
         }, //search
         menuShortcuts: {
-            fileNew: { key: "KeyN", prefix: ["ctrlKey"]},
-            fileOpen: { key: "KeyO", prefix: ["ctrlKey"]},
-            fileSaveAs: { key: "KeyS", prefix: ["ctrlKey", "shiftKey"]},
-            fileSaveExisting: { key: "KeyS", prefix: ["ctrlKey"]},
-            helpAbout: { key: "F1", prefix: []},
+            fileNew: { key: "KeyN", prefix: ["ctrlKey"] },
+            fileOpen: { key: "KeyO", prefix: ["ctrlKey"] },
+            fileSaveAs: { key: "KeyS", prefix: ["ctrlKey", "shiftKey"] },
+            fileSaveExisting: { key: "KeyS", prefix: ["ctrlKey"] },
+            helpAbout: { key: "F1", prefix: [] },
         }, //menuShortcuts
-        isShortcut : (event, shortcut) => {
+        isShortcut: (event, shortcut) => {
             if (event.code != shortcut.key) return false;
             if (!shortcut.prefix || shortcut.prefix.length < 1)
                 return !(event.shiftKey || event.ctrlKey || event.metaKey || event.altKey);
@@ -233,14 +233,15 @@ const getDefinitionSet = () => {
                 if (!event[prefixElement]) return false;
             return true;
         }, //isShortcut
-    }; //definitionSet
 
-    for (const subset of [definitionSet.events, definitionSet.elements, definitionSet.keys, definitionSet.search.optionClassName])
-        for (const index in subset)
-            if (!subset[index])
-                subset[index] = index;
-    Object.freeze(definitionSet);
+    }; //definitionSetExtension
 
-    return definitionSet;
+    namespaces.initializeNames([
+        definitionSetExtension.events,
+        definitionSetExtension.elements,
+        definitionSetExtension.keys,
+        definitionSetExtension.search.optionClassName]);
 
-};
+    namespaces.extend(baseDefinitionSet, definitionSetExtension);
+
+})();
