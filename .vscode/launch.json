@@ -10,7 +10,7 @@
       "windows": {
         "runtimeExecutable": "c:/app/Node.js/node_modules/electron/dist/electron.exe"
       },
-      "args" : ["${workspaceFolder}/Editor", "--remote-debugging-port=9223", "--trace-warnings", "${workspaceFolder}/Editor/../test.txt"],
+      "args" : ["${workspaceFolder}/Editor", "--remote-debugging-port=9223", "--trace-warnings", "${workspaceFolder}/test.txt"],
       "outputCapture": "std"
     },
     {
