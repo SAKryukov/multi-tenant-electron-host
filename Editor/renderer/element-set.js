@@ -1,7 +1,8 @@
 "use strict";
 
 const getElementSet = document => {
-    return {
+
+    const elementSet = {
         editor: document.querySelector("textarea"),
         menu: document.querySelector("menu"),
         copyright: document.querySelector("#id-copyright"),
@@ -69,4 +70,19 @@ const getElementSet = document => {
             pluginParent: document.querySelector("#menu-plugins"),
         },
     };
+
+    (() => { // hints
+        new Hint(elementSet.statusBar.all, elementSet.statusBar.cursorPositionIndicator);
+        new Hint(elementSet.search.dialog, elementSet.search.closeCross);
+        new Hint(elementSet.search.dialog, elementSet.search.inputFind);
+        new Hint(elementSet.search.dialog, elementSet.search.inputReplace);
+        new Hint(elementSet.search.dialog, elementSet.search.options.matchCase);
+        new Hint(elementSet.search.dialog, elementSet.search.options.matchWholeWord);
+        new Hint(elementSet.search.dialog, elementSet.search.options.useRegularExpression);
+        new Hint(elementSet.search.dialog, elementSet.search.options.useSpecialCharacters);
+        new Hint(elementSet.search.dialog, elementSet.search.options.askConfirmation);
+    })();
+
+    return elementSet;
+
 }; //elementSet

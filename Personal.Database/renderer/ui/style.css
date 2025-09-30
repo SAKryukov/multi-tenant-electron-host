@@ -4,9 +4,6 @@
     --padding-horizontal: 0.2em 1em 0.2em 1em;
     --color-border: gray;
     --color-modified: red;
-    --color-hint-border: hsl(210, 30%, 50%, 100%);
-    --color-hint-text: hsl(210, 30%, 50%, 100%);
-    --color-hint-background: hsl(210, 100%, 97%, 100%);
     --color-cell-headers: lightgray;
     --color-cell-focus-background: white;
     --color-cell-selection-text: white;
@@ -49,11 +46,6 @@ td.URI.select:not(:focus) { color: var(--color-cell-selection-text-URI); }
 td.found { outline: 6px solid var(--color-border-found); outline-offset: -3px; }
 td:focus, th:focus { background-color: var(--color-cell-focus-background); color: var(--color-cell-editing); outline: none; }
 table:not(:focus) td:not(:focus).select { opacity: 50%; }
-cite { /* hint */
-    background-color: var(--color-hint-background); border: solid 0.4px var(--color-hint-border); border-radius: 0.3em;
-    padding: var(--padding-horizontal);
-    color: var(--color-hint-text); font-size: 80%; font-style: normal;
-}
 /* footer */
 footer > * { display: inline-block; vertical-align: middle; }
 footer { padding: 1em; padding-top: 0.2em; padding-bottom: 0.2em; }
