@@ -12,9 +12,9 @@ class Search {
 
         const pattern = elements.search.searchPattern;
 
-        const matchCase = new TwoStateButton(elements.search.options.matchCase, definitionSet.CSS.buttonUp, definitionSet.CSS.buttonDown, true);
-        const wholeWord = new TwoStateButton(elements.search.options.wholeWord, definitionSet.CSS.buttonUp, definitionSet.CSS.buttonDown, false);
-        const useRegexp = new TwoStateButton(elements.search.options.useRegexp, definitionSet.CSS.buttonUp, definitionSet.CSS.buttonDown, false);
+        const matchCase = createTwoStateButton(elements.search.options.matchCase, definitionSet.CSS.buttonUp, definitionSet.CSS.buttonDown, true);
+        const wholeWord = createTwoStateButton(elements.search.options.wholeWord, definitionSet.CSS.buttonUp, definitionSet.CSS.buttonDown, false);
+        const useRegexp = createTwoStateButton(elements.search.options.useRegexp, definitionSet.CSS.buttonUp, definitionSet.CSS.buttonDown, false);
         const searchResults = elements.search.searchResults;
         const buttonNext = elements.search.buttonNext;
 
