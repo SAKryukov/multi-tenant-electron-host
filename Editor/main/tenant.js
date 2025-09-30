@@ -7,10 +7,14 @@ module.exports.tenant = tenantRoot => {
         const candidate = require("../../shared/main/tenant-base.js");
         tenantBase = candidate.tenantBase;
     } catch {
-        const { dialog } = require("electron");
+        const { dialog, app } = require("electron");
+        const path = require("node:path");
         const { definitionSet } = require("./definition-set.js");
+        const applicationPath = app.getAppPath();
+        const application = path.basename(applicationPath)
         dialog.showErrorBox(definitionSet.invalidApplicationPack.title,
-            definitionSet.invalidApplicationPack.message(tenantRoot));
+            definitionSet.invalidApplicationPack.message);
+        app.quit();
         return;
     } //exception
 
