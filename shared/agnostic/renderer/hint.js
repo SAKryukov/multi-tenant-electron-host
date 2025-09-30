@@ -8,7 +8,9 @@ http://www.codeproject.com/Members/SAKryukov
 
 "use strict";
 
-const Hint = function (parent, textOrTarget) {
+const Hint = function (elementOrString) {
+    // if elementOrString is string, should be shown with this.show
+    // if this is HTMLElement, its title value is used
 
     const definitionSet = {
         hint: {
@@ -31,12 +33,14 @@ const Hint = function (parent, textOrTarget) {
 
     let text, time;
     
-    if (textOrTarget instanceof HTMLElement) {
-        text = textOrTarget.title;
-        textOrTarget.title = definitionSet.hint.noTitle;
+    if (elementOrString instanceof HTMLElement) {
+        text = elementOrString.title;
+        elementOrString.title = definitionSet.hint.noTitle;
         time =  definitionSet.hint.timeout;
-    } else if (textOrTarget.constructor == String)
-        text = textOrTarget;
+    } else if (elementOrString.constructor == String)
+        text = elementOrString;
+    else
+        return;
 
     const element = document.createElement(definitionSet.hint.element);
     element.textContent = text;
@@ -46,12 +50,11 @@ const Hint = function (parent, textOrTarget) {
     document.body.appendChild(element);
 
     const show = function (currentTarget, remove) {
-        if (!currentTarget) currentTarget = textOrTarget;
+        if (!currentTarget) currentTarget = elementOrString;
         element.style.display = remove
             ? definitionSet.CSS.display.none
             : null;
         if (!remove) {
-            const parentRectangle = parent.getBoundingClientRect();
             const targetRectangle = currentTarget.getBoundingClientRect();
             let xOrientationLeft = true;
             let yOrientationTop = true;
@@ -77,15 +80,21 @@ const Hint = function (parent, textOrTarget) {
     } //show
     this.show = cell => show(cell, cell == null);
 
-    if (textOrTarget && textOrTarget instanceof HTMLElement) {
-        textOrTarget.onpointerenter = () => {
+    if (elementOrString && elementOrString instanceof HTMLElement) {
+        elementOrString.onpointerenter = () => {
             show(null);
             if (time)
                 setTimeout(() => show(null, true), time);
         }; //target.onpointerenter
-        textOrTarget.onmouseleave = () => {
+        elementOrString.onmouseleave = () => {
             show(null, true);
         }; //target.onpointerleave    
     } //if
 
-};
+}; //Hint
+
+const replaceTitlesWithHints = () => {
+    const titledElements = document.querySelectorAll("[title]");
+    for (const element of titledElements)
+        new Hint(element);
+}; //replaceTitlesWithHints

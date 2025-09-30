@@ -78,14 +78,7 @@ window.onload = () => {
         () => commandSetMap.table.findNext()
     );
 
-    (() => { //set hints:
-        new Hint(elements.main, elements.search.searchPattern);
-        new Hint(elements.main, elements.search.options.matchCase);
-        new Hint(elements.main, elements.search.options.wholeWord);
-        new Hint(elements.main, elements.search.options.useRegexp);
-        new Hint(elements.main, elements.search.buttonNext);
-        new Hint(elements.main, elements.indicators.modified);
-    })(); //set hints
+    replaceTitlesWithHints();
 
     window.onkeydown = event => {
         if (event.key == definitionSet.keyboard.findNext) {

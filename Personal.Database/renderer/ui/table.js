@@ -38,7 +38,7 @@ class Table {
         const head = this.#table.createTHead();
         this.#headerRow = head.insertRow();
         this.#body = this.#table.createTBody();
-        this.#hint = new Hint(parent, definitionSet.table.editingHint);
+        this.#hint = new Hint(definitionSet.table.editingHint);
         const onBlurHandle = event => {
             if (event.target == this.#editingCell)
                 this.#stopEditing(event.target, true, false, true);
