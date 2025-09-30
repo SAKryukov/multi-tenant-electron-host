@@ -8,7 +8,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 "use strict";
 
-const createCommandSet = (table, summary, menuItems) => {
+const createCommandSet = (table, summary, menuItems, menuShortcuts) => {
     
     const commandSetMap = new Map();
     commandSetMap.table = table;
@@ -48,7 +48,7 @@ const createCommandSet = (table, summary, menuItems) => {
     }; //showTitle
 
     commandSetMap.set(menuItems.new, actionRequest => {
-        if (!actionRequest) return;
+        if (!actionRequest) return true;
         commandSetMap.actConfirmed(() => commandSetMap.table.reset() );
     });
 
@@ -59,7 +59,7 @@ const createCommandSet = (table, summary, menuItems) => {
     }; //loadDatabase
 
     commandSetMap.set(menuItems.open, actionRequest => {
-        if (!actionRequest) return;
+        if (!actionRequest) return true;
         commandSetMap.actConfirmed(() => {
             fileIO.loadTextFile((_, text) => {
                 try {

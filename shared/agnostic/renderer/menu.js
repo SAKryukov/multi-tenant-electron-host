@@ -226,11 +226,15 @@ function menuGenerator (container, focusElement) {
     Object.defineProperties(this, { //menu API:
         subscribe: {
             get() {
-                return (value, action, customItemData) => {
+                return (value, action, customItemData, shortcuts) => {
                     if (!value) return;
                     if (value instanceof Map) {
-                        for (const [key, command] of value)
+                        for (const [key, command] of value) {
                             command.menuItemHandle = this.subscribe(key, command);
+                            const shortcut = shortcuts?.get(key);
+                            if (shortcut)
+                                command.menuItemHandle.subscribeToShortcut(shortcut);
+                        } //loop
                     } else {
                         const actionMapData = actionMap.get(value);
                         if (!actionMapData)
