@@ -1,0 +1,27 @@
+{
+  "name": "personal-database",
+  "version": "1.0.0",
+  "description": "Personal Database",
+  "main": "./main/entry-point.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/SAKryukov/conceptual-electron-editor",
+  "author": "Sergey A Kryukov",
+  "license": "MIT",
+  "keywords": [
+    "electron",
+    "nodejs",
+    "javascript",
+    "plugin",
+    "cross-platform",
+    "chrome-browser",
+    "chromium-browser",
+    "keyboard-macros",
+    "remote-debugger",
+    "remote-debugging"
+  ],
+  "devDependencies": {
+    "electron": "^37.4.0"
+  }
+}

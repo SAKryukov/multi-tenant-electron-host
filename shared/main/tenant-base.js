@@ -22,8 +22,8 @@ const tenantBase = {
         let permittedToCloseApplication = false;
 
         const handlePlugins = (applicationPath, window) => {
-            pluginProvider?.setup({ applicationPath, window });
-            pluginProvider?.sendScripts(ipcChannel.plugin.loadAll);
+            this.pluginProvider?.setup({ applicationPath, window });
+            this.pluginProvider?.sendScripts(ipcChannel.plugin.loadAll);
         }; //handlePlugins
 
         const applicationPackage = (() => {
