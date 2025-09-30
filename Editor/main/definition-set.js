@@ -8,6 +8,14 @@ const definitionSet = {
         metadata: "metadata.json",
         applicationIcon: "images/editor.png",
     },
+    invalidApplicationPack: {
+        title: "Invalid application pack",
+        message: tenantRoot =>  
+            `This application pack cannot work as a stand-alone application. Here are the valid alternatives:` +
+            `\n\n` +
+            `    1. Pack the application multi-tenant-host. Use it with the command-line argument :${tenantRoot}.\n` +
+            `    2. Execute the application under Electron`
+    }, //invalidApplicationPack
     utility: {
         fileNaming: {
             title: (baseFilename, title) =>

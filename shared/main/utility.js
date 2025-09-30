@@ -58,7 +58,7 @@ module.exports.utilitySet = (() => {
             if (result) {
                 const window = new BrowserWindow(
                     definitionSet.invalidApplicationPack.createWindowProperties(
-                        path.join(applicationPath, definitionSet.applicationIcon)));
+                        undefined));
                 window.loadFile(path.join(applicationPath, definitionSet.invalidApplicationPack.pathHTML));
                 Menu.setApplicationMenu(null);
             } //if

@@ -145,7 +145,6 @@ const tenantBase = {
         }; //createWindow
 
         app.whenReady().then(() => {
-            //if (utilitySet.handleInvalidApplicationPack(app)) return; //SA!!! provision for future multi-tenant use
             const filename = utilitySet.processCommandLine();
             const baseTitle = applicationPackage?.description;
             const title = filename

@@ -2,7 +2,18 @@
 
 module.exports.tenant = tenantRoot => {
 
-    const { tenantBase } = require("../../shared/main/tenant-base.js");
+    let tenantBase;
+    try {
+        const candidate = require("../../shared/main/tenant-base.js");
+        tenantBase = candidate.tenantBase;
+    } catch {
+        const { dialog } = require("electron");
+        const { definitionSet } = require("./definition-set.js");
+        dialog.showErrorBox(definitionSet.invalidApplicationPack.title,
+            definitionSet.invalidApplicationPack.message(tenantRoot));
+        return;
+    } //exception
+
     const { definitionSet } = require("./definition-set.js");
     const { pluginProvider } = require("./plugin-provider.js");
 
