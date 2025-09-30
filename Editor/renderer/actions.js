@@ -4,7 +4,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     elementSet.copyright.innerHTML = metadata?.package?.metadata?.copyright;
     let currentFilename = null;
-    const defaultPath = () => currentFilename == null ? definitionSet.empty : currentFilename;
+    const defaultPath = () => currentFilename == null ? definitionSet.characters.empty : currentFilename;
     const filters = null; //SA??? [{ name: "Text files", extensions: ["json", "text"]}];
 
     const fileSystemStatus = (() => {
@@ -194,7 +194,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         const length = elementSet.editor.selectionEnd - elementSet.editor.selectionStart;
         if (!actionRequest) return length > 0;
         selectionToClipboard(length);
-        elementSet.editor.setRangeText(definitionSet.empty);
+        elementSet.editor.setRangeText(definitionSet.characters.empty);
         elementSet.editor.focus();
         return true;
     }); //edit.cut

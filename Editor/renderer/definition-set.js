@@ -51,10 +51,10 @@
                     <br/>`;
             },
             returnResult: function (name, theResult, error) {
-                return `<p>${name}:</p><br/><span ${error ? this.errorStyle : this.empty}>${theResult}</span></br></br>`;
+                return `<p>${name}:</p><br/><span ${error ? this.errorStyle : this.character.empty}>${theResult}</span></br></br>`;
             },
             nameInMenu: name => `${name}`,
-        },
+        }, //plugin
         defaultMessageDialog: {
             defaultButton: "Close",
         },
@@ -104,15 +104,6 @@
                 { text: "Don't Save", action: dontSaveAction },
                 { isDefault: true, isEscape: true, text: "Cancel", action: cancelAction }],
         }, //modifiedTextOperationConfirmation
-        events: {
-            DOMContentLoaded: 0,
-            keydown: 0,
-            selectionchange: 0,
-            input: 0,
-            reading: 0, // Sensor: GravitySensor, Accelerometer...
-            //custom:
-            editorTextModified: 0,
-        }, //events
         keys: {
             KeyP: 0,
             KeyR: 0,
@@ -243,11 +234,10 @@
     }; //definitionSetExtension
 
     namespaces.initializeNames([
-        definitionSetExtension.events,
         definitionSetExtension.elements,
         definitionSetExtension.keys,
         definitionSetExtension.search.optionClassName]);
 
-    namespaces.extend(baseDefinitionSet, definitionSetExtension);
+    namespaces.extend(extensibleDefinitionSet, definitionSetExtension);
 
 })();

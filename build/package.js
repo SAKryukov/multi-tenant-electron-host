@@ -3,8 +3,8 @@ const fs = require("fs");
 const { argv } = require("node:process");
 const path = require("node:path");
 
-const application = ""; // as multi-tenant host
-//const application = "Editor"; // can be changed to "" to build multi-tenant-host
+//const application = ""; // as multi-tenant host
+const application = "Editor"; // can be changed to "" to build multi-tenant-host
 
 const medatadaFile = `../${application}/metadata.json`;
 const supportedCombinations =[

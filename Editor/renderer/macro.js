@@ -37,9 +37,9 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
             const indentSize = slice.length - slice.trimLeft().length;
             if (!indentSize)
                 return null;
-            const indent = definitionSet.blankSpace.repeat(indentSize);
+            const indent = definitionSet.characters.blankSpace.repeat(indentSize);
             editor.setRangeText(indent);
-            mockEvent = { data: definitionSet.newLine + indent, target: event.target };
+            mockEvent = { data: definitionSet.characters.newLine + indent, target: event.target };
             location += indentSize;
             editor.setSelectionRange(location, location);
         } else if (backspace) {
@@ -47,7 +47,7 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
             const currentIndent = currentIndentBuffer.length;
             if (currentIndentBuffer.trim().length > 0) return null;
             const linesBuffer = event.target.value.slice(0, location);
-            const lines = linesBuffer.split(definitionSet.newLine);
+            const lines = linesBuffer.split(definitionSet.characters.newLine);
             let requiredIndent = null;
             for (let index = lines.length - 1; index >= 0; --index) {
                 const line = lines[index];
@@ -61,7 +61,7 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
                 requiredIndent = 0;
             const deleteCount = currentIndent - requiredIndent;
             editor.setSelectionRange(location - deleteCount, location);
-            editor.setRangeText(definitionSet.empty);
+            editor.setRangeText(definitionSet.characters.empty);
             mockEvent = { target: event.target };
         } //if
         return mockEvent;
@@ -77,7 +77,7 @@ const createMacroProcessor = (editor, stateIndicator, editorAPI) => {
         const currentState = getState(event.target);
         const delta = getDelta(previousState, currentState);
         previousState = currentState;
-        let data = event.data ? event.data : definitionSet.empty;
+        let data = event.data ? event.data : definitionSet.characters.empty;
         if (!data && event.inputType == definitionSet.macro.specialInputTypeNewLine.recorded) // ugly special case
             data = definitionSet.macro.specialInputTypeNewLine.replaced;
         macro.push({
