@@ -10,6 +10,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 <html lang="en-us">
     <head>
+        <script src="../../shared/agnostic/readonly-namespaces.js"></script>
         <script src="metadata/definitionSet.js"></script>
         <script src="ui/file-io.js"></script>
         <script src="ui/accesskey.js"></script>
@@ -41,71 +42,67 @@ http://www.codeproject.com/Members/SAKryukov
             <li>
                 <header>File</header>
                 <select>
-                    <option>New</option>
-                    <option selected="true">Open</option>
-                    <option>Save</option>
-                    <option value="SaveAs">Save As&hellip;</option>
+                    <option value="new">New (Ctrl+N)</option>
+                    <option selected="true" value="open">Open (Ctrl+O)</option>
+                    <option value="save">Save (Ctrl+S)</option>
+                    <option value="saveAs">Save As&hellip; (Ctrl+Shift+S)</option>
                 </select>
             </li>
             <li>
                 <header>Edit</header>
                 <select>
-                    <option value="Edit Selected Cell">F2: Edit Selected Cell</option>
-                    <option value="Edit Property Name">Ctrl+F2: Edit Property Name</option>
-                    <option value="Load">Open Web Page</option>
+                    <option value="editSelectedCell">F2: Edit Selected Cell</option>
+                    <option value="editPropertyName">Ctrl+F2: Edit Property Name</option>
+                    <option value="load">Open Web Page</option>
                     <option disabled="true" class="separator">───────────────────────────────</option>
-                    <option>Add Property</option>
-                    <option>Insert Property</option>
-                    <option>Remove Property</option>
-                    <option>Insert Row</option>
-                    <option>Remove Row</option>
+                    <option value="addProperty">Add Property</option>
+                    <option value="insertProperty">Insert Property</option>
+                    <option value="removeProperty">Remove Property</option>
+                    <option value="insertRow">Insert Row</option>
+                    <option value="removeRow">Remove Row</option>
                     <option disabled="true" class="separator">───────────────────────────────</option>
                     <option value="up">Ctrl+Shift+&uarr;: Move Row</option>   
                     <option value="down">Ctrl+Shift+&darr; : Move Row</option>
                     <option value="left">Ctrl+Shift+&larr;: Move Column</option>
                     <option value="right">Ctrl+Shift+&rarr;: Move Column</option>
                     <option disabled="true" class="separator">───────────────────────────────</option>
-                    <option value="Copy">Ctrl+C,  Ctrl+Insert: Copy</option>
-                    <option value="Paste">Ctrl+V, Shift+Insert: Paste</option>
-                    <option disabled="true" class="separator">───────────────────────────────</option>
-                    <option>Remember Query String in the Clipboard</option>
+                    <option value="copy">Ctrl+C,  Ctrl+Insert: Copy</option>
+                    <option value="paste">Ctrl+V, Shift+Insert: Paste</option>
                 </select>
             </li>    
             <li>
                 <header>Help</header>
                 <select>
-                    <option>About</option>
-                    <option>Source Code</option>
+                    <option value="about">About</option>
+                    <option value="sourceCode">Source Code</option>
                 </select>
             </li>    
         </menu>
     </header>
     <main>
         <select>
-            <option>New</option>
-            <option selected="true">Open</option>
-            <option>Save</option>
-            <option value="SaveAs">Save As&hellip;</option>
+            <option value="new">New</option>
+            <option selected="true" value="open">Open</option>
+            <option value="save">Save</option>
+            <option  value="saveAs">Save As&hellip;</option>
             <option disabled="true" class="separator">───────────────────────────────</option>
-            <option value="Edit Selected Cell">F2: Edit Selected Cell</option>
-            <option value="Edit Property Name">Ctrl+F2: Edit Property Name</option>
-            <option value="Load">Open Web Page</option>
+            <option value="editSelectedCell">F2: Edit Selected Cell</option>
+            <option value="editPropertyName">Ctrl+F2: Edit Property Name</option>
+            <option value="load">Open Web Page</option>
             <option disabled="true" class="separator">───────────────────────────────</option>
-            <option>Add Property</option>
-            <option>Insert Property</option>
-            <option>Remove Property</option>
-            <option>Insert Row</option>
-            <option>Remove Row</option>
+            <option value="addProperty">Add Property</option>
+            <option value="insertProperty">Insert Property</option>
+            <option value="removeProperty">Remove Property</option>
+            <option value="insertRow">Insert Row</option>
+            <option value="removeRow">Remove Row</option>
             <option disabled="true" class="separator">───────────────────────────────</option>
             <option value="up">Ctrl+Shift+&uarr;: Move Row</option>   
             <option value="down">Ctrl+Shift+&darr; : Move Row</option>
             <option value="left">Ctrl+Shift+&larr;: Move Column</option>
             <option value="right">Ctrl+Shift+&rarr;: Move Column</option>
             <option disabled="true" class="separator">───────────────────────────────</option>
-            <option value="Copy">Ctrl+C,  Ctrl+Insert: Copy</option>
-            <option value="Paste">Ctrl+V, Shift+Insert: Paste</option>
-            <option disabled="true" class="separator">───────────────────────────────</option>
-            <option>Remember Query String in the Clipboard</option>
+            <option value="copy">Ctrl+C,  Ctrl+Insert: Copy</option>
+            <option value="paste">Ctrl+V, Shift+Insert: Paste</option>
         </select>
     </main>
     <footer>

@@ -10,7 +10,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 function menuGenerator (container, focusElement) {
 
-    const version = "1.4.0";
+    const version = "1.5.0";
     if (!new.target) return version;
 
     if (!container) return;
@@ -233,11 +233,11 @@ function menuGenerator (container, focusElement) {
                             command.menuItemHandle = this.subscribe(key, command);
                     } else {
                         const actionMapData = actionMap.get(value);
-                        actionMapData.customItemData = customItemData;
                         if (!actionMapData)
                             throw new MenuSubscriptionFailure(
                                 definitionSet.exceptions.menuItemSubscriptionFailure(value));
                         actionMapData.action = action;
+                        actionMapData.customItemData = customItemData;
                         return new menuItemProxyApi(actionMapData.menuItem);
                     } //if
                 }

@@ -22,7 +22,8 @@ window.onload = () => {
 
     const commandSet = createCommandSet(
         new Table(elements.main),
-        new Summary(elements));
+        new Summary(elements),
+        elements.menuItems);
     const commandSetMap = commandSet.commandSetMap;
 
     commandSetMap.table.doubleClickHandler = commandSet.doubleClickHandler;

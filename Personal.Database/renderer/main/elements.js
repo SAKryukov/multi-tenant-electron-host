@@ -10,7 +10,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 const getElements = () => {
     
-    const result = {
+    const elementSet = {
         main: document.querySelector("main"),
         product: document.querySelector("#product"),
         mainMenu: document.querySelector("header > menu"),
@@ -20,11 +20,11 @@ const getElements = () => {
             created: document.querySelector("#summary-created"),
             updated: document.querySelector("#summary-updated"),
             description: document.querySelector("#summary-description"),
-        },
+        }, //summary
         indicators: {
             readOnly: document.querySelector("#read-only"),
             modified: document.querySelector("#modified"),
-        },
+        }, //indicators
         search: {
             searchPattern: document.querySelector("#search"),
             options: {
@@ -34,12 +34,35 @@ const getElements = () => {
             },
             searchResults: document.querySelector("#search-results"),
             buttonNext: document.querySelector("#search-next"),
-        },
+        }, //search
+        menuItems: {
+            new: 0,
+            open: 0,
+            save: 0,
+            saveAs: 0,
+            insertRow: 0,
+            removeRow: 0,
+            addProperty: 0,
+            insertProperty: 0,
+            removeProperty: 0,
+            copy: 0,
+            paste: 0,
+            editSelectedCell: 0,
+            editPropertyName: 0,
+            load: 0,
+            up: 0,
+            down: 0,
+            left: 0,
+            right: 0,
+            about: 0,
+            sourceCode: 0,
+        }, //menuItems
     };
 
-    Object.freeze(result);
+    namespaces.initializeNames([elementSet.menuItems]);
+    Object.freeze(elementSet);
 
-    return result;
+    return elementSet;
 
 };
 
