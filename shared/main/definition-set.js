@@ -7,6 +7,9 @@ const definitionSet = {
         readyToShow: "ready-to-show",
         windowAllClosed: "window-all-closed",
     },
+    paths: {
+        preload: "./shared/IPC/preload.js",
+    },
     utility: {
         fileNaming: {
             title: (baseFilename, title) =>

@@ -13,12 +13,11 @@ const tenantBase = {
         package: null,
         metadata: null,
         applicationIcon: null,
-        preload: null,
         index: null,
     }, //paths
     pluginProvider: null, // has to be customized or left unimplemented
 
-    run: function (tenantRoot) {
+    run: function(tenantRoot) {
 
         let permittedToCloseApplication = false;
 
@@ -103,12 +102,18 @@ const tenantBase = {
                         text, error));
         }; //handleCommandLine
 
-        const createWindow = (title, baseTitle, filename) => {
-            const applicationPath = path.join(app.getAppPath(), tenantRoot);
-            const icon = nativeImage.createFromPath(path.join(applicationPath, this.paths.applicationIcon));
+        const createWindow = (title, baseTitle, filename) => {  
+            const applicationPath = app.getAppPath();
+            const hostApplicationPath = tenantRoot
+                ? app.getAppPath()
+                : path.dirname(applicationPath);
+            const tenantApplicationPath = tenantRoot
+                ? path.join(hostApplicationPath, tenantRoot)
+                : applicationPath;
+            const icon = nativeImage.createFromPath(path.join(tenantApplicationPath, this.paths.applicationIcon));
             const window = new BrowserWindow(
                 definitionSet.createWindowProperties(title, icon,
-                    path.join(applicationPath, this.paths.preload)));
+                    path.join(hostApplicationPath, definitionSet.paths.preload)));
             window.webContents.send(ipcChannel.metadata.metadataPush, {
                 platform: process.platform,
                 architecture: process.arch,
@@ -119,7 +124,7 @@ const tenantBase = {
             });
             window.maximize(); //SA???
             window.once(definitionSet.events.readyToShow, () => {
-                handlePlugins(applicationPath, window);
+                handlePlugins(tenantApplicationPath, window);
                 handleCommandLine(window, filename);
                 window.show();
             }); //once ready to show
@@ -134,7 +139,7 @@ const tenantBase = {
                 });
                 event.preventDefault();
             }); //on close
-            window.loadFile(path.join(applicationPath, this.paths.index));
+            window.loadFile(path.join(tenantApplicationPath, this.paths.index));
             subscribeToEvents(window, baseTitle);
             Menu.setApplicationMenu(null);
         }; //createWindow

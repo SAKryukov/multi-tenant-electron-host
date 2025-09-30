@@ -10,7 +10,6 @@ module.exports.tenant = tenantRoot => {
     tenantBase.paths.package = definitionSet.paths.package;
     tenantBase.paths.metadata = definitionSet.paths.metadata;
     tenantBase.paths.applicationIcon = definitionSet.paths.applicationIcon;
-    tenantBase.paths.preload = definitionSet.paths.preload;
     tenantBase.paths.index = definitionSet.paths.index;
     tenantBase.pluginProvider = pluginProvider;
 
