@@ -1,18 +1,12 @@
 "use strict";
 
 const definitionSet = {
-    events: {
-        activate: 0,
-        close: 0,
-        readyToShow: "ready-to-show",
-        windowAllClosed: "window-all-closed",
-    },
     paths: {
         preload: "../shared/IPC/preload.js",
-        image: "main/editor.png",
         index: "renderer/index.html",
         package: "package.json",
         metadata: "metadata.json",
+        applicationIcon: "images/editor.png",
     },
     utility: {
         fileNaming: {
@@ -24,27 +18,6 @@ const definitionSet = {
         directory: "plugins",
         pluginFileSuffix: ".js",
     }, //plugin
-    isDarwin: process => process.platform == 'darwin',
-    applicationIcon: "images/editor.png",
-    createWindowProperties: (title, icon, preloadScript) => {
-        return { // see https://www.electronjs.org/docs/latest/api/base-window#new-basewindowoptions
-            resizable: true,
-            minWidth: 800,
-            minHeight: 320,
-            width: 1400,
-            //height: 600,
-            show: false,
-            frame: true,
-            transparent: false,
-            title: title,
-            icon: icon,
-            webPreferences: { //https://www.electronjs.org/docs/latest/api/structures/web-preferences
-                preload: preloadScript,
-                sandbox: false, // required with CommonJS or ES Modules used in preload
-                //nodeIntegration: true,
-            } //webPreferences
-        };
-    }, //createWindowProperties
 };
 
 for (const subset of [definitionSet.events])
