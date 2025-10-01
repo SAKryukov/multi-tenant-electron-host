@@ -8,7 +8,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 "use strict";
 
-const createCommandSet = (table, summary, menuItems) => {
+const createCommandSet = (table, summary, menuItems, metadata) => {
 
     const commandSetMap = new Map();
     commandSetMap.table = table;
@@ -78,7 +78,7 @@ const createCommandSet = (table, summary, menuItems) => {
 
     window.bridgeFileIO.subscribeToCommandLine((filename, text, error) => {
         loadDatabase(text, true); //readonly
-        handleFileOperationResult(filename, text, error, false, true);
+        handleFileOperationResult(filename, text, error, false, true); //readonly
     }); //window.bridgeFileIO.subscribeToCommandLine
 
     const saveAs = () =>
@@ -220,6 +220,7 @@ const createCommandSet = (table, summary, menuItems) => {
             showException(exception);
         } //exception
     } //loadWebPage
+    
     commandSetMap.set(menuItems.load, loadWebPage);
 
     commandSetMap.set(menuItems.up, actionRequest => {
@@ -243,11 +244,13 @@ const createCommandSet = (table, summary, menuItems) => {
     aboutCommandSet.set(menuItems.about, actionRequest => {
         if (!actionRequest) return true;
         modalDialog.show("To be re-implemented<br/><br/>");
-    });
+    }); //menuItems.about
     aboutCommandSet.set(menuItems.sourceCode, actionRequest => {
         if (!actionRequest) return true;
-        window.open("https://www.github.com/SAKryukov/personal-database-dynamic-schema", definitionSet.URI.newTab);
-    });
+        window.bridgeMetadata.showSource();
+        table.focus();
+        return true;
+    }); //menuItems.sourceCode
 
     table.focus();
     return { commandSetMap, aboutCommandSet, doubleClickHandler: loadWebPage, loadDatabase, showPreloadException };

@@ -14,6 +14,10 @@ window.bridgeUI.subscribeToApplicationClose(() => {
 
 window.onload = () => {
 
+    let metadata;
+    if (window.bridgePlugin)
+        metadata = window.bridgeMetadata.pushedMetadata();
+
     fixAccessKeyAttributes();
 
     const elements = getElements();
@@ -23,7 +27,8 @@ window.onload = () => {
     const commandSet = createCommandSet(
         new Table(elements.main),
         new Summary(elements),
-        elements.menuItems);
+        elements.menuItems,
+        metadata);
     const commandSetMap = commandSet.commandSetMap;
 
     commandSetMap.table.doubleClickHandler = commandSet.doubleClickHandler;
