@@ -21,7 +21,8 @@ class Table {
     #searchResults = [];
     #indexInSearchResults = -1;
     #readOnlyEvent = new CustomEvent(definitionSet.eventHandler.readOnlyEvent);
-    #modifiedEvent = new CustomEvent(definitionSet.eventHandler.modifiedEvent);
+    #modifiedEvent = new CustomEvent(definitionSet.eventHandler.modifiedEvent, { detail: { isModified: true } });
+    #notModifiedEvent = new CustomEvent(definitionSet.eventHandler.modifiedEvent, { detail: { isModified: false } });
     #notifyReadonly = null;
     #notifyModified = null;
     #hint = null;
@@ -204,7 +205,7 @@ class Table {
         }; //document.body.onpaste
         this.#setInitialSelection();
         this.#notifyReadonly = function() { window.dispatchEvent(this.#readOnlyEvent); }
-        this.#notifyModified = function() { this.#modified = true; window.dispatchEvent(this.#modifiedEvent); }
+        this.#notifyModified = function() { window.dispatchEvent(this.#modifiedEvent); }
     } //constructor
 
     #setInitialSelection() {
@@ -616,7 +617,13 @@ class Table {
     set isReadOnly(value) { this.#isReadOnly = value; this.#notifyReadonly(); }
 
     get isModified() { return this.#modified; }
-    set isModified(value) { this.#modified = value; }
+    set isModified(value) {
+        this.#modified = value;
+        const event = value
+            ? this.#modifiedEvent
+            : this.#notModifiedEvent
+        window.dispatchEvent(event);
+    } //isModified setter
 
     get selectedCell() { return this.#selectedCell; }
     get selectedUri() { return this.#getUri(this.#selectedCell); }

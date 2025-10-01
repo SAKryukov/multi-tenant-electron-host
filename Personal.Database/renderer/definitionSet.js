@@ -21,7 +21,6 @@ const definitionSet = (() => {
             },
             readOnlyEvent: "readonly",
             modifiedEvent: "modified",
-            storedEvent: "stored",
             readOnlyIndicator: ["Read/Write", "Read-only"],
             modifiedIndicator: "✷",
         },

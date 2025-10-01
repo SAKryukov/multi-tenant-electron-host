@@ -15,9 +15,6 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
     let currentFilename = null;
     const defaultPath = () => currentFilename == null ? definitionSet.characters.empty : currentFilename;
 
-    const storedEvent = new CustomEvent(definitionSet.eventHandler.storedEvent);
-    const notifyStored = () => window.dispatchEvent(storedEvent);
-
     const reportError = (error, errorKind = definitionSet.errorHandling.other) =>
         showMessage(definitionSet.errorHandling.format(errorKind, error.message), table);
 
@@ -81,7 +78,6 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
         commandSetMap.table.load(data);
         summary.populate(data);
         commandSetMap.table.isReadOnly = readonly;
-        notifyStored();
     }; //loadDatabase
 
     const handleFileOperationResult = (filename, text, error, isSave = false, readonly = false) => {
@@ -89,6 +85,7 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
             currentFilename = filename;
             if (text)
                 loadDatabase(text, readonly)
+            table.isModified = false;
             commandSetMap.table.focus();
         } else
             reportError(error, isSave ? definitionSet.errorHandling.save : definitionSet.errorHandling.open);

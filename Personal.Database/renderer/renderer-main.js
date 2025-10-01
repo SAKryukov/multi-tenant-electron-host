@@ -67,13 +67,10 @@ window.addEventListener(extensibleDefinitionSet.events.DOMContentLoaded, () => {
         const value = commandSetMap.table.isReadOnly;
         elements.indicators.readOnly.textContent = definitionSet.eventHandler.readOnlyIndicator[value ? 1 : 0];
     });
-    window.addEventListener(definitionSet.eventHandler.modifiedEvent, () => {
-        elements.indicators.modified.textContent = definitionSet.eventHandler.modifiedIndicator;
-    });
-    window.addEventListener(definitionSet.eventHandler.storedEvent, () => {
-        commandSetMap.table.isModified = false;
-        elements.indicators.modified.textContent = null;
-    });
+    window.addEventListener(definitionSet.eventHandler.modifiedEvent, event =>
+        elements.indicators.modified.textContent = event.detail.isModified
+            ? definitionSet.eventHandler.modifiedIndicator
+            : null);
 
     commandSetMap.table.isReadOnly = false;
 
