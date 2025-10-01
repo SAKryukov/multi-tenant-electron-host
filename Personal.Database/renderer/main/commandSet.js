@@ -13,7 +13,7 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
     const commandSetMap = new Map();
     commandSetMap.table = table;
     let currentFilename = null;
-    const defaultPath = () => currentFilename == null ? "" : currentFilename; //SA???
+    const defaultPath = () => currentFilename == null ? definitionSet.characters.empty : currentFilename; //SA???
 
     const storedEvent = new CustomEvent(definitionSet.eventHandler.storedEvent);
     const notifyStored = () => window.dispatchEvent(storedEvent);
@@ -240,7 +240,8 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
     const aboutCommandSet = new Map();
     aboutCommandSet.set(menuItems.about, actionRequest => {
         if (!actionRequest) return true;
-        modalDialog.show("To be re-implemented<br/><br/>");
+        showMessage(definitionSet.aboutDialog(metadata, definitionSet.paths.image), table);
+        return true;
     }); //menuItems.about
     aboutCommandSet.set(menuItems.sourceCode, actionRequest => {
         if (!actionRequest) return true;
@@ -250,6 +251,11 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
     }); //menuItems.sourceCode
 
     table.focus();
+
+    window.bridgeUI.subscribeToApplicationClose(() => {
+        return true; //!table.isModified; //SA???
+    }); //subscribeToApplicationClose
+
     return { commandSetMap, aboutCommandSet, doubleClickHandler: loadWebPage, loadDatabase, showPreloadException };
 
 };

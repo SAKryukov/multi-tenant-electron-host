@@ -55,34 +55,12 @@ const definitionSet = (() => {
             },
             nameInMenu: name => `${name}`,
         }, //plugin
-        defaultMessageDialog: {
-            defaultButton: "Close",
-        },
         fileDialog: {
             titleOpenFile: `Open text file${String.fromCharCode(0x2026)}`,
             titleSaveFile: `Save text file as${String.fromCharCode(0x2026)}`,
             titleSaveFileAndContinue: `Save text file as${String.fromCharCode(0x2026)} and continue`,
             titleSaveFileAndClose: `Save text file as${String.fromCharCode(0x2026)} and close application`,
         }, //fileDialog
-        aboutDialog: metadata => {
-            const hostVersionLine =
-                metadata?.package?.applicationHostDescription
-                    ? `<br/>${metadata.package.applicationHostDescription} version: ${metadata.applicationVersion}`
-                    : "";
-            return `<h4><img src="../images/editor.png"/>${metadata?.package?.description}</h4>
-            <br/>Application version: ${metadata.package.version}
-            ${hostVersionLine}
-            <br/>
-            <br/>Platform: ${metadata.platform}
-            <br/>CPU architecture: ${metadata.architecture}
-            <br/>
-            <br>Electron: v.&thinsp;${metadata.versions.electron}
-            <br/>Chromium: v.&thinsp;${metadata.versions.chrome}
-            <br/>Node.js: v.&thinsp;${metadata.versions.node}
-            <br/>
-            <br/>${metadata?.package?.metadata?.copyright}
-            <br/><br/>`
-        }, //aboutDialog
         modifiedTextOperationConfirmation: {
             saveAsEvent: new Event("save-as"),
             saveExistingEvent: new Event("save-existing"),
@@ -230,6 +208,9 @@ const definitionSet = (() => {
                 if (!event[prefixElement]) return false;
             return true;
         }, //isShortcut
+        paths: {
+            image: "../images/editor.png",
+        },
 
     }; //definitionSetExtension
 

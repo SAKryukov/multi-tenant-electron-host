@@ -8,21 +8,17 @@ http://www.codeproject.com/Members/SAKryukov
 
 "use strict";
 
-window.bridgeUI.subscribeToApplicationClose(() => {
-    return true;
-}); //subscribeToApplicationClose
-
-window.onload = () => {
+window.addEventListener(extensibleDefinitionSet.events.DOMContentLoaded, () => { //SA???
 
     let metadata;
-    if (window.bridgePlugin)
+    if (window.bridgeMetadata)
         metadata = window.bridgeMetadata.pushedMetadata();
+    else
+        console.log("SA??? Prevent standalone here?");
 
     fixAccessKeyAttributes();
 
     const elements = getElements();
-    elements.product.innerHTML = definitionSet.productFormat();
-    document.title = definitionSet.titleFormat();
 
     const commandSet = createCommandSet(
         new Table(elements.main),
@@ -97,4 +93,4 @@ window.onload = () => {
         } //if
     }; //window.onkeydown
 
-}; //window.onload
+}); //window.onload

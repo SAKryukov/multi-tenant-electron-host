@@ -295,7 +295,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     menu.subscribe(elementSet.menuItems.help.about.textContent, actionRequest => {
         if (!actionRequest) return true;
-        showMessage(definitionSet.aboutDialog(metadata), elementSet.editor);
+        showMessage(definitionSet.aboutDialog(metadata, definitionSet.paths.image), elementSet.editor); //SA???
         return true;
     }).subscribeToShortcut(definitionSet.menuShortcuts.helpAbout); //help.about
 

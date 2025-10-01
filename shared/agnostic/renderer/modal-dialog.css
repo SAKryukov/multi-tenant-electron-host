@@ -10,7 +10,7 @@ dialog section { user-select: none; }
 dialog { margin: auto; }
 dialog { padding: 0; border: none; border-radius: var(--dialog-border-radius); outline: none; }
 dialog > section { padding: 3em; padding-top: var(--vertical-gap); padding-bottom: var(--vertical-gap); }
-dialog > section > h4 { display: flex; align-items: center; justify-content: space-between; font-size: 18px; font-weight: bold; }
+dialog > section > h4 { display: flex; align-items: center; justify-content: flex-start; font-size: 24px; font-weight: bold; }
 dialog > section > h4 > img { margin-right: 1.2em; }
 dialog > section:first-of-type { background-color: floralWhite; padding-top: var(--vertical-gap-clipboard); }
 dialog > section:last-of-type { background-color: hsl(300, 10%, 84%); border-top: darkviolet solid thin; display: flex; justify-content: space-around; }
