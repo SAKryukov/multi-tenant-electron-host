@@ -1,7 +1,6 @@
 "use strict";
 
 let elementSet;
-const definitionSet = extensibleDefinitionSet;
 window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
 
     elementSet = getElementSet(document);

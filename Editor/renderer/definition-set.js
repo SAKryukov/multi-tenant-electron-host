@@ -1,6 +1,6 @@
 "use strict";
 
-(() => {
+const definitionSet = (() => {
     
     const definitionSetExtension = {
         standaloneExecutionProtection: {
@@ -239,5 +239,7 @@
         definitionSetExtension.search.optionClassName]);
 
     namespaces.extend(extensibleDefinitionSet, definitionSetExtension);
+
+    return extensibleDefinitionSet;
 
 })();
