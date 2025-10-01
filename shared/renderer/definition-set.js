@@ -19,6 +19,12 @@ const extensibleDefinitionSet = (() => {
         defaultMessageDialog: {
             defaultButton: "Close",
         },
+        errorHandling: {
+            format: (errorKind, errorMessage) => `${errorKind}:<br/><br/><span style="color: red">${errorMessage}<br/><br/></span>`,
+            save: "Save file error",
+            open: "Open file error",
+            other: "Error",
+        }, //errorHandling
         aboutDialog: (metadata, imagePath) => {
             const hostVersionLine =
                 metadata?.package?.applicationHostDescription

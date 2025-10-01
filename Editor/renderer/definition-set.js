@@ -111,11 +111,6 @@ const definitionSet = (() => {
             },
             backspace: "deleteContentBackward", //for smart indentation
         }, //macro
-        errorHandling: {
-            format: (errorKind, errorMessage) => `${errorKind}:<br/><br/><span style="color: red">${errorMessage}</span>`,
-            save: "Save file error",
-            open: "Open file error",
-        }, //errorHandling
         view: {
             statusBarStyle: visible => visible ? "flex" : "none",
             textWrapStyle: wrap => wrap ? "stable" : "nowrap",

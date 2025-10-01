@@ -18,16 +18,8 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
     const storedEvent = new CustomEvent(definitionSet.eventHandler.storedEvent);
     const notifyStored = () => window.dispatchEvent(storedEvent);
 
-    const errorMessageBox = message =>
-        modalDialog.show(
-            message,
-            { options: {
-                focusAfterAction: commandSetMap.table.element,
-                cssClasses: definitionSet.eventHandler.dataModifiedRequestStyles.cssClass } });
-    const showException = exception =>
-        errorMessageBox(exception.toString());
-    const showPreloadException = (message, fileName) =>
-        errorMessageBox(definitionSet.persistence.formatPersistenceErrorMessage(message, fileName));
+    const reportError = (error, errorKind = definitionSet.errorHandling.other) =>
+        showMessage(definitionSet.errorHandling.format(errorKind, error.message), table);
 
     commandSetMap.actConfirmed = function (action) {
         if (this.table.isModified) {
@@ -47,23 +39,13 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
         commandSetMap.actConfirmed(() => commandSetMap.table.reset() );
     });
 
-    const handleFileOperationResult = (filename, text, error, isSave = false, readonly = false) => {
-        if (!error) {
-            currentFilename = filename;
-            commandSetMap.table.isReadOnly = readonly;
-            commandSetMap.table.focus();
-        } else
-            showException(error); //SA???
-        //reportError(error, isSave ? definitionSet.errorHandling.save : definitionSet.errorHandling.open);
-    }; //handleFileOperationResult
-
     const tableToText = () => {
         try {
             const data = commandSetMap.table.store();
             summary.updateData(data);
             const json = JSON.stringify(data);
             return definitionSet.scripting.wrapJson(json);
-        } catch (ex) { showException(ex); }
+        } catch (ex) { reportError(ex); }
     }; //tableToText
 
     const loadDatabase = (text, readonly = false) => {
@@ -76,8 +58,17 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
         notifyStored();
     }; //loadDatabase
 
+    const handleFileOperationResult = (filename, text, error, isSave = false, readonly = false) => {
+        if (!error) {
+            currentFilename = filename;
+            if (text)
+                loadDatabase(text, readonly)
+            commandSetMap.table.focus();
+        } else
+            reportError(error, isSave ? definitionSet.errorHandling.save : definitionSet.errorHandling.open);
+    }; //handleFileOperationResult
+
     window.bridgeFileIO.subscribeToCommandLine((filename, text, error) => {
-        loadDatabase(text, true); //readonly
         handleFileOperationResult(filename, text, error, false, true); //readonly
     }); //window.bridgeFileIO.subscribeToCommandLine
 
@@ -134,9 +125,8 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
             window.bridgeFileIO.openFile(
                 (filename, text, error) => {
                     try {
-                        loadDatabase(text);
                         handleFileOperationResult(filename, text, error, false);
-                    } catch (exception) { showException(exception); }
+                    } catch (exception) { reportError(exception); }
                 },
                 definitionSet.persistence.fileDialog.titleOpen,
                 defaultPath(),
@@ -184,14 +174,14 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
         if (!actionRequest) return commandSetMap.table.canCopyToClipboard;
         try {
             commandSetMap.table.toClipboard();
-        } catch (ex) { showException(ex); }
+        } catch (ex) { reportError(ex); }
     });    
 
     commandSetMap.set(menuItems.paste, actionRequest => {
         if (!actionRequest) return commandSetMap.table.canPasteFromClipboard;
         try {
             commandSetMap.table.fromClipboard();
-        } catch (ex) { showException(ex); }
+        } catch (ex) { reportError(ex); }
     });
     
     commandSetMap.set(menuItems.editSelectedCell, actionRequest => {
@@ -256,6 +246,6 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
         return true; //!table.isModified; //SA???
     }); //subscribeToApplicationClose
 
-    return { commandSetMap, aboutCommandSet, doubleClickHandler: loadWebPage, loadDatabase, showPreloadException };
+    return { commandSetMap, aboutCommandSet, doubleClickHandler: loadWebPage, loadDatabase };
 
 };
