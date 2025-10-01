@@ -12,7 +12,6 @@ const getElements = () => {
     
     const elementSet = {
         main: document.querySelector("main"),
-        product: document.querySelector("#product"),
         mainMenu: document.querySelector("header > menu"),
         contextMenu: document.querySelector("main select"),
         summary: {

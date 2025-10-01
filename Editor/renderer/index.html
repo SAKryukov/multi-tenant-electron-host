@@ -22,20 +22,17 @@
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
     <style>
-        @import url(css/flex.css);
+        @import url(../../shared/renderer/css/flex.css);
         @import url(css/menu.css);
         @import url(css/search.css);
         @import url(../../shared/agnostic/renderer/hint.css);
         @import url(../../shared/agnostic/renderer/modal-dialog.css);
+        @import url(../../shared/renderer/css/standalone-execution-protection.css);
         :root {
             --border: solid thin gray;
             --status-delta-Y: 0.1em;
             --status-delta-X: 0.4em;
         }
-        /* standaloneExecutionProtection: */
-        body > aside { color: red; font-size: 160%; margin: 1em; }
-        body > p, body > aside { margin-left: 20pt; }
-        /* end of standaloneExecutionProtection */
         * { font-family: sans-serif; }
         main { overflow: hidden; border-top: var(--border); border-bottom: var(--border); }
         main { display: flex; flex-direction: row; justify-content: center; }

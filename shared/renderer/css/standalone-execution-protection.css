@@ -1,0 +1,2 @@
+body > aside { color: red; font-size: 160%; margin: 1em; }
+body > p, body > aside { margin-left: 20pt; }

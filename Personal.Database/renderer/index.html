@@ -30,12 +30,10 @@ http://www.codeproject.com/Members/SAKryukov
             content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
         <style>
             @import url(ui/style.css);
+            @import url(../../shared/renderer/css/flex.css);
             @import url(../../shared/agnostic/renderer/hint.css);
             @import url(../../shared/agnostic/renderer/modal-dialog.css);
-            /* standaloneExecutionProtection: */
-            body > aside { color: red; font-size: 160%; margin: 1em; }
-            body > p, body > aside { margin-left: 20pt; }
-            /* end of standaloneExecutionProtection */
+            @import url(../../shared/renderer/css/standalone-execution-protection.css);
             dialog p { margin: 0; margin-bottom: 0.4em; }
             dialog.exception section:first-of-type { color: red; }
             dialog > section:first-of-type { background-color: Cornsilk; }
@@ -112,7 +110,6 @@ http://www.codeproject.com/Members/SAKryukov
         </select>
     </main>
     <footer>
-        <p id="product"></p>
         <p id="read-only">Read-only</p>
         <p id="modified" title="Modified"></p>
 
