@@ -9,7 +9,7 @@ http://www.codeproject.com/Members/SAKryukov
 "use strict";
 
 const createCommandSet = (table, summary, menuItems) => {
-    
+
     const commandSetMap = new Map();
     commandSetMap.table = table;
     let currentFilename = null;
@@ -42,26 +42,15 @@ const createCommandSet = (table, summary, menuItems) => {
             action();
     }; //commandSet.actConfirmed
 
-    const showTitle = data => {
-        const title = data ? (data.summary ? data.summary.title : null) : null;
-        document.title = definitionSet.titleFormat(title);
-    }; //showTitle
-
     commandSetMap.set(menuItems.new, actionRequest => {
         if (!actionRequest) return true;
         commandSetMap.actConfirmed(() => commandSetMap.table.reset() );
     });
 
-    const loadDatabase = data => {
-        commandSetMap.table.load(data);
-        summary.populate(data);
-        showTitle(data);
-    }; //loadDatabase
-
-    const handleFileOperationResult = (filename, text, error, isSave) => {
+    const handleFileOperationResult = (filename, text, error, isSave = false, readonly = false) => {
         if (!error) {
             currentFilename = filename;
-            commandSetMap.table.isReadOnly = false;
+            commandSetMap.table.isReadOnly = readonly;
             commandSetMap.table.focus();
         } else
             showException(error); //SA???
@@ -76,6 +65,21 @@ const createCommandSet = (table, summary, menuItems) => {
             return definitionSet.scripting.wrapJson(json);
         } catch (ex) { showException(ex); }
     }; //tableToText
+
+    const loadDatabase = (text, readonly = false) => {
+        definitionSet.scripting.checkupSignature(text);
+        const json = definitionSet.scripting.extractJson(text);
+        const data = JSON.parse(json);
+        commandSetMap.table.load(data);
+        summary.populate(data);
+        commandSetMap.table.isReadOnly = readonly;
+        notifyStored();
+    }; //loadDatabase
+
+    window.bridgeFileIO.subscribeToCommandLine((filename, text, error) => {
+        loadDatabase(text, true); //readonly
+        handleFileOperationResult(filename, text, error, false, true);
+    }); //window.bridgeFileIO.subscribeToCommandLine
 
     const saveAs = () =>
         window.bridgeFileIO.saveFileAs(tableToText(),
@@ -130,12 +134,7 @@ const createCommandSet = (table, summary, menuItems) => {
             window.bridgeFileIO.openFile(
                 (filename, text, error) => {
                     try {
-                        definitionSet.scripting.checkupSignature(text);
-                        const json = definitionSet.scripting.extractJson(text);
-                        const data = JSON.parse(json);
-                        loadDatabase(data);
-                        commandSetMap.table.isReadOnly = false;
-                        notifyStored();
+                        loadDatabase(text);
                         handleFileOperationResult(filename, text, error, false);
                     } catch (exception) { showException(exception); }
                 },
