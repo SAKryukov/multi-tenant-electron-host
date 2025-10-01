@@ -33,6 +33,10 @@ http://www.codeproject.com/Members/SAKryukov
             @import url(ui/style.css);
             @import url(../../shared/agnostic/renderer/hint.css);
             @import url(../../shared/agnostic/renderer/modal-dialog.css);
+            /* standaloneExecutionProtection: */
+            body > aside { color: red; font-size: 160%; margin: 1em; }
+            body > p, body > aside { margin-left: 20pt; }
+            /* end of standaloneExecutionProtection */
             dialog p { margin: 0; margin-bottom: 0.4em; }
             dialog.exception section:first-of-type { color: red; }
             dialog > section:first-of-type { background-color: Cornsilk; }

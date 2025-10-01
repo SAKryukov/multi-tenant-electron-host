@@ -14,7 +14,7 @@ window.addEventListener(extensibleDefinitionSet.events.DOMContentLoaded, () => {
     if (window.bridgeMetadata)
         metadata = window.bridgeMetadata.pushedMetadata();
     else
-        console.log("SA??? Prevent standalone here?");
+        return definitionSet.standaloneExecutionProtection.show();
 
     fixAccessKeyAttributes();
 

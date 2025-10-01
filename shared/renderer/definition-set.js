@@ -37,7 +37,18 @@ const extensibleDefinitionSet = (() => {
             <br/>
             <br/>${metadata?.package?.metadata?.copyright}
             <br/><br/>`
-        }, //aboutDialog        
+        }, //aboutDialog
+        standaloneExecutionProtection: {
+            copyright: "Copyright &copy; Sergey A Kryukov",
+            url: "https://github.com/SAKryukov/conceptual-electron-editor",
+            electron: "https://www.electronjs.org",
+            show: function () {
+                const electron = `<a href="${this.electron}">Electron</a>`;
+                document.body.innerHTML = `<aside>This HTML only works under ${electron}</aside>
+                <p><a href="${this.url}">Conceptual Electron Editor</a>, ${this.copyright}</p>`;
+                window.stop();
+            }, //show
+        }, //standaloneExecutionProtection
     }; //definitionSet
 
     namespaces.initializeNames([ definitionSet.events, ]);
