@@ -5,7 +5,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     elementSet.copyright.innerHTML = metadata?.package?.metadata?.copyright;
     let currentFilename = null;
     const defaultPath = () => currentFilename == null ? definitionSet.characters.empty : currentFilename;
-    const filters = null; //SA??? [{ name: "Text files", extensions: ["json", "text"]}];
+    const filters = null;
 
     const fileSystemStatus = (() => {
         elementSet.statusBar.modifiedFlag.innerHTML = definitionSet.status.modified;

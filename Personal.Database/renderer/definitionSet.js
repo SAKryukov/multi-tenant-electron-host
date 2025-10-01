@@ -147,6 +147,13 @@ const definitionSet = {
     },
 
     persistence: {
+        fileDialog: {
+            fileTypeFilters: [{ name: "SA Database files", extensions: ["sadb"]}],
+            titleOpen: "Open database file",
+            titleSaveFile: `Save database file as${String.fromCharCode(0x2026)}`,
+            titleSaveFileAndContinue: `Save database file as${String.fromCharCode(0x2026)} and continue`,
+            titleSaveFileAndClose: `Save database file as${String.fromCharCode(0x2026)} and close application`,
+        }, //fileDialog
         toText: element => {
             if (element.innerHTML.includes("<br")) {
                 const lines = element.innerHTML.split("<br>");

@@ -12,6 +12,8 @@ const createCommandSet = (table, summary, menuItems) => {
     
     const commandSetMap = new Map();
     commandSetMap.table = table;
+    let currentFilename = null;
+    const defaultPath = () => currentFilename == null ? "" : currentFilename; //SA???
 
     const storedEvent = new CustomEvent(definitionSet.eventHandler.storedEvent);
     const notifyStored = () => window.dispatchEvent(storedEvent);
@@ -27,8 +29,6 @@ const createCommandSet = (table, summary, menuItems) => {
     const showPreloadException = (message, fileName) =>
         errorMessageBox(definitionSet.persistence.formatPersistenceErrorMessage(message, fileName));
 
-    const fileIO = createFileIO(showException);
-            
     commandSetMap.actConfirmed = function (action) {
         if (this.table.isModified) {
             modalDialog.show(
@@ -58,56 +58,115 @@ const createCommandSet = (table, summary, menuItems) => {
         showTitle(data);
     }; //loadDatabase
 
-    commandSetMap.set(menuItems.open, actionRequest => {
-        if (!actionRequest) return true;
-        commandSetMap.actConfirmed(() => {
-            fileIO.loadTextFile((_, text) => {
-                try {
-                    definitionSet.scripting.checkupSignature(text);
-                    const json = definitionSet.scripting.extractJson(text);
-                    const data = JSON.parse(json);
-                    loadDatabase(data);
-                    commandSetMap.table.isReadOnly = false;
-                    notifyStored();
-                } catch (ex) { showException(ex); }
-            }, definitionSet.fileIO.filePickerOptions());
-        });
-    });
+    const handleFileOperationResult = (filename, text, error, isSave) => {
+        if (!error) {
+            currentFilename = filename;
+            commandSetMap.table.isReadOnly = false;
+            commandSetMap.table.focus();
+        } else
+            showException(error); //SA???
+        //reportError(error, isSave ? definitionSet.errorHandling.save : definitionSet.errorHandling.open);
+    }; //handleFileOperationResult
 
-    const implementSave = alwaysDialog => {
-        let content = null;
+    const tableToText = () => {
         try {
             const data = commandSetMap.table.store();
             summary.updateData(data);
-            showTitle(data);
             const json = JSON.stringify(data);
-            content = definitionSet.scripting.wrapJson(json);
+            return definitionSet.scripting.wrapJson(json);
         } catch (ex) { showException(ex); }
-        if (fileIO.canSave && (!alwaysDialog))
-            fileIO.saveExisting(definitionSet.fileIO.defaultSaveFilename(), content, definitionSet.fileIO.filePickerOptions());
-        else
-            fileIO.storeTextFile(definitionSet.fileIO.defaultSaveFilename(), content, definitionSet.fileIO.filePickerOptions());
-    }; //implementSave
+    }; //tableToText
+
+    const saveAs = () =>
+        window.bridgeFileIO.saveFileAs(tableToText(),
+            (filename, error) =>
+                handleFileOperationResult(filename, null, error, true),
+            definitionSet.persistence.fileDialog.titleSaveFile,
+            defaultPath(),
+            definitionSet.persistence.fileDialog.fileTypeFilters,
+            false);
+    const saveAsAndContinue = action =>
+        window.bridgeFileIO.saveFileAs(tableToText(),
+            (filename, error) => {
+                action();
+                handleFileOperationResult(filename, null, error, true);
+            },
+            definitionSet.persistence.fileDialog.titleSaveFileAndContinue,
+            defaultPath(),
+            definitionSet.persistence.fileDialog.fileTypeFilters,
+            false);
+    const saveAsAndCloseApplication = () =>
+        window.bridgeFileIO.saveFileAs(tableToText(),
+            (filename, error) =>
+                handleFileOperationResult(filename, null, error, true),
+            definitionSet.persistence.fileDialog.titleSaveFileAndClose,
+            defaultPath(),
+            definitionSet.persistence.fileDialog.fileTypeFilters,
+            true);
+    const saveExistingFile = () =>
+        window.bridgeFileIO.saveExistingFile(currentFilename,
+            tableToText(),
+            (filename, error) =>
+                handleFileOperationResult(filename, null, error, true),
+            false);
+    const saveExistingFileAndContinue = action =>
+        window.bridgeFileIO.saveExistingFile(currentFilename,
+            tableToText(),
+            (filename, error) => {
+                action();
+                handleFileOperationResult(filename, null, error, true);
+            },
+            false);
+    const saveExistingFileAndCloseApplication = () =>
+        window.bridgeFileIO.saveExistingFile(currentFilename,
+            tableToText(),
+            (filename, error) =>
+                handleFileOperationResult(filename, null, error, true),
+            true);
+
+    commandSetMap.set(menuItems.open, actionRequest => {
+        if (!actionRequest) return true;
+        commandSetMap.actConfirmed(() => {
+            window.bridgeFileIO.openFile(
+                (filename, text, error) => {
+                    try {
+                        definitionSet.scripting.checkupSignature(text);
+                        const json = definitionSet.scripting.extractJson(text);
+                        const data = JSON.parse(json);
+                        loadDatabase(data);
+                        commandSetMap.table.isReadOnly = false;
+                        notifyStored();
+                        handleFileOperationResult(filename, text, error, false);
+                    } catch (exception) { showException(exception); }
+                },
+                definitionSet.persistence.fileDialog.titleOpen,
+                defaultPath(),
+                definitionSet.persistence.fileDialog.fileTypeFilters);
+        });
+    }); //menuItems.open
 
     commandSetMap.set(menuItems.save, actionRequest => {
         if (!actionRequest) return commandSetMap.table.canStore; //SA???
-        implementSave(false);
-    });
+        if (currentFilename)
+            saveExistingFile();
+        else
+            saveAs();
+    }); //menuItems.save
 
     commandSetMap.set(menuItems.saveAs, actionRequest => {
         if (!actionRequest) return true;
-        implementSave(true);
-    });
+        saveAs();
+    }); //menuItems.saveAs
 
     commandSetMap.set(menuItems.insertRow, actionRequest => {
         if (!actionRequest) return commandSetMap.table.canInsertRow;
         commandSetMap.table.insertRow();
-    });
+    }); //menuItems.insertRow
     
     commandSetMap.set(menuItems.removeRow, actionRequest => {
         if (!actionRequest) return commandSetMap.table.canRemoveRow;
         commandSetMap.table.removeRow();
-    });
+    }); //menuItems.removeRow
 
     commandSetMap.set(menuItems.addProperty, actionRequest => {
         if (!actionRequest) return commandSetMap.table.canAddProperty;
@@ -134,7 +193,7 @@ const createCommandSet = (table, summary, menuItems) => {
         try {
             commandSetMap.table.fromClipboard();
         } catch (ex) { showException(ex); }
-    });    
+    });
     
     commandSetMap.set(menuItems.editSelectedCell, actionRequest => {
         if (!actionRequest) return commandSetMap.table.canEditSelectedCell;
