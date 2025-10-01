@@ -18,10 +18,10 @@ const adHocUtility = (() => {
             const lineHeight = this.measure.lineHeight;
             const columnWidth = this.measure.columnWidth;
             const text = editor.value;
-            let left = editor.value.lastIndexOf(definitionSet.newLine, start);
+            let left = editor.value.lastIndexOf(definitionSet.characters.newLine, start);
             if (left < 0) left = 0; else left += 1;
             const sliceX = text.slice(left, end);
-            const sliceY = text.substring(0, end).split(definitionSet.newLine);
+            const sliceY = text.substring(0, end).split(definitionSet.characters.newLine);
             let scrollTop = (sliceY.length + 2) * lineHeight;
             let scrollLeft = (sliceX.length + 1) * columnWidth;
             const editorHeight = editor.clientHeight;
@@ -151,3 +151,4 @@ const adHocUtility = (() => {
     return implementation;
 
 })(); //adHocUtility
+

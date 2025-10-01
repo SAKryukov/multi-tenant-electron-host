@@ -2,10 +2,23 @@
 
 module.exports.utilitySet = (() => {
 
-    const { definitionSet } = require("./definition-set.js");
     const { dialog, BrowserWindow, Menu } = require("electron");
     const fs = require("node:fs");
     const path = require("node:path");
+
+    const definitionSet = {
+        invalidApplicationPack: {
+            isInvalid: applicationPath => applicationPath.endsWith("app.asar"),
+            createWindowProperties: icon => {
+                return {
+                    title: "Invalid application pack",
+                    resizable: true,
+                    icon: icon,
+                };
+            }, //createInvalidPackMessageWindowProperties
+            pathHTML: "renderer/invalid-pack.html",
+        }, //invalidApplicationPack
+    }; //definitionSet
 
     const utilitySet = {
         processCommandLine: () => {
@@ -21,15 +34,15 @@ module.exports.utilitySet = (() => {
                 fs.readFile(filename, {}, (error, data) =>
                     useData(data?.toString(), error));
         }, //openKnownFile
-        openFile: (window, useData, defaultPath) => {
-            dialog.showOpenDialog(window, { defaultPath, title: definitionSet.utility.fileDialog.titleOpenFile }).then(event => {
+        openFile: (window, useData, title, defaultPath, filters) => {
+            dialog.showOpenDialog(window, { defaultPath, filters, title }).then(event => {
                 if (event.canceled) return;
                 fs.readFile(event.filePaths[0], {}, (error, data) =>
                     useData(event.filePaths[0], data?.toString(), error));
             }); //dialog.showOpenDialog
         }, //openFile
-        saveFileAs: (window, text, handler, defaultPath) => {
-            dialog.showSaveDialog(window, { defaultPath, title: definitionSet.utility.fileDialog.titleSaveFile }).then(event => {
+        saveFileAs: (window, text, handler, title, defaultPath, filters) => {
+            dialog.showSaveDialog(window, { defaultPath, filters, title }).then(event => {
                 if (event.canceled) return;
                 fs.writeFile(event.filePath, text, {}, error =>
                     handler(event.filePath, error));
@@ -45,7 +58,7 @@ module.exports.utilitySet = (() => {
             if (result) {
                 const window = new BrowserWindow(
                     definitionSet.invalidApplicationPack.createWindowProperties(
-                        path.join(applicationPath, definitionSet.applicationIcon)));
+                        undefined));
                 window.loadFile(path.join(applicationPath, definitionSet.invalidApplicationPack.pathHTML));
                 Menu.setApplicationMenu(null);
             } //if

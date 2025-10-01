@@ -1,8 +1,8 @@
 {
-  "name": "multi-tenant-host",
-  "version": "0.0.5",
-  "description": "Multi-Tenant Electron Host",
-  "main": "./multi-tenant-host/host.js",
+  "name": "personal-database",
+  "version": "5.2.0",
+  "description": "Personal Database",
+  "main": "./main/entry-point.js",
   "scripts": {
     "start": "electron ."
   },

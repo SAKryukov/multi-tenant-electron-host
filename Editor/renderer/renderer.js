@@ -1,7 +1,6 @@
 "use strict";
 
 let elementSet;
-const definitionSet = getDefinitionSet();
 window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
 
     elementSet = getElementSet(document);
@@ -31,8 +30,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
             subscribe(elementSet, menu, searchDialogObject.searchDialog, metadata);
             pluginProcessor.processPlugins(definitionSet, elementSet, menu, plugins, pluginsKeyword);
         });
-
-    if (!window.bridgePlugin)
+    else 
         return definitionSet.standaloneExecutionProtection.show();
 
     elementSet.editor.focus();

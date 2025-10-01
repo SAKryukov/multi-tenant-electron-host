@@ -1,0 +1,139 @@
+﻿<!doctype HTML>
+
+<!--
+Personal Database
+
+Copyright (c) 2017, 2023, 2025 by Sergey A Kryukov
+http://www.SAKryukov.org
+http://www.codeproject.com/Members/SAKryukov
+-->
+
+<html lang="en-us">
+    <head>
+        <script src="../../shared/agnostic/readonly-namespaces.js"></script>
+        <script src="../../shared/agnostic/renderer/two-state-button.js"></script>
+        <script src="../../shared/agnostic/renderer/hint.js"></script>
+        <script src="../../shared/agnostic/renderer/menu.js"></script>
+        <script src="../../shared/agnostic/renderer/modal-dialog.js"></script>
+        <script src="../../shared/agnostic/renderer/accesskey.js"></script>
+        <script src="../../shared/renderer/definition-set.js"></script>
+        <script src="../../shared/renderer/default-message-dialog.js"></script>
+        <script src="./definitionSet.js"></script>
+        <script src="ui/table.js"></script>
+        <script src="ui/summary.js"></script>
+        <script src="ui/search.js"></script>
+        <script src="./elements.js"></script>
+        <script src="./commandSet.js"></script>
+        <script src="./renderer-main.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+        <style>
+            @import url(ui/style.css);
+            @import url(../../shared/agnostic/renderer/hint.css);
+            @import url(../../shared/agnostic/renderer/modal-dialog.css);
+            /* standaloneExecutionProtection: */
+            body > aside { color: red; font-size: 160%; margin: 1em; }
+            body > p, body > aside { margin-left: 20pt; }
+            /* end of standaloneExecutionProtection */
+            dialog p { margin: 0; margin-bottom: 0.4em; }
+            dialog.exception section:first-of-type { color: red; }
+            dialog > section:first-of-type { background-color: Cornsilk; }
+            dialog > section:last-of-type { background-color: hsl(6, 70%, 40%, 100%); }
+        </style>
+    </head>
+<body> 
+    <header>
+        <menu>
+            <li>
+                <header>File</header>
+                <select>
+                    <option value="new">New (Ctrl+N)</option>
+                    <option selected="true" value="open">Open (Ctrl+O)</option>
+                    <option value="save">Save (Ctrl+S)</option>
+                    <option value="saveAs">Save As&hellip; (Ctrl+Shift+S)</option>
+                </select>
+            </li>
+            <li>
+                <header>Edit</header>
+                <select>
+                    <option value="editSelectedCell">F2: Edit Selected Cell</option>
+                    <option value="editPropertyName">Ctrl+F2: Edit Property Name</option>
+                    <option value="load">Open Web Page</option>
+                    <option disabled="true" class="separator">───────────────────────────────</option>
+                    <option value="addProperty">Add Property</option>
+                    <option value="insertProperty">Insert Property</option>
+                    <option value="removeProperty">Remove Property</option>
+                    <option value="insertRow">Insert Row</option>
+                    <option value="removeRow">Remove Row</option>
+                    <option disabled="true" class="separator">───────────────────────────────</option>
+                    <option value="up">Ctrl+Shift+&uarr;: Move Row</option>   
+                    <option value="down">Ctrl+Shift+&darr; : Move Row</option>
+                    <option value="left">Ctrl+Shift+&larr;: Move Column</option>
+                    <option value="right">Ctrl+Shift+&rarr;: Move Column</option>
+                    <option disabled="true" class="separator">───────────────────────────────</option>
+                    <option value="copy">Ctrl+C,  Ctrl+Insert: Copy</option>
+                    <option value="paste">Ctrl+V, Shift+Insert: Paste</option>
+                </select>
+            </li>    
+            <li>
+                <header>Help</header>
+                <select>
+                    <option value="about">About (F1)</option>
+                    <option value="sourceCode">Source Code</option>
+                </select>
+            </li>    
+        </menu>
+    </header>
+    <main>
+        <select>
+            <option value="new">New (Ctrl+N)</option>
+            <option selected="true" value="open">Open (Ctrl+O)</option>
+            <option value="save">Save (Ctrl+S)</option>
+            <option value="saveAs">Save As&hellip; (Ctrl+Shift+S)</option>
+            <option disabled="true" class="separator">───────────────────────────────</option>
+            <option value="editSelectedCell">F2: Edit Selected Cell</option>
+            <option value="editPropertyName">Ctrl+F2: Edit Property Name</option>
+            <option value="load">Open Web Page</option>
+            <option disabled="true" class="separator">───────────────────────────────</option>
+            <option value="addProperty">Add Property</option>
+            <option value="insertProperty">Insert Property</option>
+            <option value="removeProperty">Remove Property</option>
+            <option value="insertRow">Insert Row</option>
+            <option value="removeRow">Remove Row</option>
+            <option disabled="true" class="separator">───────────────────────────────</option>
+            <option value="up">Ctrl+Shift+&uarr;: Move Row</option>   
+            <option value="down">Ctrl+Shift+&darr; : Move Row</option>
+            <option value="left">Ctrl+Shift+&larr;: Move Column</option>
+            <option value="right">Ctrl+Shift+&rarr;: Move Column</option>
+            <option disabled="true" class="separator">───────────────────────────────</option>
+            <option value="copy">Ctrl+C,  Ctrl+Insert: Copy</option>
+            <option value="paste">Ctrl+V, Shift+Insert: Paste</option>
+        </select>
+    </main>
+    <footer>
+        <p id="product"></p>
+        <p id="read-only">Read-only</p>
+        <p id="modified" title="Modified"></p>
+
+        <details><summary accesskey="KeyU">S<u>u</u>mmary</summary>
+        <!-- accesskey attributes are removed by script here and elsewhere -->
+            <section>
+                <p><b>Title</b><b><input id="summary-title" /></b></p>
+                <p><b>Created</b><b id="summary-created"></b></p>    
+                <p><b>Modified</b><b id="summary-updated"></b></p>    
+                <p><b>Description</b><b><input id="summary-description"/></b></p>
+            </section>
+        </details>
+        <section>
+            <p><label accesskey="KeyN" for="search">Fi<u>n</u>d
+                <input id="search" title="Search pattern, press Enter to find"/></label><button id="search-match-case" title="Match case">Αα</button><button id="search-whole-word" title="Match whole word">| |</button><button id="search-regexp" title="Use regular expression"><small>✶</small></button>
+                <span id="search-results"></span>
+                <button id="search-next" title="Find next">F3</button>
+            </p>
+        </section>
+        <p id="error"></p>
+    </footer>
+
+</body>
+</html>

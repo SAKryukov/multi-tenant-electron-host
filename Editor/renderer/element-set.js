@@ -1,7 +1,8 @@
 "use strict";
 
 const getElementSet = document => {
-    return {
+
+    const elementSet = {
         editor: document.querySelector("textarea"),
         menu: document.querySelector("menu"),
         copyright: document.querySelector("#id-copyright"),
@@ -69,4 +70,9 @@ const getElementSet = document => {
             pluginParent: document.querySelector("#menu-plugins"),
         },
     };
+
+    replaceTitlesWithHints();
+    
+    return elementSet;
+
 }; //elementSet

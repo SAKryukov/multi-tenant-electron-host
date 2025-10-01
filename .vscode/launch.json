@@ -10,15 +10,35 @@
       "windows": {
         "runtimeExecutable": "c:/app/Node.js/node_modules/electron/dist/electron.exe"
       },
-      "args" : ["${workspaceFolder}/Editor", "--remote-debugging-port=9223", "--trace-warnings", "${workspaceFolder}/Editor/../test.txt"],
+      "args" : ["${workspaceFolder}/Editor", "--remote-debugging-port=9223", "--trace-warnings", "${workspaceFolder}/test.txt"],
       "outputCapture": "std"
     },
     {
-      "name": "Renderer",
+      "name": "Database",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "c:/app/Node.js/node_modules/.bin/electron.cmd",
+      "windows": {
+        "runtimeExecutable": "c:/app/Node.js/node_modules/electron/dist/electron.exe"
+      },
+      "args" : ["${workspaceFolder}/Personal.Database", "--remote-debugging-port=9223", "--trace-warnings", "${workspaceFolder}/test.history.sadb"],
+      "outputCapture": "std"
+    },
+    {
+      "name": "EditorRenderer",
       "type": "chrome",
       "request": "attach",
       "port": 9223,
       "webRoot": "${workspaceFolder}/Editor",
+      "timeout": 30000
+    },
+    {
+      "name": "DatabaseRenderer",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "webRoot": "${workspaceFolder}/Personal.Database",
       "timeout": 30000
     },
     {
@@ -57,7 +77,13 @@
     {
       "name": "Editor: All",
       "configurations": [
-        "Editor", "Renderer",
+        "Editor", "EditorRenderer",
+      ]
+    },
+    {
+      "name": "Database: All",
+      "configurations": [
+        "Database", "DatabaseRenderer",
       ]
     }
   ]

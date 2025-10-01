@@ -48,7 +48,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
     let findings, replacementIndex;
     const resetFindings = () => {
         findings = [];
-        elementSet.search.findingsIndicator.textContent = definitionSet.empty;
+        elementSet.search.findingsIndicator.textContent = definitionSet.characters.empty;
     }; //resetFindings
     resetFindings();
 
@@ -85,7 +85,7 @@ const createSearchDialog = (definitionSet, elementSet) => {
     }; //replaceAll
 
     const confirmationReplacer = (() => {
-        let replaceString = definitionSet.empty;
+        let replaceString = definitionSet.characters.empty;
         definitionSet.search.replaceConfirmation.subscribeToReplaceConfirmation(
             elementSet.editor,
             () => { //handler

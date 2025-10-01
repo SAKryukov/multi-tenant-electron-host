@@ -3,13 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
+    <script src="../../shared/agnostic/readonly-namespaces.js"></script>
+    <script src="../../shared/agnostic/renderer/hint.js"></script>
+    <script src="../../shared/agnostic/renderer/two-state-button.js"></script>
+    <script src="../../shared/agnostic/renderer/menu.js"></script>
+    <script src="../../shared/agnostic/renderer/modal-dialog.js"></script>
+    <script src="../../shared/renderer/definition-set.js"></script>
+    <script src="../../shared/renderer/default-message-dialog.js"></script>
     <script src="./definition-set.js"></script>
     <script src="./element-set.js"></script>
     <script src="./plugin-processor.js"></script>
-    <script src="./ui/two-state-button.js"></script>
-    <script src="./ui/menu.js"></script>
-    <script src="./ui/modal-dialog.js"></script>
-    <script src="./default-message-dialog.js"></script>
     <script src="./ad-hoc-utility.js"></script>
     <script src="./search-dialog.js"></script>
     <script src="./macro.js"></script>
@@ -22,7 +25,8 @@
         @import url(css/flex.css);
         @import url(css/menu.css);
         @import url(css/search.css);
-        @import url(./ui/modal-dialog.css);
+        @import url(../../shared/agnostic/renderer/hint.css);
+        @import url(../../shared/agnostic/renderer/modal-dialog.css);
         :root {
             --border: solid thin gray;
             --status-delta-Y: 0.1em;

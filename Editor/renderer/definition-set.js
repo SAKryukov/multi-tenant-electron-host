@@ -1,20 +1,8 @@
 "use strict";
 
-const getDefinitionSet = () => {
-
-    const definitionSet = {
-        empty: "", blankSpace: " ", newLine: "\n",
-        standaloneExecutionProtection: {
-            copyright: "Copyright &copy; Sergey A Kryukov",
-            url: "https://github.com/SAKryukov/conceptual-electron-editor",
-            electron: "https://www.electronjs.org",
-            show: function() {
-                const electron = `<a href="${this.electron}">Electron</a>`;
-                document.body.innerHTML = `<aside>This HTML only works under ${electron}</aside>
-                <p><a href="${this.url}">Conceptual Electron Editor</a>, ${this.copyright}</p>`;
-                window.stop();
-            }, //show
-        }, //standaloneExecutionProtection
+const definitionSet = (() => {
+    
+    const definitionSetExtension = {
         editorAPI: {
             tabReplacement: " ".repeat(4),
             wordRegexString: "[0123456789\\w]+",
@@ -52,62 +40,16 @@ const getDefinitionSet = () => {
                     <br/>`;
             },
             returnResult: function (name, theResult, error) {
-                return `<p>${name}:</p><br/><span ${error ? this.errorStyle : this.empty}>${theResult}</span></br></br>`;
+                return `<p>${name}:</p><br/><span ${error ? this.errorStyle : this.character.empty}>${theResult}</span></br></br>`;
             },
             nameInMenu: name => `${name}`,
-        },
-        defaultMessageDialog: {
-            defaultButton: "Close",
-        },
-        aboutDialog: metadata => {
-            const hostVersionLine =
-                metadata?.package?.applicationHostDescription
-                    ? `<br/>${metadata.package.applicationHostDescription} version: ${metadata.applicationVersion}`
-                    : "";
-            return `<h4><img src="../images/editor.png"/>${metadata?.package?.description}</h4>
-            <br/>Application version: ${metadata.package.version}
-            ${hostVersionLine}
-            <br/>
-            <br/>Platform: ${metadata.platform}
-            <br/>CPU architecture: ${metadata.architecture}
-            <br/>
-            <br>Electron: v.&thinsp;${metadata.versions.electron}
-            <br/>Chromium: v.&thinsp;${metadata.versions.chrome}
-            <br/>Node.js: v.&thinsp;${metadata.versions.node}
-            <br/>
-            <br/>${metadata?.package?.metadata?.copyright}
-            <br/><br/>`
-        }, //aboutDialog
-        modifiedTextOperationConfirmation: {
-            saveAsEvent: new Event("save-as"),
-            saveExistingEvent: new Event("save-existing"),
-            closeApplication: new Event("close-application"),
-            message: `<p>Do you want to save the changes?</p><br>
-                <small>
-                <p>The changes will be lost if you don't save them.</p>
-                <p>You can save them now, or cancel.</p>
-                </small>
-                </br>`,
-            messageClosingApplication: `<p>Do you want to save the changes before closing the application?</p><br>
-                <small>
-                <p>The changes will be lost if you don't save them.</p>
-                <p>You can save them now, or cancel.</p>
-                </small>
-                </br>`,
-            buttons: (saveAction, dontSaveAction, cancelAction) => [
-                { text: "Save", action: saveAction, },
-                { text: "Don't Save", action : dontSaveAction },
-                { isDefault: true, isEscape: true, text: "Cancel", action: cancelAction }],
-        }, //modifiedTextOperationConfirmation
-        events: {
-            DOMContentLoaded: 0,
-            keydown: 0,
-            selectionchange: 0,
-            input: 0,
-            reading: 0, // Sensor: GravitySensor, Accelerometer...
-            //custom:
-            editorTextModified: 0,
-        }, //events
+        }, //plugin
+        fileDialog: {
+            titleOpenFile: `Open text file${String.fromCharCode(0x2026)}`,
+            titleSaveFile: `Save text file as${String.fromCharCode(0x2026)}`,
+            titleSaveFileAndContinue: `Save text file as${String.fromCharCode(0x2026)} and continue`,
+            titleSaveFileAndClose: `Save text file as${String.fromCharCode(0x2026)} and close application`,
+        }, //fileDialog
         keys: {
             KeyP: 0,
             KeyR: 0,
@@ -129,7 +71,7 @@ const getDefinitionSet = () => {
                 permissionName: "accelerometer",
                 permissionState: "granted",
                 tilt: (x, y) => {
-                    const angle = y == 0 ? 0 : Math.round(Math.atan(x/y) * 1800 / Math.PI) / 10;
+                    const angle = y == 0 ? 0 : Math.round(Math.atan(x / y) * 1800 / Math.PI) / 10;
                     return `${angle}${String.fromCharCode(0xB0)}`.replace("-", String.fromCharCode(0x2212));
                 }, //tilt
             }, //gravitySensor
@@ -148,11 +90,6 @@ const getDefinitionSet = () => {
             },
             backspace: "deleteContentBackward", //for smart indentation
         }, //macro
-        errorHandling: {
-            format: (errorKind, errorMessage) => `${errorKind}:<br/><br/><span style="color: red">${errorMessage}</span>`,
-            save: "Save file error",
-            open: "Open file error",
-        }, //errorHandling
         view: {
             statusBarStyle: visible => visible ? "flex" : "none",
             textWrapStyle: wrap => wrap ? "stable" : "nowrap",
@@ -206,7 +143,8 @@ const getDefinitionSet = () => {
                     if (startOfLine < 0) startOfLine = 0;
                     return {
                         line: text.slice(startOfLine, endOfLine),
-                        finding: [findingStart - startOfLine, findingEnd - startOfLine] };
+                        finding: [findingStart - startOfLine, findingEnd - startOfLine]
+                    };
                 }, //replacementPresentation
                 dialogMessageFormatLines: lines =>
                     lines.length == 2 && lines[0] != lines[1]
@@ -219,13 +157,13 @@ const getDefinitionSet = () => {
             ), //regularExpressionException
         }, //search
         menuShortcuts: {
-            fileNew: { key: "KeyN", prefix: ["ctrlKey"]},
-            fileOpen: { key: "KeyO", prefix: ["ctrlKey"]},
-            fileSaveAs: { key: "KeyS", prefix: ["ctrlKey", "shiftKey"]},
-            fileSaveExisting: { key: "KeyS", prefix: ["ctrlKey"]},
-            helpAbout: { key: "F1", prefix: []},
+            fileNew: { key: "KeyN", prefix: ["ctrlKey"] },
+            fileOpen: { key: "KeyO", prefix: ["ctrlKey"] },
+            fileSaveAs: { key: "KeyS", prefix: ["ctrlKey", "shiftKey"] },
+            fileSaveExisting: { key: "KeyS", prefix: ["ctrlKey"] },
+            helpAbout: { key: "F1", prefix: [] },
         }, //menuShortcuts
-        isShortcut : (event, shortcut) => {
+        isShortcut: (event, shortcut) => {
             if (event.code != shortcut.key) return false;
             if (!shortcut.prefix || shortcut.prefix.length < 1)
                 return !(event.shiftKey || event.ctrlKey || event.metaKey || event.altKey);
@@ -233,14 +171,18 @@ const getDefinitionSet = () => {
                 if (!event[prefixElement]) return false;
             return true;
         }, //isShortcut
-    }; //definitionSet
+        paths: {
+            image: "../images/editor.png",
+        },
+    }; //definitionSetExtension
 
-    for (const subset of [definitionSet.events, definitionSet.elements, definitionSet.keys, definitionSet.search.optionClassName])
-        for (const index in subset)
-            if (!subset[index])
-                subset[index] = index;
-    Object.freeze(definitionSet);
+    namespaces.initializeNames([
+        definitionSetExtension.elements,
+        definitionSetExtension.keys,
+        definitionSetExtension.search.optionClassName]);
 
-    return definitionSet;
+    namespaces.extend(extensibleDefinitionSet, definitionSetExtension);
 
-};
+    return extensibleDefinitionSet;
+
+})();

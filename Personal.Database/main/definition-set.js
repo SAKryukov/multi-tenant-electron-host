@@ -6,7 +6,7 @@ const definitionSet = {
         index: "renderer/index.html",
         package: "package.json",
         metadata: "metadata.json",
-        applicationIcon: "images/editor.png",
+        applicationIcon: "images/sadb.png",
     },
     invalidApplicationPack: {
         title: "Invalid application pack",
@@ -22,10 +22,6 @@ const definitionSet = {
                 `${baseFilename} ${String.fromCharCode(0x2014)} ${title}`,
         },
     }, //utility
-    plugin: {
-        directory: "plugins",
-        pluginFileSuffix: ".js",
-    }, //plugin
 };
 
 for (const subset of [definitionSet.events])

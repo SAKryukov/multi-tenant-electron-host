@@ -20,6 +20,7 @@ const ipcChannel = {
         fullscreen: 0,
         fullscreenToggle: 0,
         requestToIgnoreUnsavedData: 0,
+        showExternalUri: 0,
     }, //ui
 }; //ipcChannel
 
@@ -36,4 +37,5 @@ for (const subset of [ipcChannel.fileIO, ipcChannel.plugin, bridgeAPI, ipcChanne
             subset[index] = index;
 Object.freeze(ipcChannel);
 
-module.exports = { bridgeAPI, ipcChannel };
+if (typeof module != typeof undefined)
+    module.exports = { bridgeAPI, ipcChannel };

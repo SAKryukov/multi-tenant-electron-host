@@ -27,7 +27,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
             cursorToPosition: (line, column) => {
                 if (line < 0) line = 1;
                 if (column < 0) column = 1;
-                const lines = editor.value.substring(0).split(definitionSet.newLine);
+                const lines = editor.value.substring(0).split(definitionSet.characters.newLine);
                 if (line > lines.length)
                     line = lines.length;
                 if (lines < 1) return;
@@ -41,7 +41,7 @@ const createEditorAPI = (elementSet, searchAPI) => {
                 return position;
             }, //cursorToPosition
             positionToCursor: position => {
-                const lines = editor.value.substring(0, position).split(definitionSet.newLine);
+                const lines = editor.value.substring(0, position).split(definitionSet.characters.newLine);
                 const row = lines.length;
                 const column = lines[lines.length-1].length + 1;
                 return [row, column];
@@ -70,9 +70,9 @@ const createEditorAPI = (elementSet, searchAPI) => {
 
         const getRangeLines = (start, end) => {
             const text = editor.value;
-            let left = text.lastIndexOf(definitionSet.newLine, start - 1);
+            let left = text.lastIndexOf(definitionSet.characters.newLine, start - 1);
             if (left < 0) left = 0; else left += 1;
-            let right = text.indexOf(definitionSet.newLine, end);
+            let right = text.indexOf(definitionSet.characters.newLine, end);
             if (right < 0) right = editor.textLength - 1;
             return [left, right];
         }; //getRangeLines
@@ -159,9 +159,9 @@ const createEditorAPI = (elementSet, searchAPI) => {
                 }, //previousWord getter
                 enumerable: true,
             }, //previousWord
-            newLine: { get() { return definitionSet.newLine; }, enumerable: true, },
-            empty: { get() { return definitionSet.empty; }, enumerable: true, },
-            blankSpace: { get() { return definitionSet.blankSpace; }, enumerable: true, },
+            newLine: { get() { return definitionSet.characters.newLine; }, enumerable: true, },
+            empty: { get() { return definitionSet.characters.empty; }, enumerable: true, },
+            blankSpace: { get() { return definitionSet.characters.blankSpace; }, enumerable: true, },
             selectionLength: {
                 get() { return editor.selectionEnd - editor.selectionStart; },
                 enumerable: true,
