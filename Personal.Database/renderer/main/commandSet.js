@@ -1,4 +1,4 @@
-/*
+    /*
 Personal Database
 
 Copyright (c) 2017, 2023, 2025 by Sergey A Kryukov
@@ -13,7 +13,7 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
     const commandSetMap = new Map();
     commandSetMap.table = table;
     let currentFilename = null;
-    const defaultPath = () => currentFilename == null ? definitionSet.characters.empty : currentFilename; //SA???
+    const defaultPath = () => currentFilename == null ? definitionSet.characters.empty : currentFilename;
 
     const storedEvent = new CustomEvent(definitionSet.eventHandler.storedEvent);
     const notifyStored = () => window.dispatchEvent(storedEvent);

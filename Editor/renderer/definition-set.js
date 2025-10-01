@@ -211,7 +211,6 @@ const definitionSet = (() => {
         paths: {
             image: "../images/editor.png",
         },
-
     }; //definitionSetExtension
 
     namespaces.initializeNames([
