@@ -20,6 +20,7 @@ const ipcChannel = {
         fullscreen: 0,
         fullscreenToggle: 0,
         requestToIgnoreUnsavedData: 0,
+        showExternalUri: 0,
     }, //ui
 }; //ipcChannel
 

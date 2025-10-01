@@ -214,11 +214,8 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
         const uri = commandSetMap.table.selectedUri;
         if (!actionRequest) return !!uri;
         if (!uri) return false;
-        try {
-            window.open(uri, definitionSet.URI.newTab);
-        } catch (exception) {
-            showException(exception);
-        } //exception
+        window.bridgeUI.showExternalUri(uri);
+        return true;
     } //loadWebPage
     
     commandSetMap.set(menuItems.load, loadWebPage);

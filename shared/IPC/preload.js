@@ -51,4 +51,5 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgeUI, {
             ipcRenderer.send(ipcChannel.ui.requestToIgnoreUnsavedData, request());
         });
     }, //subscribeToApplicationClose
+    showExternalUri: uri => ipcRenderer.send(ipcChannel.ui.showExternalUri, uri),
 }); //contextBridge.exposeInMainWorld

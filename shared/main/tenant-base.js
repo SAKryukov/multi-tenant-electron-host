@@ -53,6 +53,7 @@ const tenantBase = {
                         shell.openExternal(source);
                 } //if
             }); //metadata.source
+            ipcMain.on(ipcChannel.ui.showExternalUri, (_event, uri) => shell.openExternal(uri));
             ipcMain.on(ipcChannel.fileIO.openFile, (_event, dialogTitle, defaultPath, filters) => {
                 utilitySet.openFile(window, (filename, text, error) => {
                     window.title = definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle);
