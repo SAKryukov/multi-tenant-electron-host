@@ -8,7 +8,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 "use strict";
 
-const createCommandSet = (table, summary, menuItems, menuShortcuts) => {
+const createCommandSet = (table, summary, menuItems) => {
     
     const commandSetMap = new Map();
     commandSetMap.table = table;
@@ -95,7 +95,7 @@ const createCommandSet = (table, summary, menuItems, menuShortcuts) => {
     });
 
     commandSetMap.set(menuItems.saveAs, actionRequest => {
-        if (!actionRequest) return;
+        if (!actionRequest) return true;
         implementSave(true);
     });
 
@@ -180,14 +180,14 @@ const createCommandSet = (table, summary, menuItems, menuShortcuts) => {
         if (!actionRequest) return commandSetMap.table.canShuffleColumn(false);
         commandSetMap.table.shuffleColumn(false)
     });    
-    const aboutCommandSet = new Map();
 
+    const aboutCommandSet = new Map();
     aboutCommandSet.set(menuItems.about, actionRequest => {
-        if (!actionRequest) return;
+        if (!actionRequest) return true;
         modalDialog.show("To be re-implemented<br/><br/>");
     });
     aboutCommandSet.set(menuItems.sourceCode, actionRequest => {
-        if (!actionRequest) return;
+        if (!actionRequest) return true;
         window.open("https://www.github.com/SAKryukov/personal-database-dynamic-schema", definitionSet.URI.newTab);
     });
 

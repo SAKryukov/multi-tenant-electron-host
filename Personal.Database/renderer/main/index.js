@@ -32,14 +32,14 @@ window.onload = () => {
     const contextMenu = new menuGenerator(elements.contextMenu, commandSetMap.table);
     (() => { //menu:
         mainMenu.options = { afterActionBehavior: { hide: true } };
-        const fileShortcuts = new Map();
-        fileShortcuts.set(elements.menuItems.new, elements.menuShortcuts.fileNew);
-        fileShortcuts.set(elements.menuItems.open, elements.menuShortcuts.fileOpen);
-        fileShortcuts.set(elements.menuItems.save, elements.menuShortcuts.fileSave);
-        fileShortcuts.set(elements.menuItems.saveAs, elements.menuShortcuts.fileSaveAs);
-        mainMenu.subscribe(commandSetMap, null, null, fileShortcuts);
+        mainMenu.subscribe(commandSetMap);
         mainMenu.subscribe(commandSet.aboutCommandSet);
-        contextMenu.subscribe(commandSetMap, null, null, fileShortcuts);
+        contextMenu.subscribe(commandSetMap);
+        (() => { //shortcuts
+            const shortcuts = elements.getMenuShortcuts();
+            for (const key in shortcuts) 
+                mainMenu.get(key).subscribeToShortcut(shortcuts[key]);
+        })(); //shortcuts
         const onMenuCancel = () => setTimeout(() => commandSetMap.table.focus());
         mainMenu.onCancel = onMenuCancel;
         contextMenu.onCancel = onMenuCancel;

@@ -57,12 +57,14 @@ const getElements = () => {
             about: 0,
             sourceCode: 0,
         }, //menuItems
-        menuShortcuts: {
-            fileNew: { key: "KeyN", prefix: ["ctrlKey"] },
-            fileOpen: { key: "KeyO", prefix: ["ctrlKey"] },
-            fileSaveAs: { key: "KeyS", prefix: ["ctrlKey", "shiftKey"] },
-            fileSaveExisting: { key: "KeyS", prefix: ["ctrlKey"] },
-            helpAbout: { key: "F1", prefix: [] },
+        getMenuShortcuts: function () {
+            const result = {};
+            result[this.menuItems.new] = { key: "KeyN", prefix: ["ctrlKey"] };
+            result[this.menuItems.open] = { key: "KeyO", prefix: ["ctrlKey"] };
+            result[this.menuItems.saveAs] = { key: "KeyS", prefix: ["ctrlKey", "shiftKey"] };
+            result[this.menuItems.save] = { key: "KeyS", prefix: ["ctrlKey"] };
+            result[this.menuItems.about] = { key: "F1", prefix: [] };
+            return result;
         }, //menuShortcuts
     }; //elementSet
 
