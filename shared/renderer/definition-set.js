@@ -25,6 +25,27 @@ const extensibleDefinitionSet = (() => {
             open: "Open file error",
             other: "Error",
         }, //errorHandling
+        modifiedTextOperationConfirmation: {
+            saveAsEvent: new Event("save-as"),
+            saveExistingEvent: new Event("save-existing"),
+            closeApplication: new Event("close-application"),
+            message: `<p>Do you want to save the changes?</p><br>
+                <small>
+                <p>The changes will be lost if you don't save them.</p>
+                <p>You can save them now, or cancel.</p>
+                </small>
+                </br>`,
+            messageClosingApplication: `<p>Do you want to save the changes before closing the application?</p><br>
+                <small>
+                <p>The changes will be lost if you don't save them.</p>
+                <p>You can save them now, or cancel.</p>
+                </small>
+                </br>`,
+            buttons: (saveAction, dontSaveAction, cancelAction) => [
+                { text: "Save", action: saveAction, },
+                { text: "Don't Save", action: dontSaveAction },
+                { isDefault: true, isEscape: true, text: "Cancel", action: cancelAction }],
+        }, //modifiedTextOperationConfirmation        
         aboutDialog: (metadata, imagePath) => {
             const hostVersionLine =
                 metadata?.package?.applicationHostDescription
@@ -43,7 +64,7 @@ const extensibleDefinitionSet = (() => {
             <br/>
             <br/>${metadata?.package?.metadata?.copyright}
             <br/><br/>`
-        }, //aboutDialog
+        }, //aboutDialog        
         standaloneExecutionProtection: {
             copyright: "Copyright &copy; Sergey A Kryukov",
             url: "https://github.com/SAKryukov/conceptual-electron-editor",

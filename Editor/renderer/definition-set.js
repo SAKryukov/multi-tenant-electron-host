@@ -50,27 +50,6 @@ const definitionSet = (() => {
             titleSaveFileAndContinue: `Save text file as${String.fromCharCode(0x2026)} and continue`,
             titleSaveFileAndClose: `Save text file as${String.fromCharCode(0x2026)} and close application`,
         }, //fileDialog
-        modifiedTextOperationConfirmation: {
-            saveAsEvent: new Event("save-as"),
-            saveExistingEvent: new Event("save-existing"),
-            closeApplication: new Event("close-application"),
-            message: `<p>Do you want to save the changes?</p><br>
-                <small>
-                <p>The changes will be lost if you don't save them.</p>
-                <p>You can save them now, or cancel.</p>
-                </small>
-                </br>`,
-            messageClosingApplication: `<p>Do you want to save the changes before closing the application?</p><br>
-                <small>
-                <p>The changes will be lost if you don't save them.</p>
-                <p>You can save them now, or cancel.</p>
-                </small>
-                </br>`,
-            buttons: (saveAction, dontSaveAction, cancelAction) => [
-                { text: "Save", action: saveAction, },
-                { text: "Don't Save", action: dontSaveAction },
-                { isDefault: true, isEscape: true, text: "Cancel", action: cancelAction }],
-        }, //modifiedTextOperationConfirmation
         keys: {
             KeyP: 0,
             KeyR: 0,

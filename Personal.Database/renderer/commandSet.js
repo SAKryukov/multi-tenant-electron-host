@@ -21,23 +21,49 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
     const reportError = (error, errorKind = definitionSet.errorHandling.other) =>
         showMessage(definitionSet.errorHandling.format(errorKind, error.message), table);
 
-    commandSetMap.actConfirmed = function (action) {
-        if (this.table.isModified) {
+    const actionOnConfirmation = (action, closingApplication) => {
+        const saveBeforeAction = () => {
+            if (closingApplication) {
+                if (currentFilename == null)
+                    saveAsAndCloseApplication();
+                else
+                    saveExistingFileAndCloseApplication();
+            } else {
+                if (currentFilename == null)
+                    saveAsAndContinue(action);
+                else
+                    saveExistingFileAndContinue(action);
+            } //if
+        }; //saveBeforeAction
+        const noSaveAction = () => {
+            if (closingApplication)
+                window.bridgeFileIO.closeApplication();
+            else {
+                action();
+                setTimeout(() => elementSet.editor.focus());
+            } //if
+        } //noSaveAction
+        const cancelAction = () => elementSet.editor.focus();
+        if (table.isModified) {
+            const message = closingApplication
+                ? definitionSet.modifiedTextOperationConfirmation.messageClosingApplication
+                : definitionSet.modifiedTextOperationConfirmation.message;
             modalDialog.show(
-                definitionSet.eventHandler.dataModifiedRequest,
-                { options: { focusAfterAction: this.table },
-                  buttons: [
-                    { text: definitionSet.eventHandler.dataModifiedRequestButtonConfirm, action: action, },
-                    { text: definitionSet.eventHandler.dataModifiedRequestButtonCancel, isEscape: true, }
-                  ], });
+                message, {
+                    buttons: definitionSet.modifiedTextOperationConfirmation.buttons(
+                        saveBeforeAction, noSaveAction, cancelAction),
+                });
         } else
             action();
-    }; //commandSet.actConfirmed
+    }; //actionOnConfirmation
 
     commandSetMap.set(menuItems.new, actionRequest => {
         if (!actionRequest) return true;
-        commandSetMap.actConfirmed(() => commandSetMap.table.reset() );
-    });
+        actionOnConfirmation(() => {
+            commandSetMap.table.reset();
+            currentFilename = null;
+        });
+    }); //menuItems.new
 
     const tableToText = () => {
         try {
@@ -121,7 +147,7 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
 
     commandSetMap.set(menuItems.open, actionRequest => {
         if (!actionRequest) return true;
-        commandSetMap.actConfirmed(() => {
+        actionOnConfirmation(() => {
             window.bridgeFileIO.openFile(
                 (filename, text, error) => {
                     try {
@@ -243,7 +269,9 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
     table.focus();
 
     window.bridgeUI.subscribeToApplicationClose(() => {
-        return true; //!table.isModified; //SA???
+        if (!table.isModified) return true;
+        actionOnConfirmation(() => { permitted = true; }, true);
+        return !table.isModified;
     }); //subscribeToApplicationClose
 
     return { commandSetMap, aboutCommandSet, doubleClickHandler: loadWebPage, loadDatabase };
