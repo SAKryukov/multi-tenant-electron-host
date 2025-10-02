@@ -204,8 +204,11 @@ class Table {
                 this.fromClipboard();   
         }; //document.body.onpaste
         this.#setInitialSelection();
-        this.#notifyReadonly = function() { window.dispatchEvent(this.#readOnlyEvent); }
-        this.#notifyModified = function() { window.dispatchEvent(this.#modifiedEvent); }
+        this.#notifyReadonly = function() { window.dispatchEvent(this.#readOnlyEvent); };
+        this.#notifyModified = function() {
+            this.#modified = true;
+            window.dispatchEvent(this.#modifiedEvent);
+        }; //this.#notifyModified
     } //constructor
 
     #setInitialSelection() {

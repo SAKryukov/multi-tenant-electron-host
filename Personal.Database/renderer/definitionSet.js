@@ -142,7 +142,7 @@ const definitionSet = (() => {
                 titleOpen: "Open database file",
                 titleSaveFile: `Save database file as${String.fromCharCode(0x2026)}`,
                 titleSaveFileAndContinue: `Save database file as${String.fromCharCode(0x2026)} and continue`,
-                titleSaveFileAndClose: `Save database file as${String.fromCharCode(0x2026)} and close application`,
+                titleSaveFileAndClose: `Save database file as${String.fromCharCode(0x2026)} and quit application`,
             }, //fileDialog
             toText: element => {
                 if (element.innerHTML.includes("<br")) {

@@ -48,7 +48,7 @@ const definitionSet = (() => {
             titleOpenFile: `Open text file${String.fromCharCode(0x2026)}`,
             titleSaveFile: `Save text file as${String.fromCharCode(0x2026)}`,
             titleSaveFileAndContinue: `Save text file as${String.fromCharCode(0x2026)} and continue`,
-            titleSaveFileAndClose: `Save text file as${String.fromCharCode(0x2026)} and close application`,
+            titleSaveFileAndClose: `Save text file as${String.fromCharCode(0x2026)} and quit application`,
         }, //fileDialog
         keys: {
             KeyP: 0,
