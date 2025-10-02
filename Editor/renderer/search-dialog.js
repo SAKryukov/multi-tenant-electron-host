@@ -249,6 +249,10 @@ const createSearchDialog = (definitionSet, elementSet) => {
             event.preventDefault();
         } //if
     }; //elementSet.search.inputReplace.onkeydown
+    elementSet.search.dialog.onkeydown = event => {
+        if (definitionSet.isShortcut(event, definitionSet.search.shortcutEscape))
+            elementSet.editor.focus();
+    }; //elementSet.search.dialog.onkeydown
 
     const closeDialog = () => {
         elementSet.search.dialog.close();

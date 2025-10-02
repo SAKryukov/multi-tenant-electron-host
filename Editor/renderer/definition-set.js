@@ -130,6 +130,7 @@ const definitionSet = (() => {
             shorcutFindPrevious: { key: "F3", prefix: ["shiftKey"] },
             shorcutClose: { key: "F4", prefix: ["ctrlKey"] },
             shorcutPerform: { key: "Enter", prefix: [] },
+            shortcutEscape: { key: "Escape", prefix: [] },
             optionClassName: { up: 0, down: 0, },
             replaceConfirmation: {
                 event: new Event("replace-confirmation"),
