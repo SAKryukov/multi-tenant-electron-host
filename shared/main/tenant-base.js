@@ -2,7 +2,7 @@
 
 const { ipcChannel } = require("../IPC/ipc-channels.js");
 const { utilitySet } = require("./utility.js");
-const { definitionSet } = require("./definition-set.js"); //SA??? to replace
+const { definitionSet } = require("./definition-set.js");
 const { app, BrowserWindow, Menu, ipcMain, nativeImage, shell } = require("electron");
 const fs = require("node:fs");
 const path = require("node:path");

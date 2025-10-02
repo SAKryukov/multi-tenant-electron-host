@@ -65,8 +65,11 @@ header menu { border: none; outline: none; width: 100%; }
 header menu li { display: inline; }
 header menu header { padding: var(--padding); }
 header menu { display: flex; flex-direction: row; }
-header menu li:last-of-type { margin-left: auto; right: 4px; }
+/*
+//SA??? this aligns Help menu item to the right
+header menu li:last-of-type { margin-left: auto; right: 4px; } 
 header menu li:last-of-type select { right: 4px; }
+*/
 header menu header.selected { background-color: var(--color-menu-header-background-selected); color: var(--color-menu-header-text); }
 select { overflow-y: auto; font-size: 100%; display: none; }
 header menu li:first-of-type select { left: 4px; }

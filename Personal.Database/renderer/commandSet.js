@@ -158,7 +158,7 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
     }); //menuItems.open
 
     commandSetMap.set(menuItems.save, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canStore; //SA???
+        if (!actionRequest) return !table.isReadOnly;
         if (currentFilename)
             saveExistingFile();
         else

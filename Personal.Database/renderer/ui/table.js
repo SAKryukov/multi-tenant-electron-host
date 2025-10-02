@@ -111,7 +111,6 @@ class Table {
                 for (let factIndex = 0; factIndex < data.records[rowIndex].length; ++factIndex) {
                     const fact = data.records[rowIndex][factIndex];
                     const cell = this.#body.rows[rowIndex].cells[fact.property + 1];
-                    //cell.textContent = data.values[fact.value]; //SA??? from data
                     definitionSet.persistence.fromText(cell, data.values[fact.value]);
                     this.#setupUri(cell);
                 } //loop
@@ -491,12 +490,10 @@ class Table {
         this.isReadOnly = false;
     } //reset
 
-    get canStore() { return !this.#isReadOnly; }
     store() {
         const properties = [];
         for (let cell of this.#headerRow.cells) {
             if (cell.cellIndex <= 0 || cell.cellIndex >= this.#headerRow.cells.length - 1) continue;
-            //SA??? store
             properties.push(definitionSet.persistence.toText(cell));
         } //loop
         const values = [];
@@ -550,7 +547,6 @@ class Table {
     get canCopyToClipboard() { return this.#selectedCell != null; }
     toClipboard() {
         if (this.#selectedCell == null) return;
-        //navigator.clipboard.writeText(this.#selectedCell.textContent); //SA??? to clipboard
         navigator.clipboard.writeText(definitionSet.persistence.toText(this.#selectedCell));
         setTimeout(() => this.#table.focus());
     } //toClipboard
