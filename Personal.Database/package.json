@@ -1,12 +1,12 @@
 {
   "name": "personal-database",
-  "version": "5.3.0-alpha.2.0.2",
+  "version": "5.3.0",
   "description": "Personal Database",
   "main": "./main/entry-point.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/SAKryukov/conceptual-electron-editor",
+  "repository": "https://github.com/SAKryukov/multi-tenant-electron-host",
   "author": "Sergey A Kryukov",
   "license": "MIT",
   "keywords": [

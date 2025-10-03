@@ -1,4 +1,6 @@
-# Conceptual Electron Editor
+# Multi-Tenant Electron Host
+
+Multi-tenant [Electron](https://www.electronjs.org) host is the facility used to combine several *tenant application* in single Electron host application. It solves the problem of the waste of resources created when the application is packaged. The tenant applications share contibute some 0.1-0.2% of the resources, sharing the rest. The application provide mostly or exclusively only the *renderer* part, using the electron resources via the 
 
 Proof-of-concept editor based on [Electron](https://www.electronjs.org) showcases interesting techniques related to Electron,
 Node.js, and Web technologies. It includes a plugin architecture, macros, refined search and replace conception, cross-platform packaging, multi-process debugging, and more.
