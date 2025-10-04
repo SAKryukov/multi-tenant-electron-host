@@ -170,18 +170,22 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
         saveAs();
     }); //menuItems.saveAs
 
-    const exporter = createExporter(metadata, table, handleFileOperationResult);
+    const exporter = createExporter(
+        metadata, table,
+        error => reportError(error, definitionSet.export.errorTitle));
 
     commandSetMap.set(menuItems.export, actionRequest => {
         if (!actionRequest) return exporter.canExport;
         exporter.exportAll(currentFilename, defaultPath());
         table.focus();
     }); //menuItems.exportSelection
+
     commandSetMap.set(menuItems.exportSelection, actionRequest => {
         if (!actionRequest) return exporter.canExportSelected();
         exporter.exportSelected(currentFilename, defaultPath());
         table.focus();
     }); //menuItems.exportSelection
+    
     commandSetMap.set(menuItems.exportFound, actionRequest => {       
         if (!actionRequest) return exporter.canExportFound();
         exporter.exportFound(currentFilename, defaultPath());

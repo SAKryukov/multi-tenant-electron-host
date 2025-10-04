@@ -105,11 +105,12 @@ const definitionSet = (() => {
                     `*{font-family:sans-serif}table{border-collapse:collapse;margin-top:0.4em}td,th,table{border:solid thin black}` +
                     `td,th{padding-left:0.6em;padding-right:0.6em;vertical-align:top}th{background-color:lightgray}</style>` +
                     `</head><body>${filename}<table>`,
-                ket: "</table></body></html>", //SA???
+                ket: "</table></body></html>",
                 filenameElement: filename => filename
                     ? `<td>Source:</td><dd>${filename}</dd>`
                     : definitionSet.characters.empty,
             }, //html
+            cellContent: cell => cell.trim().length > 0 ? cell : "&nbsp;",
             row: {
                 bra: "<tr>",
                 ket: "</tr>",
@@ -126,6 +127,7 @@ const definitionSet = (() => {
             dialogSelectedTitle: "Export selection as HTML",
             dialogFoundTitle: "Export found data as HTML",
             fileTypeFilters: [{ name: "HTML files", extensions: ["html"] }],
+            errorTitle: "Export error",
         }, //export
 
         keyboard: {

@@ -1,6 +1,6 @@
 "use strict";
 
-const createExporter = (metadata, table, resultHandler) => {
+const createExporter = (metadata, table, errorHandler) => {
 
     const rows = new Set();
 
@@ -13,7 +13,7 @@ const createExporter = (metadata, table, resultHandler) => {
             : definitionSet.export.cell.ket;
         const cells = [];
         for (let index = 1; index < row.cells.length - 1; ++index)
-            cells.push(bra + row.cells[index].textContent + ket);
+            cells.push(bra + definitionSet.export.cellContent(row.cells[index].textContent) + ket);
         const cellsHTML = cells.join(definitionSet.characters.empty);
         return definitionSet.export.row.bra + cellsHTML + definitionSet.export.row.ket;
     }; //reportRow
@@ -52,7 +52,7 @@ const createExporter = (metadata, table, resultHandler) => {
         const filenameElement = definitionSet.export.html.filenameElement(filename);
         const bra = definitionSet.export.html.bra(metadata.package.description, filenameElement);
         const title = all
-            ? definitionSet.export.title
+            ? definitionSet.export.dialogTitle
             : (found
                 ? definitionSet.export.dialogFoundTitle
                 : definitionSet.export.dialogSelectedTitle);
@@ -66,8 +66,8 @@ const createExporter = (metadata, table, resultHandler) => {
             + content
             + definitionSet.export.html.ket;
         window.bridgeFileIO.saveFileAs(htmlContent,
-            (filename, error) =>
-                resultHandler(filename, null, error, true),
+            (_filename, error) =>
+                errorHandler(error),
             title,
             defaultPath,
             definitionSet.export.fileTypeFilters,
