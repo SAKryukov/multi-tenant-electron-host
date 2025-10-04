@@ -35,14 +35,16 @@ module.exports.utilitySet = (() => {
                     useData(data?.toString(), error));
         }, //openKnownFile
         openFile: (window, useData, title, defaultPath, filters) => {
-            dialog.showOpenDialog(window, { defaultPath, filters, title }).then(event => {
+            // we assume defaultPath is actually a filename:
+            dialog.showOpenDialog(window, { defaultPath: path.dirname(defaultPath), filters, title }).then(event => {
                 if (event.canceled) return;
                 fs.readFile(event.filePaths[0], {}, (error, data) =>
                     useData(event.filePaths[0], data?.toString(), error));
             }); //dialog.showOpenDialog
         }, //openFile
         saveFileAs: (window, text, handler, title, defaultPath, filters) => {
-            dialog.showSaveDialog(window, { defaultPath, filters, title }).then(event => {
+            // we assume defaultPath is actually a filename:
+            dialog.showSaveDialog(window, { defaultPath: path.dirname(defaultPath), filters, title }).then(event => {
                 if (event.canceled) return;
                 fs.writeFile(event.filePath, text, {}, error =>
                     handler(event.filePath, error));
