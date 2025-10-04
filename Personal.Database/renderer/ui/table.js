@@ -612,6 +612,12 @@ class Table {
         this.#table.focus();
     } //findNext
 
+    // export:
+    get found() { return this.#searchResults; }
+    get propertiesRow() { return this.#headerRow; }
+    get selectedRow() { return this.#body.rows[this.#selectedCell.parentElement.rowIndex - 1]; }
+    get rows() { return this.#body.rows; }    
+
     get isReadOnly() { return this.#isReadOnly; }
     set isReadOnly(value) { this.#isReadOnly = value; this.#notifyReadonly(); }
 

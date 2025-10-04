@@ -98,6 +98,36 @@ const definitionSet = (() => {
             disabled: "disabled",
         },
 
+        export: {
+            html: {
+                bra: (product, filename) =>
+                    `<!doctype HTML><html><head><title>Exported from ${product}</title><style>` +
+                    `*{font-family:sans-serif}table{border-collapse:collapse;margin-top:0.4em}td,th,table{border:solid thin black}` +
+                    `td,th{padding-left:0.6em;padding-right:0.6em;vertical-align:top}th{background-color:lightgray}</style>` +
+                    `</head><body>${filename}<table>`,
+                ket: "</table></body></html>", //SA???
+                filenameElement: filename => filename
+                    ? `<td>Source:</td><dd>${filename}</dd>`
+                    : definitionSet.characters.empty,
+            }, //html
+            row: {
+                bra: "<tr>",
+                ket: "</tr>",
+            },
+            headerCell: {
+                bra: "<th>",
+                ket: "</th>",
+            },
+            cell: {
+                bra: "<td>",
+                ket: "</td>",
+            },
+            dialogTitle: "Export as HTML",
+            dialogSelectedTitle: "Export selection as HTML",
+            dialogFoundTitle: "Export found data as HTML",
+            fileTypeFilters: [{ name: "HTML files", extensions: ["html"] }],
+        }, //export
+
         keyboard: {
             left: "ArrowLeft",
             right: "ArrowRight",
@@ -109,23 +139,6 @@ const definitionSet = (() => {
             enter: "Enter",
             edit: "F2",
             findNext: "F3",
-        },
-
-        fileIO: {
-            accept: ".sadb",
-            filePickerOptions: function () {
-                return {
-                    types: [
-                        {
-                            description: "SADB or JSON file",
-                            accept: { "application/ecmascript": [this.accept, ".json"] },
-                        },
-                    ],
-                    suggestedName: this.defaultSaveFilename(),
-                    startIn: "downloads",
-                };
-            },
-            defaultSaveFilename: function () { return `default${this.accept}`; },
         },
 
         time: {
@@ -143,9 +156,9 @@ const definitionSet = (() => {
             fileDialog: {
                 fileTypeFilters: [{ name: "SA Database files", extensions: ["sadb"] }],
                 titleOpen: "Open database file",
-                titleSaveFile: `Save database file as${String.fromCharCode(0x2026)}`,
-                titleSaveFileAndContinue: `Save database file as${String.fromCharCode(0x2026)} and continue`,
-                titleSaveFileAndClose: `Save database file as${String.fromCharCode(0x2026)} and quit application`,
+                titleSaveFile: `Save database file`,
+                titleSaveFileAndContinue: `Save database file and continue`,
+                titleSaveFileAndClose: `Save database file and quit application`,
             }, //fileDialog
             toText: element => {
                 if (element.innerHTML.includes("<br")) {
