@@ -85,7 +85,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         return !fileSystemStatus.isModified;
     }); //subscribeToApplicationClose
 
-    menu.subscribe(elementSet.menuItems.file.newFile.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.file.newFile.value, actionRequest => {
         if (!actionRequest) return fileSystemStatus.isModified || currentFilename != null;
         actionOnConfirmation(() => {
             currentFilename = null;
@@ -97,7 +97,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         return true;
     }).subscribeToShortcut(definitionSet.menuShortcuts.fileNew); //file.newFile
 
-    menu.subscribe(elementSet.menuItems.file.open.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.file.open.value, actionRequest => {
         if (!actionRequest) return true;
         actionOnConfirmation(() => {
             window.bridgeFileIO.openFile((filename, text, error) =>
@@ -145,14 +145,14 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
                 handleFileOperationResult(filename, null, error, true),
             true);
 
-    menu.subscribe(elementSet.menuItems.file.saveAs.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.file.saveAs.value, actionRequest => {
         if (!actionRequest) return true;
         saveAs();
         elementSet.editor.focus();
         return true;
     }).subscribeToShortcut(definitionSet.menuShortcuts.fileSaveAs); //file.saveAs
 
-    menu.subscribe(elementSet.menuItems.file.saveExisting.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.file.saveExisting.value, actionRequest => {
         if (!actionRequest) return fileSystemStatus.isModified;
         if (currentFilename)
             saveExistingFile();
@@ -165,21 +165,21 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     // Macro:
 
     const macroProcessor = createMacroProcessor(elementSet.editor, elementSet.statusBar.macroFlag, elementSet.editorAPI);
-    menu.subscribe(elementSet.menuItems.macro.startRecording.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.macro.startRecording.value, actionRequest => {
         if (!actionRequest) return macroProcessor.canRecord();
         elementSet.editor.focus();
         macroProcessor.setRecordingState(true);
         return true;
     }); //file.newFile
 
-    menu.subscribe(elementSet.menuItems.macro.stopRecording.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.macro.stopRecording.value, actionRequest => {
         if (!actionRequest) return macroProcessor.canStopRecording();
         macroProcessor.setRecordingState(false);
         elementSet.editor.focus();
         return true;
     }); //file.newFile
 
-    menu.subscribe(elementSet.menuItems.macro.play.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.macro.play.value, actionRequest => {
         if (!actionRequest) return macroProcessor.canPlay();
         macroProcessor.playMacro();
         return true;
@@ -190,7 +190,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     const selectionToClipboard = length =>
         navigator.clipboard.writeText(elementSet.editor.value.substr(elementSet.editor.selectionStart, length));
 
-    menu.subscribe(elementSet.menuItems.edit.cut.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.edit.cut.value, actionRequest => {
         const length = elementSet.editor.selectionEnd - elementSet.editor.selectionStart;
         if (!actionRequest) return length > 0;
         selectionToClipboard(length);
@@ -199,7 +199,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         return true;
     }); //edit.cut
 
-    menu.subscribe(elementSet.menuItems.edit.copy.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.edit.copy.value, actionRequest => {
         const length = elementSet.editor.selectionEnd - elementSet.editor.selectionStart;
         if (!actionRequest) return length > 0;
         selectionToClipboard(length);
@@ -207,7 +207,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         return true;
     }); //edit.copy
 
-    menu.subscribe(elementSet.menuItems.edit.paste.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.edit.paste.value, actionRequest => {
         if (!actionRequest) return true;
         elementSet.editor.focus();
         navigator.clipboard.readText().then(value =>
@@ -215,7 +215,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         return true;
     }); //edit.paste
 
-    menu.subscribe(elementSet.menuItems.edit.selectAll.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.edit.selectAll.value, actionRequest => {
         if (!actionRequest) return elementSet.editor.textLength > 0;
         elementSet.editor.focus();
         elementSet.editor.select();
@@ -228,7 +228,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     let isFullscreen = false;
     let viewStatusBarItem, viewFullscreenItem, viewWordWrapItem;
     let isWordWrap = false;
-    viewStatusBarItem = menu.subscribe(elementSet.menuItems.view.statusBar.textContent, actionRequest => {
+    viewStatusBarItem = menu.subscribe(elementSet.menuItems.view.statusBar.value, actionRequest => {
         if (!actionRequest) return true;
         isStatusBarVisible = !isStatusBarVisible;
         if (isStatusBarVisible)
@@ -241,7 +241,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     viewStatusBarItem.setCheckedCheckBox();
     //setCheckedCheckBox
 
-    viewFullscreenItem = menu.subscribe(elementSet.menuItems.view.fullscreen.textContent, actionRequest => {
+    viewFullscreenItem = menu.subscribe(elementSet.menuItems.view.fullscreen.value, actionRequest => {
         if (!actionRequest) return true;
         isFullscreen = !isFullscreen;
         if (isFullscreen)
@@ -253,7 +253,7 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
     }); //view.fullscreen
     viewFullscreenItem.setCheckBox();
 
-    viewWordWrapItem = menu.subscribe(elementSet.menuItems.view.wordWrap.textContent, actionRequest => {
+    viewWordWrapItem = menu.subscribe(elementSet.menuItems.view.wordWrap.value, actionRequest => {
         if (!actionRequest) return true;
         isWordWrap = !isWordWrap;
         if (isWordWrap)
@@ -266,40 +266,40 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     // Search:
 
-    menu.subscribe(elementSet.menuItems.search.find.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.search.find.value, actionRequest => {
         if (!actionRequest) return true;
         searchDialog.show(false);
     }).subscribeToShortcut(definitionSet.search.shorcutFind); //search.Find
 
-    menu.subscribe(elementSet.menuItems.search.replace.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.search.replace.value, actionRequest => {
         if (!actionRequest) return true;
         searchDialog.show(true);
         return false;
     }).subscribeToShortcut(definitionSet.search.shorcutReplace); //search.Replace
 
-    menu.subscribe(elementSet.menuItems.search.findNext.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.search.findNext.value, actionRequest => {
         if (!actionRequest) return searchDialog.canFindNext();
         searchDialog.findNext(false);
     }).subscribeToShortcut(definitionSet.search.shorcutFindNext); //search.findNext
-    menu.subscribe(elementSet.menuItems.search.findPrevious.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.search.findPrevious.value, actionRequest => {
         if (!actionRequest) return searchDialog.canFindNext();
         searchDialog.findNext(true);
     }).subscribeToShortcut(definitionSet.search.shorcutFindPrevious); //edit.findPrevious
 
-    menu.subscribe(elementSet.menuItems.search.goto.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.search.goto.value, actionRequest => {
         if (!actionRequest) return elementSet.editor.textLength > 0;
         adHocUtility.goto();
     }); //search.goto
 
     // Help:
 
-    menu.subscribe(elementSet.menuItems.help.about.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.help.about.value, actionRequest => {
         if (!actionRequest) return true;
         showMessage(definitionSet.aboutDialog(metadata, definitionSet.paths.image), elementSet.editor);
         return true;
     }).subscribeToShortcut(definitionSet.menuShortcuts.helpAbout); //help.about
 
-    menu.subscribe(elementSet.menuItems.help.sourceCode.textContent, actionRequest => {
+    menu.subscribe(elementSet.menuItems.help.sourceCode.value, actionRequest => {
         if (!actionRequest) return true;
         window.bridgeMetadata.showSource();
         elementSet.editor.focus();

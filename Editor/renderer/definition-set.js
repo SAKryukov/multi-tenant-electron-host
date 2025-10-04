@@ -157,21 +157,6 @@ const definitionSet = (() => {
                 editor
             ), //regularExpressionException
         }, //search
-        menuShortcuts: {
-            fileNew: { key: "KeyN", prefix: ["ctrlKey"] },
-            fileOpen: { key: "KeyO", prefix: ["ctrlKey"] },
-            fileSaveAs: { key: "KeyS", prefix: ["ctrlKey", "shiftKey"] },
-            fileSaveExisting: { key: "KeyS", prefix: ["ctrlKey"] },
-            helpAbout: { key: "F1", prefix: [] },
-        }, //menuShortcuts
-        isShortcut: (event, shortcut) => {
-            if (event.code != shortcut.key) return false;
-            if (!shortcut.prefix || shortcut.prefix.length < 1)
-                return !(event.shiftKey || event.ctrlKey || event.metaKey || event.altKey);
-            for (const prefixElement of shortcut.prefix)
-                if (!event[prefixElement]) return false;
-            return true;
-        }, //isShortcut
         paths: {
             image: "../images/editor.png",
         },
