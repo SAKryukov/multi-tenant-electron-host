@@ -58,11 +58,11 @@ const getElements = () => {
         }, //menuItems
         getMenuShortcuts: function () {
             const result = {};
-            result[this.menuItems.new] = { key: "KeyN", prefix: ["ctrlKey"] };
-            result[this.menuItems.open] = { key: "KeyO", prefix: ["ctrlKey"] };
-            result[this.menuItems.saveAs] = { key: "KeyS", prefix: ["ctrlKey", "shiftKey"] };
-            result[this.menuItems.save] = { key: "KeyS", prefix: ["ctrlKey"] };
-            result[this.menuItems.about] = { key: "F1", prefix: [] };
+            result[this.menuItems.new] = definitionSet.menuShortcuts.fileNew;
+            result[this.menuItems.open] = definitionSet.menuShortcuts.fileOpen;
+            result[this.menuItems.saveAs] = definitionSet.menuShortcuts.fileSaveAs;
+            result[this.menuItems.save] = definitionSet.menuShortcuts.fileSaveExisting;
+            result[this.menuItems.about] = definitionSet.menuShortcuts.helpAbout;
             return result;
         }, //menuShortcuts
     }; //elementSet
