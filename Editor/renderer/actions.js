@@ -224,35 +224,15 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
 
     // View:
 
-    let isStatusBarVisible = true;
-    let isFullscreen = false;
-    let viewStatusBarItem, viewFullscreenItem, viewWordWrapItem;
+    viewMenuSubscription( // from shared
+        menu,
+        elementSet.menuItems.view.statusBar.value,
+        elementSet.menuItems.view.fullscreen.value,
+        elementSet.statusBar.all,
+        definitionSet.view.statusBarStyle);
+
+    let viewWordWrapItem;
     let isWordWrap = false;
-    viewStatusBarItem = menu.subscribe(elementSet.menuItems.view.statusBar.value, actionRequest => {
-        if (!actionRequest) return true;
-        isStatusBarVisible = !isStatusBarVisible;
-        if (isStatusBarVisible)
-            viewStatusBarItem.setCheckedCheckBox();
-        else
-            viewStatusBarItem.setCheckBox();
-        elementSet.statusBar.all.style.display = definitionSet.view.statusBarStyle(isStatusBarVisible);
-        return true;
-    }); //view.statusBar
-    viewStatusBarItem.setCheckedCheckBox();
-    //setCheckedCheckBox
-
-    viewFullscreenItem = menu.subscribe(elementSet.menuItems.view.fullscreen.value, actionRequest => {
-        if (!actionRequest) return true;
-        isFullscreen = !isFullscreen;
-        if (isFullscreen)
-            viewFullscreenItem.setCheckedCheckBox();
-        else
-            viewFullscreenItem.setCheckBox();
-        window.bridgeUI.fullscreenToggle();
-        return true;
-    }); //view.fullscreen
-    viewFullscreenItem.setCheckBox();
-
     viewWordWrapItem = menu.subscribe(elementSet.menuItems.view.wordWrap.value, actionRequest => {
         if (!actionRequest) return true;
         isWordWrap = !isWordWrap;

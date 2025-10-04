@@ -14,6 +14,7 @@ const getElements = () => {
         main: document.querySelector("main"),
         mainMenu: document.querySelector("header > menu"),
         contextMenu: document.querySelector("main select"),
+        statusBar: document.querySelector("footer"),
         summary: {
             title: document.querySelector("#summary-title"),
             created: document.querySelector("#summary-created"),
@@ -44,6 +45,8 @@ const getElements = () => {
             addProperty: 0,
             insertProperty: 0,
             removeProperty: 0,
+            viewStatusBar: "Status Bar",
+            viewFullScreen: "Full Screen",
             copy: 0,
             paste: 0,
             editSelectedCell: 0,

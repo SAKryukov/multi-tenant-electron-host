@@ -18,6 +18,7 @@ http://www.codeproject.com/Members/SAKryukov
         <script src="../../shared/agnostic/renderer/accesskey.js"></script>
         <script src="../../shared/renderer/definition-set.js"></script>
         <script src="../../shared/renderer/default-message-dialog.js"></script>
+        <script src="../../shared/renderer/view-menu-subscription.js"></script>
         <script src="./definitionSet.js"></script>
         <script src="ui/table.js"></script>
         <script src="ui/summary.js"></script>
@@ -58,22 +59,29 @@ http://www.codeproject.com/Members/SAKryukov
                     <option value="editSelectedCell">F2: Edit Selected Cell</option>
                     <option value="editPropertyName">Ctrl+F2: Edit Property Name</option>
                     <option value="load">Open Web Page</option>
-                    <option disabled="true" class="separator">───────────────────────────────</option>
+                    <option disabled="true" class="separator">───────────────────────</option>
                     <option value="addProperty">Add Property</option>
                     <option value="insertProperty">Insert Property</option>
                     <option value="removeProperty">Remove Property</option>
                     <option value="insertRow">Insert Row</option>
                     <option value="removeRow">Remove Row</option>
-                    <option disabled="true" class="separator">───────────────────────────────</option>
+                    <option disabled="true" class="separator">───────────────────────</option>
                     <option value="up">Ctrl+Shift+&uarr;: Move Row</option>   
                     <option value="down">Ctrl+Shift+&darr; : Move Row</option>
                     <option value="left">Ctrl+Shift+&larr;: Move Column</option>
                     <option value="right">Ctrl+Shift+&rarr;: Move Column</option>
-                    <option disabled="true" class="separator">───────────────────────────────</option>
+                    <option disabled="true" class="separator">───────────────────────</option>
                     <option value="copy">Ctrl+C,  Ctrl+Insert: Copy</option>
                     <option value="paste">Ctrl+V, Shift+Insert: Paste</option>
                 </select>
-            </li>    
+            </li>
+                <li>
+                    <header>View</header>
+                    <select>
+                        <option id="menu-status-bar">Status Bar</option>
+                        <option id="menu-full-screen">Full Screen</option>
+                    </select>
+                </li>
             <li>
                 <header>Help</header>
                 <select>

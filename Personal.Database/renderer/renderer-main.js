@@ -32,7 +32,6 @@ window.addEventListener(extensibleDefinitionSet.events.DOMContentLoaded, () => {
 
     const contextMenu = new menuGenerator(elements.contextMenu, commandSetMap.table);
     (() => { //menu:
-        mainMenu.options = { afterActionBehavior: { hide: true } };
         mainMenu.subscribe(commandSetMap);
         mainMenu.subscribe(commandSet.aboutCommandSet);
         contextMenu.subscribe(commandSetMap);
@@ -44,6 +43,12 @@ window.addEventListener(extensibleDefinitionSet.events.DOMContentLoaded, () => {
         const onMenuCancel = () => setTimeout(() => commandSetMap.table.focus());
         mainMenu.onCancel = onMenuCancel;
         contextMenu.onCancel = onMenuCancel;
+        viewMenuSubscription( // from shared
+            mainMenu,
+            elements.menuItems.viewStatusBar,
+            elements.menuItems.viewFullScreen,
+            elements.statusBar,
+            definitionSet.CSS.view.statusBarStyle);
     })(); //menu
 
     (() => { //context menu activation:

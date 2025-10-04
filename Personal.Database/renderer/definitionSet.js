@@ -89,7 +89,10 @@ const definitionSet = (() => {
             position: {
                 hint: "absolute",
             },
-        },
+            view: {
+                statusBarStyle: visible => { return visible ? "inline-block" : "none";  },
+            },
+        }, //CSS
 
         attributes: {
             disabled: "disabled",
