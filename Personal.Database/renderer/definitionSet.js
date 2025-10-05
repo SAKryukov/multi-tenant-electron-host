@@ -110,7 +110,20 @@ const definitionSet = (() => {
                     ? `<td>Source:</td><dd>${filename}</dd>`
                     : definitionSet.characters.empty,
             }, //html
-            cellContent: cell => cell.trim().length > 0 ? cell : "&nbsp;",
+            urlRegExp: /^http(s?)\:\/\/.*$/,
+            cellContent: function(cell) {
+                if (!cell) return "&nbsp;";
+                if (cell.trim().length < 1) return "&nbsp;";
+                const lines = cell.split("\n");
+                const content = [];
+                for (const line of lines) {
+                    let newLine = line.trim();
+                    if (this.urlRegExp.test(newLine))
+                        newLine = `<a href="${newLine}">${newLine}</a>`;
+                    content.push(newLine);
+                } //loop
+                return content.join("<br/>");
+            }, //cellContent
             row: {
                 bra: "<tr>",
                 ket: "</tr>",
