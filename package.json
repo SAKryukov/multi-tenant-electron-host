@@ -1,6 +1,6 @@
 {
   "name": "multi-tenant-electron-host",
-  "version": "5.5.0",
+  "version": "5.6.0",
   "description": "Multi-Tenant Electron Host",
   "main": "./multi-tenant-host/host.js",
   "scripts": {
