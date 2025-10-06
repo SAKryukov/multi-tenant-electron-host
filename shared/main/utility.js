@@ -2,7 +2,7 @@
 
 module.exports.utilitySet = (() => {
 
-    const { dialog, BrowserWindow, Menu } = require("electron");
+    const { dialog, BrowserWindow, Menu, nativeImage } = require("electron");
     const fs = require("node:fs");
     const path = require("node:path");
 
@@ -66,6 +66,12 @@ module.exports.utilitySet = (() => {
             } //if
             return result;
         }, //handleInvalidApplicationPack
+        createApplicationIcon: (tenantApplicationPath, iconFileName) => {
+            if (!iconFileName) return null;
+            const absoluteFileName = path.join(tenantApplicationPath, iconFileName);
+            if (!fs.existsSync(absoluteFileName)) return null;
+            return nativeImage.createFromPath(absoluteFileName);
+        }, //createApplicationIcon
     }; //utilitySet
 
     return utilitySet;

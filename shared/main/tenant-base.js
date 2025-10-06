@@ -3,19 +3,19 @@
 const { ipcChannel } = require("../IPC/ipc-channels.js");
 const { utilitySet } = require("./utility.js");
 const { definitionSet } = require("./definition-set.js");
-const { app, BrowserWindow, Menu, ipcMain, nativeImage, shell } = require("electron");
+const { app, BrowserWindow, Menu, ipcMain, shell } = require("electron");
 const fs = require("node:fs");
 const path = require("node:path");
 
 const tenantBase = {
 
     paths: { // has to be customized
-        package: null,
-        metadata: null,
-        applicationIcon: null,
-        index: null,
+        package: null, // mandatory
+        index: null, // mandatory
+        metadata: null, // optional (copyright won't show in the About dialog)
+        applicationIcon: null, // optional
     }, //paths
-    pluginProvider: null, // has to be customized or left unimplemented
+    pluginProvider: null, // optional, has to be customized or left unimplemented
 
     run: function(tenantRoot) {
 
@@ -28,13 +28,14 @@ const tenantBase = {
 
         const applicationPackage = (() => {
             const getJSON = (filename, host) => {
+                if (!filename) return true;
                 const fullName =
                     host
                         ? path.join(app.getAppPath(), filename)
                         : path.join(app.getAppPath(), tenantRoot, filename);
                 if (fs.existsSync(fullName))
                     return JSON.parse(fs.readFileSync(fullName));
-            };
+            }; //getJSON
             const packageJSON = getJSON(this.paths.package);
             const metadataJSON = getJSON(this.paths.metadata);
             packageJSON.metadata = metadataJSON;
@@ -111,7 +112,7 @@ const tenantBase = {
             const tenantApplicationPath = tenantRoot
                 ? path.join(hostApplicationPath, tenantRoot)
                 : applicationPath;
-            const icon = nativeImage.createFromPath(path.join(tenantApplicationPath, this.paths.applicationIcon));
+            const icon = utilitySet.createApplicationIcon(tenantApplicationPath, this.paths.applicationIcon);
             const window = new BrowserWindow(
                 definitionSet.createWindowProperties(title, icon,
                     path.join(hostApplicationPath, definitionSet.paths.preload)));

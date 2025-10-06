@@ -66,6 +66,8 @@ const extensibleDefinitionSet = (() => {
                 metadata?.package?.applicationHostDescription
                     ? `<br/>${metadata.package.applicationHostDescription} version: ${metadata.applicationVersion}`
                     : "";
+            const copyright = metadata?.package?.metadata?.copyright
+                ? `<br/> <br/>${metadata?.package?.metadata?.copyright}` : "";
             return `<h4> <img src="${imagePath}"/>${metadata?.package?.description}</h4>
             <br/>Application version: ${metadata.package.version}
             ${hostVersionLine}
@@ -76,8 +78,7 @@ const extensibleDefinitionSet = (() => {
             <br>Electron: v.&thinsp;${metadata.versions.electron}
             <br/>Chromium: v.&thinsp;${metadata.versions.chrome}
             <br/>Node.js: v.&thinsp;${metadata.versions.node}
-            <br/>
-            <br/>${metadata?.package?.metadata?.copyright}
+            ${copyright}
             <br/><br/>`
         }, //aboutDialog        
         standaloneExecutionProtection: {
