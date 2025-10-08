@@ -1,2 +1,2 @@
 "use strict";
-require("./tenant.js").tenant("");
+require("./tenant.js").tenant();

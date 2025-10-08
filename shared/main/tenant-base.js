@@ -19,6 +19,8 @@ const tenantBase = {
 
     run: function(tenantRoot) {
 
+        tenantRoot = tenantRoot ?? String();
+
         let permittedToCloseApplication = false;
 
         const handlePlugins = (applicationPath, window) => {
