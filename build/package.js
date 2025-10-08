@@ -18,7 +18,8 @@ const supportedCombinations =[
     "win32 arm64",
     "win32 ia32",
     "win32 x64",];
-const platforms = new Set(["win32", "linux", "mas", "darwin"]);
+const windowsPlatform = "win32";
+const platforms = new Set([windowsPlatform, "linux", "mas", "darwin"]);
 const architectures = new Set(["ia32", "x64", "arm64", "armv7l"]);
 
 const parseCommandLine = () => {
@@ -64,6 +65,20 @@ if (copyright)
 
 const command = `npx @electron/packager ../${application} --overwrite --platform=${parsedArguments.platform} --arch=${parsedArguments.architecture} ${exe} ${copyright} --asar`;
 
+const extractOutput = stdout => 
+    stdout.substring(stdout.indexOf(module.path)).trim();
+const copyExtraFiles = (targetPath, platform) => {
+    let sourceDirectory = path.join(module.path, "extra");
+    if (platform == windowsPlatform)
+        sourceDirectory = path.join(sourceDirectory, windowsPlatform);
+    const entries = fs.readdirSync(sourceDirectory);
+    for (const entry of entries) {
+        const source = path.join(sourceDirectory, entry);
+        const target = path.join(targetPath, entry);
+        fs.copyFile(source, target, error => console.log(`Copy error:\n        ${error}`));
+    } //loop
+} //copyExtraFiles
+
 exec(command, (error, stdout, stderr) => {
     if (error) {
         console.error(`Error executing electron-packager: ${error.message}`);
@@ -73,7 +88,9 @@ exec(command, (error, stdout, stderr) => {
         console.error(`electron-packager stderr: ${stderr}`);
         return;
     }
-    console.log(`electron-packager stdout: ${stdout}`);
+    console.log(`${stdout}`);
+    const outputDirectory = extractOutput(stdout);
+    copyExtraFiles(outputDirectory, parsedArguments.platform);
     console.log(`Electron application packaged successfully
         for ${parsedArguments.platform} ${parsedArguments.architecture}!`);
 });
