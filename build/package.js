@@ -4,7 +4,7 @@ const { argv } = require("node:process");
 const path = require("node:path");
 
 const application = ""; // as multi-tenant host
-//const application = "Editor"; // can be changed to "" to build multi-tenant-host
+//const application = "Editor";
 
 const medatadaFile = `../${application}/metadata.json`;
 const supportedCombinations =[
@@ -32,9 +32,9 @@ const parseCommandLine = () => {
             architecture = value;
     });
     if (!(platform && architecture)) {
-        console.log("Speficy both platform and CPU architecture. The supported combinations are:");
+        console.warn("Speficy both platform and CPU architecture. The supported combinations are:");
         for (const combination of supportedCombinations)
-            console.log(`      ${combination}`);
+            console.warn(`      ${combination}`);
         return;
     } //if
     return { platform, architecture, };
@@ -71,26 +71,29 @@ const copyExtraFiles = (targetPath, platform) => {
     let sourceDirectory = path.join(module.path, "extra");
     if (platform == windowsPlatform)
         sourceDirectory = path.join(sourceDirectory, windowsPlatform);
-    const entries = fs.readdirSync(sourceDirectory);
+    const entries = fs.readdirSync(sourceDirectory, { withFileTypes: true });
+    const files = [];
     for (const entry of entries) {
-        const source = path.join(sourceDirectory, entry);
-        const target = path.join(targetPath, entry);
-        fs.copyFile(source, target, error => console.log(`Copy error:\n        ${error}`));
+        if (entry.isDirectory()) continue;
+        const source = path.join(sourceDirectory, entry.name);
+        const target = path.join(targetPath, entry.name);
+        fs.copyFile(source, target, error => { if (error) console.error(`Copy error: ${error}`); });
+        files.push(entry.name);
     } //loop
+    return files;
 } //copyExtraFiles
 
+const showError = error => {
+    if (!error) return false;
+    console.error(`Electron/packager error: ${error}`);
+    return true;
+}; //showError
+
 exec(command, (error, stdout, stderr) => {
-    if (error) {
-        console.error(`Error executing electron-packager: ${error.message}`);
-        return;
-    }
-    if (stderr) {
-        console.error(`electron-packager stderr: ${stderr}`);
-        return;
-    }
-    console.log(`${stdout}`);
+    if (showError(error?.message)) return;
+    if (showError(stderr)) return;
+    console.log(stdout);
     const outputDirectory = extractOutput(stdout);
-    copyExtraFiles(outputDirectory, parsedArguments.platform);
-    console.log(`Electron application packaged successfully
-        for ${parsedArguments.platform} ${parsedArguments.architecture}!`);
+    console.log(`Added application start scripts:
+        ${copyExtraFiles(outputDirectory, parsedArguments.platform).join(", ")}`);
 });
