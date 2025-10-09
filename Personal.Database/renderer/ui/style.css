@@ -77,5 +77,6 @@ option, optgroup { padding: var(--padding-option); font-weight: normal; }
 optgroup { margin-left: 1em; }
 optgroup option { padding-left: 2em; }
 option:disabled { color: var(--color-menu-option-disabled); opacity: 0.3; }
-option.separator { padding: 0; opacity: 1; color: var(--color-border) }
+option.separator-top, option.separator-bottom { height: 3px; font-size: 1px; opacity: 1; }
+option.separator-top { height: 2px; border-bottom: solid 1px var(--color-border); }
 select { display: none; border: none; outline: 1.4px solid var(--color-border) }

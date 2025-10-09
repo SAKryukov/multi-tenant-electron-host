@@ -1,9 +1,12 @@
 "use strict";
 const { bridgeAPI, ipcChannel } = require("./ipc-channels.js");
 const { ipcRenderer, contextBridge} = require("electron/renderer");
+const { webFrame } = require('electron');
 
 let metadata = null;
 ipcRenderer.once(ipcChannel.metadata.metadataPush, (_event, received) => metadata = received);
+
+webFrame.setZoomFactor(1);
 
 contextBridge.exposeInMainWorld(bridgeAPI.bridgeFileIO, { // to be used only in renderer loaded from HTML
     openFile: (handler, dialogTitle, defaultPath, filters) => {

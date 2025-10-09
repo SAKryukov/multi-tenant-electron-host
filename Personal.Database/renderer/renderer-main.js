@@ -25,22 +25,23 @@ window.addEventListener(extensibleDefinitionSet.events.DOMContentLoaded, () => {
         new Summary(elements),
         elements.menuItems,
         metadata);
-    const commandSetMap = commandSet.commandSetMap;
+    const commonCommandSet = commandSet.commonCommandSet;
 
-    commandSetMap.table.doubleClickHandler = commandSet.doubleClickHandler;
-    const mainMenu = new menuGenerator(elements.mainMenu, commandSetMap.table);
+    commonCommandSet.table.doubleClickHandler = commandSet.doubleClickHandler;
+    const mainMenu = new menuGenerator(elements.mainMenu, commonCommandSet.table);
 
-    const contextMenu = new menuGenerator(elements.contextMenu, commandSetMap.table);
+    const contextMenu = new menuGenerator(elements.contextMenu, commonCommandSet.table);
     (() => { //menu:
-        mainMenu.subscribe(commandSetMap);
+        mainMenu.subscribe(commonCommandSet);
         mainMenu.subscribe(commandSet.aboutCommandSet);
-        contextMenu.subscribe(commandSetMap);
+        mainMenu.subscribe(commandSet.fileCommandSet);
+        contextMenu.subscribe(commonCommandSet);
         (() => { //shortcuts
             const shortcuts = elements.getMenuShortcuts();
             for (const key in shortcuts) 
                 mainMenu.get(key).subscribeToShortcut(shortcuts[key]);
         })(); //shortcuts
-        const onMenuCancel = () => setTimeout(() => commandSetMap.table.focus());
+        const onMenuCancel = () => setTimeout(() => commonCommandSet.table.focus());
         mainMenu.onCancel = onMenuCancel;
         contextMenu.onCancel = onMenuCancel;
         viewMenuSubscription( // from shared
@@ -69,7 +70,7 @@ window.addEventListener(extensibleDefinitionSet.events.DOMContentLoaded, () => {
     })(); //
 
     window.addEventListener(definitionSet.eventHandler.readOnlyEvent, () => {
-        const value = commandSetMap.table.isReadOnly;
+        const value = commonCommandSet.table.isReadOnly;
         elements.indicators.readOnly.textContent = definitionSet.eventHandler.readOnlyIndicator[value ? 1 : 0];
     });
     window.addEventListener(definitionSet.eventHandler.modifiedEvent, event =>
@@ -77,20 +78,20 @@ window.addEventListener(extensibleDefinitionSet.events.DOMContentLoaded, () => {
             ? definitionSet.eventHandler.modifiedIndicator
             : null);
 
-    commandSetMap.table.isReadOnly = false;
+    commonCommandSet.table.isReadOnly = false;
 
     new Search(
         elements,
-        (pattern, matchCase, wholeWord, isRegexp) => commandSetMap.table.find(pattern, matchCase, wholeWord, isRegexp),
-        () => commandSetMap.table.hideFound(),
-        () => commandSetMap.table.findNext()
+        (pattern, matchCase, wholeWord, isRegexp) => commonCommandSet.table.find(pattern, matchCase, wholeWord, isRegexp),
+        () => commonCommandSet.table.hideFound(),
+        () => commonCommandSet.table.findNext()
     );
 
     replaceTitlesWithHints();
 
     window.onkeydown = event => {
         if (event.key == definitionSet.keyboard.findNext) {
-            commandSetMap.table.findNext();
+            commonCommandSet.table.findNext();
             event.preventDefault();
         } //if
     }; //window.onkeydown

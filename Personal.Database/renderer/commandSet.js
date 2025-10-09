@@ -10,8 +10,9 @@ http://www.codeproject.com/Members/SAKryukov
 
 const createCommandSet = (table, summary, menuItems, metadata) => {
 
-    const commandSetMap = new Map();
-    commandSetMap.table = table;
+    const commonCommandSet = new Map();
+    const fileCommandSet = new Map();
+    commonCommandSet.table = table;
     let currentFilename = null;
     const defaultPath = () => currentFilename == null ? definitionSet.characters.empty : currentFilename;
 
@@ -54,17 +55,17 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
             action();
     }; //actionOnConfirmation
 
-    commandSetMap.set(menuItems.new, actionRequest => {
+    fileCommandSet.set(menuItems.new, actionRequest => {
         if (!actionRequest) return true;
         actionOnConfirmation(() => {
-            commandSetMap.table.reset();
+            commonCommandSet.table.reset();
             currentFilename = null;
         });
     }); //menuItems.new
 
     const tableToText = () => {
         try {
-            const data = commandSetMap.table.store();
+            const data = commonCommandSet.table.store();
             summary.updateData(data);
             const json = JSON.stringify(data);
             return definitionSet.scripting.wrapJson(json);
@@ -75,9 +76,9 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
         definitionSet.scripting.checkupSignature(text);
         const json = definitionSet.scripting.extractJson(text);
         const data = JSON.parse(json);
-        commandSetMap.table.load(data);
+        commonCommandSet.table.load(data);
         summary.populate(data);
-        commandSetMap.table.isReadOnly = readonly;
+        commonCommandSet.table.isReadOnly = readonly;
     }; //loadDatabase
 
     const handleFileOperationResult = (filename, text, error, isSave = false, readonly = false) => {
@@ -86,7 +87,7 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
             if (text)
                 loadDatabase(text, readonly)
             table.isModified = false;
-            commandSetMap.table.focus();
+            commonCommandSet.table.focus();
         } else
             reportError(error, isSave ? definitionSet.errorHandling.save : definitionSet.errorHandling.open);
     }; //handleFileOperationResult
@@ -142,7 +143,7 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
                 handleFileOperationResult(filename, null, error, true),
             true);
 
-    commandSetMap.set(menuItems.open, actionRequest => {
+    fileCommandSet.set(menuItems.open, actionRequest => {
         if (!actionRequest) return true;
         actionOnConfirmation(() => {
             window.bridgeFileIO.openFile(
@@ -157,7 +158,7 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
         });
     }); //menuItems.open
 
-    commandSetMap.set(menuItems.save, actionRequest => {
+    fileCommandSet.set(menuItems.save, actionRequest => {
         if (!actionRequest) return table.isModified && !table.isReadOnly;
         if (currentFilename)
             saveExistingFile();
@@ -165,7 +166,7 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
             saveAs();
     }); //menuItems.save
 
-    commandSetMap.set(menuItems.saveAs, actionRequest => {
+    fileCommandSet.set(menuItems.saveAs, actionRequest => {
         if (!actionRequest) return true;
         saveAs();
     }); //menuItems.saveAs
@@ -174,102 +175,102 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
         metadata, table,
         error => reportError(error, definitionSet.export.errorTitle));
 
-    commandSetMap.set(menuItems.export, actionRequest => {
+    fileCommandSet.set(menuItems.export, actionRequest => {
         if (!actionRequest) return exporter.canExport;
         exporter.exportAll(currentFilename, defaultPath());
         table.focus();
     }); //menuItems.exportSelection
 
-    commandSetMap.set(menuItems.exportSelection, actionRequest => {
+    fileCommandSet.set(menuItems.exportSelection, actionRequest => {
         if (!actionRequest) return exporter.canExportSelected();
         exporter.exportSelected(currentFilename, defaultPath());
         table.focus();
     }); //menuItems.exportSelection
     
-    commandSetMap.set(menuItems.exportFound, actionRequest => {       
+    fileCommandSet.set(menuItems.exportFound, actionRequest => {       
         if (!actionRequest) return exporter.canExportFound();
         exporter.exportFound(currentFilename, defaultPath());
         table.focus();
     }); //menuItems.exportFound
 
-    commandSetMap.set(menuItems.insertRow, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canInsertRow;
-        commandSetMap.table.insertRow();
+    commonCommandSet.set(menuItems.insertRow, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canInsertRow;
+        commonCommandSet.table.insertRow();
     }); //menuItems.insertRow
     
-    commandSetMap.set(menuItems.removeRow, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canRemoveRow;
-        commandSetMap.table.removeRow();
+    commonCommandSet.set(menuItems.removeRow, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canRemoveRow;
+        commonCommandSet.table.removeRow();
     }); //menuItems.removeRow
 
-    commandSetMap.set(menuItems.addProperty, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canAddProperty;
-        commandSetMap.table.addProperty()
+    commonCommandSet.set(menuItems.addProperty, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canAddProperty;
+        commonCommandSet.table.addProperty()
     });
-    commandSetMap.set(menuItems.insertProperty, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canInsertProperty;
-        commandSetMap.table.insertProperty();
+    commonCommandSet.set(menuItems.insertProperty, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canInsertProperty;
+        commonCommandSet.table.insertProperty();
     });
-    commandSetMap.set(menuItems.removeProperty, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canRemoveProperty;
-        commandSetMap.table.removeProperty()
+    commonCommandSet.set(menuItems.removeProperty, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canRemoveProperty;
+        commonCommandSet.table.removeProperty()
     });
     
-    commandSetMap.set(menuItems.copy, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canCopyToClipboard;
+    commonCommandSet.set(menuItems.copy, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canCopyToClipboard;
         try {
-            commandSetMap.table.toClipboard();
+            commonCommandSet.table.toClipboard();
         } catch (ex) { reportError(ex); }
     });    
 
-    commandSetMap.set(menuItems.paste, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canPasteFromClipboard;
+    commonCommandSet.set(menuItems.paste, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canPasteFromClipboard;
         try {
-            commandSetMap.table.fromClipboard();
+            commonCommandSet.table.fromClipboard();
         } catch (ex) { reportError(ex); }
     });
     
-    commandSetMap.set(menuItems.editSelectedCell, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canEditSelectedCell;
-        if (commandSetMap.table.editingMode)
-            setTimeout( () => { commandSetMap.table.commitEdit() });
+    commonCommandSet.set(menuItems.editSelectedCell, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canEditSelectedCell;
+        if (commonCommandSet.table.editingMode)
+            setTimeout( () => { commonCommandSet.table.commitEdit() });
         else
-            setTimeout( () => { commandSetMap.table.editSelectedCell() });
+            setTimeout( () => { commonCommandSet.table.editSelectedCell() });
     });
 
-    commandSetMap.set(menuItems.editPropertyName, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canEditProperty;
-        if (commandSetMap.table.editingMode)
-            setTimeout( () => { commandSetMap.table.cancelEdit(); });
+    commonCommandSet.set(menuItems.editPropertyName, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canEditProperty;
+        if (commonCommandSet.table.editingMode)
+            setTimeout( () => { commonCommandSet.table.cancelEdit(); });
         else
-            setTimeout( () => { commandSetMap.table.editProperty(); });
+            setTimeout( () => { commonCommandSet.table.editProperty(); });
     });
 
     const loadWebPage = (actionRequest) => {
-        const uri = commandSetMap.table.selectedUri;
+        const uri = commonCommandSet.table.selectedUri;
         if (!actionRequest) return !!uri;
         if (!uri) return false;
         window.bridgeUI.showExternalUri(uri);
         return true;
     } //loadWebPage
     
-    commandSetMap.set(menuItems.load, loadWebPage);
+    commonCommandSet.set(menuItems.load, loadWebPage);
 
-    commandSetMap.set(menuItems.up, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canShuffleRow(true);
-        commandSetMap.table.shuffleRow(true)
+    commonCommandSet.set(menuItems.up, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canShuffleRow(true);
+        commonCommandSet.table.shuffleRow(true)
     });    
-    commandSetMap.set(menuItems.down, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canShuffleRow(false);
-        commandSetMap.table.shuffleRow(false)
+    commonCommandSet.set(menuItems.down, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canShuffleRow(false);
+        commonCommandSet.table.shuffleRow(false)
     });    
-    commandSetMap.set(menuItems.left, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canShuffleColumn(true);
-        commandSetMap.table.shuffleColumn(true)
+    commonCommandSet.set(menuItems.left, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canShuffleColumn(true);
+        commonCommandSet.table.shuffleColumn(true)
     });    
-    commandSetMap.set(menuItems.right, actionRequest => {
-        if (!actionRequest) return commandSetMap.table.canShuffleColumn(false);
-        commandSetMap.table.shuffleColumn(false)
+    commonCommandSet.set(menuItems.right, actionRequest => {
+        if (!actionRequest) return commonCommandSet.table.canShuffleColumn(false);
+        commonCommandSet.table.shuffleColumn(false)
     });    
 
     const aboutCommandSet = new Map();
@@ -293,6 +294,6 @@ const createCommandSet = (table, summary, menuItems, metadata) => {
         return !table.isModified;
     }); //subscribeToApplicationClose
 
-    return { commandSetMap, aboutCommandSet, doubleClickHandler: loadWebPage, loadDatabase };
+    return { commonCommandSet, fileCommandSet, aboutCommandSet, doubleClickHandler: loadWebPage, loadDatabase };
 
 };

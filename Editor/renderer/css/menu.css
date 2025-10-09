@@ -17,6 +17,7 @@ http://www.codeproject.com/Members/SAKryukov
     --border-radius-select-header: 6px 6px 0 0;
     --border-radius-select: 0 9px 9px 9px;
     --border-radius-context-menu: 9px 9px 9px 9px;
+    --color-border: gray;
 }
 
 header menu { display: flex; flex-direction: row; }
@@ -32,6 +33,7 @@ option, optgroup { padding: var(--padding-option); font-weight: normal; }
 optgroup { margin-left: 1em; }
 optgroup option { padding-left: 2em; }
 option:disabled { color: black; opacity: 0.3; }
-option.separator { padding: 0; opacity: 1; color: gray; }
+option.separator-top, option.separator-bottom { height: 3px; font-size: 1px; opacity: 1; }
+option.separator-top { height: 2px; border-bottom: solid 1px var(--color-border); }
 select { display: none; border: none; outline: 1.4px solid gray; }
 footer { display: flex; flex-direction: row; align-items: center; justify-content: space-between; }
