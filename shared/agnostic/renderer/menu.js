@@ -10,7 +10,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 function menuGenerator (container, focusElement) {
 
-    const version = "1.5.0";
+    const version = "1.6.0";
     if (!new.target) return version;
 
     if (!container) return;
@@ -128,6 +128,14 @@ function menuGenerator (container, focusElement) {
     const actionMap = new Map();
     const elementMap = new Map();
     const keyboardMap = new Map();
+
+    const fixSelectHeight = select => {
+        const last = select.lastElementChild;
+        const lastRectangle = last.getBoundingClientRect();
+        const selectRectangle = select.getBoundingClientRect();
+        const fixedHeight = lastRectangle.bottom - selectRectangle.top;     
+        select.style.height = definitionSet.css.pixels(fixedHeight);
+   } //fixSelectHeight
 
     const describeSelfDocumentedAPI = self => {
         const propertyNames = [];
@@ -263,6 +271,7 @@ function menuGenerator (container, focusElement) {
                                 return center;
                             return result;
                         }; //optimizeLocation
+                        fixSelectHeight(container);
                         container.style.left =
                             definitionSet.css.pixels(optimizeLocation(pointerX, window.innerWidth, rectangle.width));
                         container.style.top =
@@ -476,6 +485,7 @@ function menuGenerator (container, focusElement) {
         if (!doSelect) return focusElement?.focus();
         if (eventData.optionSize < 2) ++eventData.optionSize; // SA??? weird bug workaround
         eventData.select.size = eventData.optionSize;
+        fixSelectHeight(eventData.select);
         if (doSelect)
             current = element;
         setTimeout(() => eventData.select.focus());
