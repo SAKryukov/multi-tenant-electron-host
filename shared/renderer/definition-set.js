@@ -16,6 +16,13 @@ const extensibleDefinitionSet = (() => {
             //custom:
             editorTextModified: 0,
         }, //events
+        zoom: {
+            shortcuts: {
+                zoomIn: { keys: ["NumpadAdd", "Equal"], prefix: ["ctrlKey"] },
+                zoomOut: { keys: ["NumpadSubtract", "Minus"], prefix: ["ctrlKey"] },
+                zoomReset: { key: "Digit0", prefix: ["ctrlKey"] },
+            },
+        }, //zoom    
         menuShortcuts: {
             fileNew: { key: "KeyN", prefix: ["ctrlKey"] },
             fileOpen: { key: "KeyO", prefix: ["ctrlKey"] },

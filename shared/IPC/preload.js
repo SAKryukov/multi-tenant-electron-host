@@ -1,4 +1,5 @@
 "use strict";
+const { definitionSet } = require("../main/definition-set.js");
 const { bridgeAPI, ipcChannel } = require("./ipc-channels.js");
 const { ipcRenderer, contextBridge} = require("electron/renderer");
 const { webFrame } = require('electron');
@@ -6,7 +7,26 @@ const { webFrame } = require('electron');
 let metadata = null;
 ipcRenderer.once(ipcChannel.metadata.metadataPush, (_event, received) => metadata = received);
 
-webFrame.setZoomFactor(1);
+const zoom = (webFrame => {
+    const minimumLevel = definitionSet.zoom.minimumLevel;
+    const maximumLevel = definitionSet.zoom.maximumLevel;
+    let currentLevel = 0;
+    const reset = () => webFrame.setZoomLevel(0);
+    reset();
+    webFrame.setVisualZoomLevelLimits(minimumLevel, maximumLevel);
+    webFrame.setZoomLevel(0);
+    const canZoomIn = () => currentLevel < maximumLevel;
+    const canZoomOut = () => currentLevel > minimumLevel;
+    const zoomBy = increment => {
+        if (increment > 0 && !canZoomIn()) return;
+        if (increment < 0 && !canZoomOut()) return;
+        currentLevel += increment;
+        webFrame.setZoomLevel(currentLevel);
+    }; //zoomBy
+    const zoomIn = () => zoomBy(1);
+    const zoomOut = () => zoomBy(-1);
+    return { reset, canZoomIn, canZoomOut, zoomIn, zoomOut };
+})(webFrame); //zoom
 
 contextBridge.exposeInMainWorld(bridgeAPI.bridgeFileIO, { // to be used only in renderer loaded from HTML
     openFile: (handler, dialogTitle, defaultPath, filters) => {
@@ -55,4 +75,9 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgeUI, {
         });
     }, //subscribeToApplicationClose
     showExternalUri: uri => ipcRenderer.send(ipcChannel.ui.showExternalUri, uri),
+    canZoomIn: () => zoom.canZoomIn(),
+    canZoomOut: () => zoom.canZoomOut(),
+    zoomIn: () => zoom.zoomIn(),
+    zoomOut: () => zoom.zoomOut(),
+    zoomReset: () => zoom.reset(),
 }); //contextBridge.exposeInMainWorld

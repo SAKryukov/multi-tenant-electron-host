@@ -48,6 +48,7 @@ window.addEventListener(extensibleDefinitionSet.events.DOMContentLoaded, () => {
             mainMenu,
             elements.menuItems.viewStatusBar,
             elements.menuItems.viewFullScreen,
+            elements.menuItems.zoomIn, elements.menuItems.zoomOut, elements.menuItems.zoomReset,
             elements.statusBar,
             definitionSet.CSS.view.statusBarStyle);
     })(); //menu

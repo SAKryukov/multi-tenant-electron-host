@@ -16,6 +16,10 @@ const definitionSet = {
                 `${baseFilename} ${String.fromCharCode(0x2014)} ${title}`,
         },
     }, //utility
+    zoom: {
+        minimumLevel: -4,
+        maximumLevel: 9,
+    }, //zoom
     isDarwin: process => process.platform == 'darwin',
     createWindowProperties: (title, icon, preloadScript) => {
         return { // see https://www.electronjs.org/docs/latest/api/base-window#new-basewindowoptions

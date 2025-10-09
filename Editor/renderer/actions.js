@@ -228,6 +228,9 @@ const subscribe = (elementSet, menu, searchDialog, metadata) => {
         menu,
         elementSet.menuItems.view.statusBar.value,
         elementSet.menuItems.view.fullscreen.value,
+        elementSet.menuItems.view.zoomIn.value,
+        elementSet.menuItems.view.zoomOut.value,
+        elementSet.menuItems.view.zoomReset.value,
         elementSet.statusBar.all,
         definitionSet.view.statusBarStyle);
 

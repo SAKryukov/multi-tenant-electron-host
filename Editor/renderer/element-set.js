@@ -59,6 +59,9 @@ const getElementSet = document => {
                 statusBar: document.querySelector("#menu-status-bar"),
                 fullscreen: document.querySelector("#menu-full-screen"),
                 wordWrap: document.querySelector("#menu-word-wrap"),
+                zoomIn: document.querySelector("#menu-zoom-in"),
+                zoomOut: document.querySelector("#menu-zoom-out"),
+                zoomReset: document.querySelector("#menu-zoom-reset"),
             },
             search: {
                 find: document.querySelector("#menu-find"),
