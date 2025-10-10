@@ -8,10 +8,7 @@ module.exports.tenant = tenantRoot => {
         tenantBase = candidate.tenantBase;
     } catch {
         const { dialog, app } = require("electron");
-        const path = require("node:path");
         const { definitionSet } = require("./definition-set.js");
-        const applicationPath = app.getAppPath();
-        const application = path.basename(applicationPath)
         dialog.showErrorBox(definitionSet.invalidApplicationPack.title,
             definitionSet.invalidApplicationPack.message);
         app.quit();
