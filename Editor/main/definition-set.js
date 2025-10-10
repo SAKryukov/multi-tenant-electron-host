@@ -24,7 +24,10 @@ const definitionSet = {
     }, //utility
     plugin: {
         directory: "plugins",
+        directoryInPackage: "editor.plugins",
         pluginFileSuffix: ".js",
+        isPackedForm: applicationPath => applicationPath.endsWith(".asar"),
+        noPluginsWarning: pluginPath => `No editor plugins found\nPlugins can be placed in the directory\n${pluginPath}`
     }, //plugin
 };
 

@@ -3,21 +3,16 @@ const fs = require("fs");
 const { argv } = require("node:process");
 const path = require("node:path");
 
-const application = ""; // as multi-tenant host
+const application = String(); // as multi-tenant host
 //const application = "Editor";
+const medatadaFile = path.join(path.dirname(module.path), "metadata.json");
+const metadata = (() => {
+    let metadata = null;
+    if (fs.existsSync(medatadaFile))
+        metadata = JSON.parse(fs.readFileSync(medatadaFile));
+    return metadata;
+})(); //metadata
 
-const medatadaFile = `../${application}/metadata.json`;
-const supportedCombinations =[
-    "darwin arm64",
-    "darwin x64",
-    "linux arm64",
-    "linux armv7l",
-    "linux x64",
-    "mas arm64",
-    "mas x64",
-    "win32 arm64",
-    "win32 ia32",
-    "win32 x64",];
 const windowsPlatform = "win32";
 const platforms = new Set([windowsPlatform, "linux", "mas", "darwin"]);
 const architectures = new Set(["ia32", "x64", "arm64", "armv7l"]);
@@ -33,7 +28,7 @@ const parseCommandLine = () => {
     });
     if (!(platform && architecture)) {
         console.warn("Speficy both platform and CPU architecture. The supported combinations are:");
-        for (const combination of supportedCombinations)
+        for (const combination of metadata.build.supported)
             console.warn(`      ${combination}`);
         return;
     } //if
@@ -43,21 +38,12 @@ const parseCommandLine = () => {
 const parsedArguments = parseCommandLine();
 if (!parsedArguments) return;
 
-const metadata = (() => {
-    const script = argv[1];
-    const filename = path.join(path.dirname(script), medatadaFile);
-    let metadata = null;
-    if (fs.existsSync(filename))
-        metadata = JSON.parse(fs.readFileSync(filename));
-    return metadata;
-})(); //metadata
-
-let exe = "";
-if (metadata && metadata["executable-file-name"])
-    exe = metadata["executable-file-name"];
+let exe = String();
+if (metadata && metadata.build && metadata.build.executableFileName)
+    exe = metadata.build.executableFileName;
 if (exe)
     exe = `--executable-name="${exe}"`;
-let copyright = ""
+let copyright = String();
 if (metadata && metadata.copyright)
     copyright = metadata.copyright;
 if (copyright)
@@ -68,7 +54,7 @@ const command = `npx @electron/packager ../${application} --overwrite --platform
 const extractOutput = stdout => 
     stdout.substring(stdout.indexOf(module.path)).trim();
 const copyExtraFiles = (targetPath, platform) => {
-    let sourceDirectory = path.join(module.path, "extra");
+    let sourceDirectory = path.join(module.path, metadata.build.startFileSource);
     if (platform == windowsPlatform)
         sourceDirectory = path.join(sourceDirectory, windowsPlatform);
     const entries = fs.readdirSync(sourceDirectory, { withFileTypes: true });
@@ -77,11 +63,46 @@ const copyExtraFiles = (targetPath, platform) => {
         if (entry.isDirectory()) continue;
         const source = path.join(sourceDirectory, entry.name);
         const target = path.join(targetPath, entry.name);
-        fs.copyFile(source, target, error => { if (error) console.error(`Copy error: ${error}`); });
+        fs.copyFile(
+            source, target,
+            error => {
+                if (error)
+                    console.error(`Copy error: ${error}`);
+            });
         files.push(entry.name);
     } //loop
     return files;
 } //copyExtraFiles
+
+const purgeDirectories = targetPath => {
+    const purgeDirectory = directory => {
+        const entries = fs.readdirSync(path.join(targetPath, directory.directory));
+        for (const entry of entries) {
+            if (directory.except.includes(entry)) continue;
+            const filename = path.join(targetPath, directory.directory, entry);
+            fs.unlink(
+                filename,
+                error => {
+                    if (error)
+                        console.error(`File remove error: ${error}`);
+            });
+        } //loop
+    }; //purgeDirectory
+    for (const directory of metadata.build.directoriesToPurge)
+        purgeDirectory(directory);
+}; //purgeDirectories
+
+const copyDirectories = targetPath => {
+    for (const directory of metadata.build.directoriesToCopy)
+        fs.cp(
+            directory.from,
+            path.join(targetPath, directory.to),
+            {recursive: true},
+            error => {
+                if (error)
+                    console.error(`Copy directory error: ${error}`);
+            });
+}; //copyDirectories
 
 const showError = error => {
     if (!error) return false;
@@ -94,6 +115,8 @@ exec(command, (error, stdout, stderr) => {
     if (showError(stderr)) return;
     console.log(stdout);
     const outputDirectory = extractOutput(stdout);
+    purgeDirectories(outputDirectory);
+    copyDirectories(outputDirectory);
     console.log(`Added application start scripts:
         ${copyExtraFiles(outputDirectory, parsedArguments.platform).join(", ")}`);
 });
