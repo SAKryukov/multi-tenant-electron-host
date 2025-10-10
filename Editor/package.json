@@ -1,6 +1,6 @@
 {
   "name": "conceptual-electron-editor",
-  "version": "2.2.0",
+  "version": "6.0.0",
   "description": "Conceptual Electron Editor",
   "main": "./main/entry-point.js",
   "scripts": {
