@@ -14,5 +14,6 @@
             api.isModified = true;
     },
     isEnabled: () => true,
+    stayOnMenu: true,
     menuItemIndent: cleanupGroupIndent,
 });

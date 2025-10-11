@@ -60,7 +60,8 @@ const pluginProcessor = (() => {
                         } //exception
                     } else if (plugin.error)
                         showMessage(definitionSet.plugin.exceptionExplanation(itemData.filename, itemData.error), elementSet.editor);
-                    elementSet.editor.focus();
+                    if (plugin.result && !plugin.result.stayOnMenu)
+                        elementSet.editor.focus();
                     return true;
                 }, //menu item handler
                 { filename: plugin.plugin, error: plugin.error });
