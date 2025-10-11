@@ -7,6 +7,6 @@
         const point = api.currentWord;
         api.scrollTo(point[0], point[1]);
     },
-    shortcut: { key: "Period", prefix: ["metaKey", "altKey"]},
+    shortcut: { keys: ["Period"], prefix: ["metaKey", "altKey"]},
     menuItemIndent: demoGroupIndent,
 });

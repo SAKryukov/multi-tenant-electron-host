@@ -18,6 +18,7 @@ pluginProcessor.registerPlugin({
     },
     isEnabled: api => api.selectionLength > 0,
     shortcut: { key: "Insert", prefix: ["metaKey", "altKey"]},
+    stayOnMenu: api => true,
     menuItemIndent: 3,
 });
 ~~~
@@ -29,13 +30,18 @@ Files are added to the system in lexicographic order. This way, the plugin execu
 The registration method `pluginProcessor.registerPlugin` accepts one argument, the object with the following properties:
 
 1. `name`: a string used to define the text of the menu item, mandatory
-1. `description`: a string used to define the title of the menu item; the title is shown by hovering over the menu item
-1. `handler`: a function accepting the editor API used to perform the job with the editor
-1. `isEnabled`: a function accepting the editor API used to enable or disable the menu item, depending on the current condition of the editor
+1. `description`: a string used to define the title of the menu item; the title is shown by hovering over the menu item it's trimmed length should be more than zero.
+1. `handler`: a function accepting the editor API used to perform the job with the editor.
+1. `isEnabled`: a function accepting the editor API used to enable or disable the menu item, depending on the current condition of the editor.
 1. `shortcut`: a structure used to define the shortcut for calling `isEnabled` and then `handler`. It has two properties: string `key` and array `prefix` with four valid items: `metaKey`, `altKey`, `ctrlKey`, and `shiftKey`.
+1. `stayOnMenu`: a function accepting the editor API used to prevent focusing on the editor after execution of the `handler`.
 1. `menuItemIndent`: integer value determines the additional indent of the menu item; it can be used to structure the plugins in the menu.
 
 A plugin can be registered if `handler` is `undefined` (or `null`). In this case, the menu item is always disabled, and the return of the `isEnabled` function, if any, is ignored. Such a plugin could be used as a group header for the plugins found lexicographically below it. In this case, it is shown in the menu in a special, recognizable style.
+
+The property `handler` is a function accepting exactly one argument, the editor API. This function can return a string. If a non-empty string is returned, it is shown in a modal dialog after the execution of the `handler`.
+
+The properties `isEnabled` and `stayOnMenu` are predicate functions, they can accept either no arguments or one argument, the editor API.
 
 ### Editor API
 

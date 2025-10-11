@@ -3,6 +3,6 @@
 const demoGroupIndent = 3;
 ({
     name: "Demo:",
-    description: "",
+    description: "Demo plugins",
     isEnabled: api => false,
 });

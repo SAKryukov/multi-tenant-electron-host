@@ -23,11 +23,11 @@ const definitionSet = (() => {
             unregisteredExplanation: function (file, error) {
                 const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
                 const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
-                return `<p><span ${this.errorStyle}>This plugin did not register itself:</span><br/>
+                return `<p><span ${this.errorStyle}>Pluging registration failure:</span><br/>
                     <span>${fileName}</span></p>
                     ${errorText}
                     <br/>A valid plugin should register itself by defining the object
-                    <br/><code style="font-family: monospace; font-size:140%; color: green">({ name, description, handler(api), isEnabled(api), shortcut, stayOnMenu, menuItemIndent });</code>
+                    <br/><code style="font-family: monospace; font-size:140%; color: green">({ name, description, handler(api), isEnabled(api), shortcut, stayOnMenu(api), menuItemIndent });</code>
                     <br/>The property <code style="font-family: monospace; font-size:140%; color: green">name</code> is mandatory.
                     <br/><br/>Please see ${String.fromCharCode(0x201C)}plugins.readme.md${String.fromCharCode(0x201D)}.<br/><br/>`;
             },

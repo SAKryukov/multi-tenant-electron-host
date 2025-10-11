@@ -2,26 +2,63 @@
 
 const pluginProcessor = (() => {
 
-    let lastError = null;
-    window.onerror = (message, source, line, column, error) =>
-        lastError = { message, source, line, column, error };
-
     const isValidPredicate = predicate => {
         if (!predicate) return true;
         if (!(predicate instanceof Function)) return false;
         if (predicate.length > 1) return false;
         return true;
     }; //isValidPredicate
+
+    const isValidIdString = value => {
+        if (value == null) return true;
+        if (value.constructor != String) return false;
+        if (value.trim().length < 1) return false;
+        return true;
+    }; //isValidIdString
+
+    const isValidIndent = value => {
+        if (value == null) return true;
+        if (value.constructor != Number) return false;
+        if (value < 0) return false;
+        return true;
+    }; //isValidIndent
+
+    const isValidShorcut = value => {
+        if (value == null) return true;
+        if (!value.key && !value.keys) return false;
+        if (value.key && value.key.toString().trim().length < 1) return false;
+        if (value.keys) {
+            if (!(value.keys instanceof Array)) return false;
+            for (const key of value.keys) {
+                if (!key) return false;
+                if (key.toString().trim().length < 1) return false;
+            } //loop
+        } //if
+        if (!value.prefix) return false;
+        if (!(value.prefix instanceof Array)) return false;
+        for (const prefixKey of value.prefix) {
+            if (!prefixKey) return false;
+            if (prefixKey.toString().trim().length < 1) return false;
+        } //loop
+        return true;            
+    }; //isValidShorcut
     
     const isValidPlugin = plugin => {
         if (!plugin.name) return false;
+        if (!isValidIdString(plugin.name)) return false;
+        if (!isValidIdString(plugin.description)) return false;
         if (plugin.handler && !(plugin.handler instanceof Function && plugin.handler.length == 1)) return false;
         if (!isValidPredicate(plugin.isEnabled)) return false;
         if (!isValidPredicate(plugin.stayOnMenu)) return false;
+        if (!isValidIndent(plugin.menuItemIndent)) return false;
+        if (!isValidShorcut(plugin.shortcut)) return false;
         return true;
     }; //isValidPlugin
     
     const processPlugins = (definitionSet, elementSet, menu, plugins) => {
+        let lastError = null;
+        window.onerror = (message, source, line, column, error) =>
+            lastError = { message, source, line, column, error };
         let validPlugins = [];
         let invalidPlugins = [];
         let exceptionThrowingPlugins = [];
