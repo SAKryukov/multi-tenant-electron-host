@@ -8,6 +8,6 @@
         api.isModified = true;
     },
     isEnabled: () => true,
-    stayOnMenu: true,
+    stayOnMenu: () => false,
     menuItemIndent: cleanupGroupIndent,
 });

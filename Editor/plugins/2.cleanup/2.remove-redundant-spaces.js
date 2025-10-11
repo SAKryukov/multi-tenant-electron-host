@@ -29,6 +29,6 @@
             api.isModified = true;
     },
     isEnabled: api => true,
-    stayOnMenu: true,
+    stayOnMenu: () => true,
     menuItemIndent: cleanupGroupIndent,
 });

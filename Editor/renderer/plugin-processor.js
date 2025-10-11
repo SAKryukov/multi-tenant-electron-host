@@ -6,10 +6,18 @@ const pluginProcessor = (() => {
     window.onerror = (message, source, line, column, error) =>
         lastError = { message, source, line, column, error };
 
+    const isValidPredicate = predicate => {
+        if (!predicate) return true;
+        if (!(predicate instanceof Function)) return false;
+        if (predicate.length > 1) return false;
+        return true;
+    }; //isValidPredicate
+    
     const isValidPlugin = plugin => {
         if (!plugin.name) return false;
-        if (plugin.handler && !(plugin.handler instanceof Function && plugin.handler.length <= 1)) return false;
-        if (plugin.isEnabled && !(plugin.isEnabled instanceof Function && plugin.isEnabled.length <= 1)) return false;
+        if (plugin.handler && !(plugin.handler instanceof Function && plugin.handler.length == 1)) return false;
+        if (!isValidPredicate(plugin.isEnabled)) return false;
+        if (!isValidPredicate(plugin.stayOnMenu)) return false;
         return true;
     }; //isValidPlugin
     
@@ -67,7 +75,7 @@ const pluginProcessor = (() => {
                         } //exception
                     } else if (plugin.error)
                         showMessage(definitionSet.plugin.exceptionExplanation(itemData.filename, itemData.error), elementSet.editor);
-                    if (plugin.result && !plugin.result.stayOnMenu)
+                    if (!(plugin?.result?.stayOnMenu && plugin.result.stayOnMenu(editorAPI)))
                         elementSet.editor.focus();
                     return true;
                 }, //menu item handler
