@@ -82,8 +82,12 @@ const pluginProcessor = (() => {
                 item.changeText(definitionSet.plugin.exception);
                 definitionSet.plugin.styleMenuItem(item, false, true);
             } //if
+            const title = plugin?.result?.description;
+            if (title)
+                item.title = title;
         } //item
         window.onerror = null;
+        replaceTitlesWithHints();
     }; //processPlugins
 
     return processPlugins;

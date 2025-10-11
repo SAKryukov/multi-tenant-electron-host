@@ -10,7 +10,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 function menuGenerator (container, focusElement) {
 
-    const version = "1.6.0";
+    const version = "1.7.0";
     if (!new.target) return version;
 
     if (!container) return;
@@ -460,16 +460,18 @@ function menuGenerator (container, focusElement) {
         if (!hasDisabled) return;
         if (!verticalMenu.options[verticalMenu.selectedIndex].disabled) return;
         // more complicated: removing selection from the disabled menu item:
-        for (const menuItem of menuItems) {
-            if (!menuItem.disabled) {
-                for (const optionIndex in verticalMenu.options) {
-                    if (verticalMenu.options[optionIndex] == menuItem) {
-                        verticalMenu.selectedIndex = optionIndex;
-                        return;
-                    } //if
-                } //loop
-            } //if
-        } //loop
+        setTimeout(() => {
+            for (const menuItem of menuItems) {
+                if (!menuItem.disabled) {
+                    for (const optionIndex in verticalMenu.options) {
+                        if (verticalMenu.options[optionIndex] == menuItem) {
+                            verticalMenu.selectedIndex = optionIndex;
+                            return;
+                        } //if
+                    } //loop
+                } //if
+            } //loop
+        }); //removing selection from the disabled menu item
         if (current)
             select(current, false);
     }; //updateStates
