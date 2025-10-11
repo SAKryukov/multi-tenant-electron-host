@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: "Split (Ctrl+!)",
     description: "Split selection into words where the case is changed",
     handler: api => {

@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: `Show Editor API`,
     description: "Show editor API as editor text",
     handler: api => {

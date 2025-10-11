@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: "Trim Line Ends",
     description: "Trim Line Ends",
     handler: api => {

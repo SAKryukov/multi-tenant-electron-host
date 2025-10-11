@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: "Find Selected",
     description: "Find all occurrences of the selected pattern",
     handler: api => {

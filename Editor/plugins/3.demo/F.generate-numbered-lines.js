@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: "Generate Numbered Lines",
     description: "Generate numbered lines for testing",
     handler: api => {

@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: `Select Next Line (Meta+Alt+${String.fromCharCode(0x2193)})`,
     description: "Select next line",
     handler: api => {

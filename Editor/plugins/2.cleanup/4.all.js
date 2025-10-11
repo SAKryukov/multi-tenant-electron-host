@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: "All",
     description: "Cleanup all of the above",
     handler: api => {

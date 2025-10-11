@@ -19,23 +19,25 @@ const definitionSet = (() => {
             fileUriToKey: (name, keyword) => name.slice(name.indexOf(keyword)).replaceAll("\\", "/"),
             errorStyle: `style="color: red"`,
             invalid: `Unregistered plugin ${String.fromCharCode(0x2014)} click to see the explanation`,
-            excepton: `Failed plugin registration ${String.fromCharCode(0x2014)} click to see the explanation`,
+            exception: `Invalid plugin code ${String.fromCharCode(0x2014)} click to see the explanation`,
             unregisteredExplanation: function (file, error) {
                 const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
                 const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
                 return `<p><span ${this.errorStyle}>This plugin did not register itself:</span><br/>
                     <span>${fileName}</span></p>
                     ${errorText}
-                    <br/>A valid plugin should register itself using
-                    <br/><code style="font-family: monospace; font-size:140%; color: green">pluginProcessor.registerPlugin(pluginProperties)</code>.
-                    <br/>Please see ${String.fromCharCode(0x201C)}plugins.readme.md${String.fromCharCode(0x201D)}.<br/><br/>`;
+                    <br/>A valid plugin should register itself by defining the object
+                    <br/><code style="font-family: monospace; font-size:140%; color: green">({ name, description, handler(api), isEnabled(api), shortcut, menuItemIndent });</code>
+                    <br/>The property <code style="font-family: monospace; font-size:140%; color: green">name</code> is mandatory.
+                    <br/><br/>Please see ${String.fromCharCode(0x201C)}plugins.readme.md${String.fromCharCode(0x201D)}.<br/><br/>`;
             },
             exceptionExplanation: function (file, error) {
                 const fileName = file == null ? "" : ` ${String.fromCharCode(0x201C)}${file}${String.fromCharCode(0x201D)}`;
-                const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error}</span><br/>`;
-                const where = file ? " in the script" : "";
-                return `<p ${this.errorStyle}>Plugin registration failed${where}</p>
+                const errorText = error == null ? "" : `<br/><span ${this.errorStyle}>${error.error}</span><br/>`;
+                const where = file ? ` in`  : "";
+                return `<p ${this.errorStyle}>Invalid syntax${where}</p>
                     <p>${fileName}</p>
+                    <p>Line ${error.line}, column ${error.column}</p>
                     ${errorText}
                     <br/>`;
             },

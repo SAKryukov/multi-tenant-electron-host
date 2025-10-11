@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: "Camel (Ctrl+~)",
     description: "Join words in selection with camel case",
     handler: api => {

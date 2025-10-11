@@ -3,6 +3,7 @@ const { definitionSet } = require("../main/definition-set.js");
 const { bridgeAPI, ipcChannel } = require("./ipc-channels.js");
 const { ipcRenderer, contextBridge} = require("electron/renderer");
 const { webFrame } = require('electron');
+const fs = require("node:fs");
 
 let metadata = null;
 ipcRenderer.once(ipcChannel.metadata.metadataPush, (_event, received) => metadata = received);
@@ -53,9 +54,13 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgeFileIO, { // to be used only in 
 
 contextBridge.exposeInMainWorld(bridgeAPI.bridgePlugin, {
     subscribeToPlugin: handler =>
-        ipcRenderer.once(ipcChannel.plugin.loadAll, (_event, plugins, pluginsKeyword) => {
-            handler(plugins, pluginsKeyword);
+        ipcRenderer.once(ipcChannel.plugin.loadAll, (_event, plugins) => {
+            handler(plugins);
         }),
+    loadPlugin: (plugin, handler) => {
+        const code = fs.readFileSync(plugin).toString();
+        webFrame.executeJavaScript(code, false, (result, error) => handler(result, error));
+    }, //loadPlugin
 }); //contextBridge.exposeInMainWorld
 
 contextBridge.exposeInMainWorld(bridgeAPI.bridgeMetadata, {

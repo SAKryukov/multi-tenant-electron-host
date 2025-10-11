@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: "Remove Repeated Blankspaces",
     description: "Remove repeated blankspaces but preserve line indentation",
     handler: api => {

@@ -1,6 +1,6 @@
 "use strict";
 ??
-pluginProcessor.registerPlugin({
+({
     name: "Select Previous Word",
     description: "Select previous word",
     handler: api => {

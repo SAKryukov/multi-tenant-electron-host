@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: "Select Current Word (Meta+Alt+.)",
     description: "Select current word",
     handler: api => {

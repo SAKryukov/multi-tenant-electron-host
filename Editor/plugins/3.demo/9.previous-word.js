@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: `Select Previous Word (Meta+Alt+${String.fromCharCode(0x2190)})`,
     description: "Select previous word",
     handler: api => {

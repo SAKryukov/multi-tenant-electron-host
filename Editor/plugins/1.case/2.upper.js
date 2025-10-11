@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: "Upper (Shift+F4)",
     description: "Change selection case to upper",
     handler: api => {

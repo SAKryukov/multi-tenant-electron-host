@@ -8,7 +8,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
         definitionSet.status.cursorPosition(); // initial default, to reduce flicker
 
     if (window.bridgePlugin)
-        window.bridgePlugin.subscribeToPlugin(async (plugins, pluginsKeyword) => {
+        window.bridgePlugin.subscribeToPlugin(async plugins => {
             elementSet.editor.addEventListener(definitionSet.events.selectionchange, event => {
                 const start = elementSet.editorAPI.positionToCursor(event.target.selectionStart);
                 const end = elementSet.editorAPI.positionToCursor(event.target.selectionEnd);
@@ -28,7 +28,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
             const searchDialogObject = createSearchDialog(definitionSet, elementSet);
             createEditorAPI(elementSet, searchDialogObject.api);
             subscribe(elementSet, menu, searchDialogObject.searchDialog, metadata);
-            pluginProcessor.processPlugins(definitionSet, elementSet, menu, plugins, pluginsKeyword);
+            pluginProcessor(definitionSet, elementSet, menu, plugins);
         });
     else 
         return definitionSet.standaloneExecutionProtection.show();

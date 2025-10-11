@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: `Select Previous Line (Meta+Alt+${String.fromCharCode(0x2191)})`,
     description: "Select previous line",
     handler: api => {

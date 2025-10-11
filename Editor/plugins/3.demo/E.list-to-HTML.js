@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: "List to HTML",
     description: "Convert selected lines to HTML list",
     handler: api => {

@@ -1,6 +1,6 @@
 "use strict";
 
-pluginProcessor.registerPlugin({
+({
     name: "Lower (F4)",
     description: "Change selection case to lower",
     handler: api => {
