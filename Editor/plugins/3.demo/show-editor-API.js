@@ -35,6 +35,6 @@
         api.editor.value = apiItems.join(api.newLine) + api.newLine;
         api.isModified = true;
     }, //handler
-    isEnabled: true,
+    isEnabled: api => true,
     menuItemIndent: demoGroupIndent,
 });
