@@ -5,6 +5,13 @@ const pluginProcessor = (() => {
     let lastError = null;
     window.onerror = (message, source, line, column, error) =>
         lastError = { message, source, line, column, error };
+
+    const isValidPlugin = plugin => {
+        if (!plugin.name) return false;
+        if (plugin.handler && !(plugin.handler instanceof Function && plugin.handler.length <= 1)) return false;
+        if (plugin.isEnabled && !(plugin.isEnabled instanceof Function && plugin.isEnabled.length <= 1)) return false;
+        return true;
+    }; //isValidPlugin
     
     const processPlugins = (definitionSet, elementSet, menu, plugins) => {
         let validPlugins = [];
@@ -15,7 +22,7 @@ const pluginProcessor = (() => {
             lastError = null;
             window.window.bridgePlugin.loadPlugin(plugin, (result, error) => {
                 if (result) {
-                    if (result.name)
+                    if (isValidPlugin(result))
                         validPlugins.push({ plugin, result });
                     else
                         invalidPlugins.push({ plugin, result, unregistered: true });
@@ -68,7 +75,7 @@ const pluginProcessor = (() => {
             if (plugin.result) {
                 if (plugin.result.shortcut)
                     item.subscribeToShortcut(plugin.result.shortcut);
-                if (plugin.result.name) {
+                if (plugin.result.name && !plugin.unregistered) {
                     item.changeText(plugin.result.name);
                     if (!plugin.result.handler)
                         definitionSet.plugin.styleMenuItem(item, true, false);
@@ -76,7 +83,7 @@ const pluginProcessor = (() => {
                     item.changeText(definitionSet.plugin.invalid);
                     definitionSet.plugin.styleMenuItem(item, false, true);
                 } //if
-                if (plugin.result.menuItemIndent)
+                if (plugin.result.menuItemIndent && !plugin.unregistered)
                     item.indent = plugin.result.menuItemIndent
             } else {
                 item.changeText(definitionSet.plugin.exception);
