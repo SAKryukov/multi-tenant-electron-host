@@ -80,9 +80,8 @@ function menuGenerator (container, focusElement) {
         }, //goodKeyboardActivationPrefix
         toString: text => `${text == null ? "" : text}`,
         isShortcut: (event, shortcut) => {
-            if (shortcut.keys && !shortcut.keys.includes(event.code)
-                || (shortcut.key && event.code != shortcut.key))
-                    return false;
+            if (!(event.code == shortcut.key || shortcut.keys?.includes(event.code)))
+                return false;
             if (!shortcut.prefix || shortcut.prefix.length < 1)
                 return !(event.shiftKey || event.ctrlKey || event.metaKey || event.altKey);
             for (const prefixElement of shortcut.prefix)
