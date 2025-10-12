@@ -2,6 +2,8 @@
 
 A plugin is a JavaScript file placed in this directory.
 
+When the application is packaged, the plugins are copied to the uncompressed directory “editor.plugins” where they are used by the editor instead of the original directory. The user can directly add or remove plugins, or modify existing ones.
+
 Each plugin file is represented by a corresponding menu item in the `Plugins` menu.
 
 A valid plugin should call `pluginProcessor.registerPlugin`.
