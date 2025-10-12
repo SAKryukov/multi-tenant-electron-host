@@ -139,7 +139,6 @@ const pluginProcessor = (() => {
                 item.title = title;
         } //item
         window.onerror = null;
-        replaceTitlesWithHints();
     }; //processPlugins
 
     return processPlugins;

@@ -73,9 +73,7 @@ const getElementSet = document => {
             pluginParent: document.querySelector("#menu-plugins"),
         },
     };
-
-    replaceTitlesWithHints();
-    
+  
     return elementSet;
 
 }; //elementSet

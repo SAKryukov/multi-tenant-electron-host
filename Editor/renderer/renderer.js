@@ -29,6 +29,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
             createEditorAPI(elementSet, searchDialogObject.api);
             subscribe(elementSet, menu, searchDialogObject.searchDialog, metadata);
             pluginProcessor(definitionSet, elementSet, menu, plugins);
+            replaceTitlesWithHints();
         });
     else 
         return definitionSet.standaloneExecutionProtection.show();
