@@ -34,6 +34,7 @@ const Hint = function (elementOrString) {
     let text, time;
     
     if (elementOrString instanceof HTMLElement) {
+        if (!elementOrString.title) return;
         text = elementOrString.title;
         elementOrString.title = definitionSet.hint.noTitle;
         time =  definitionSet.hint.timeout;
@@ -93,8 +94,10 @@ const Hint = function (elementOrString) {
 
 }; //Hint
 
-const replaceTitlesWithHints = () => {
-    const titledElements = document.querySelectorAll("[title]");
+const replaceTitlesWithHints = topElement => {
+    if (!topElement)
+        topElement = document;
+    const titledElements = topElement.querySelectorAll("[title]");
     for (const element of titledElements)
         new Hint(element);
 }; //replaceTitlesWithHints
