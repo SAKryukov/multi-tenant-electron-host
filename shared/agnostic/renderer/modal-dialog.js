@@ -2,7 +2,7 @@
 
 Modal Dialog
 
-v.4.3
+v.4.4
 
 Copyright (c) 2025 by Sergey A Kryukov
 https://www.SAKryukov.org
@@ -15,7 +15,7 @@ https://www.codeproject.com/Members/SAKryukov
 const modalDialog = (() => {
 
     const metadata = {
-        version: "4.3",
+        version: "4.4",
         date: 2025,
     }; //metadata
     Object.freeze(metadata);
