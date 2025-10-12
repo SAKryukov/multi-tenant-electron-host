@@ -30,18 +30,20 @@ Files are added to the system in lexicographic order. This way, the plugin execu
 The registration method `pluginProcessor.registerPlugin` accepts one argument, the object with the following properties:
 
 1. `name`: a string used to define the text of the menu item, mandatory
-1. `description`: a string used to define the title of the menu item; the title is shown by hovering over the menu item it's trimmed length should be more than zero.
+1. `description`: a string used to define the title of the menu item; the title is shown by hovering over the menu item. It's trimmed length should be more than zero.
 1. `handler`: a function accepting the editor API used to perform the job with the editor.
 1. `isEnabled`: a function accepting the editor API used to enable or disable the menu item, depending on the current condition of the editor.
-1. `shortcut`: a structure used to define the shortcut for calling `isEnabled` and then `handler`. It has two properties: string `key` and array `prefix` with four valid items: `metaKey`, `altKey`, `ctrlKey`, and `shiftKey`.
+1. `shortcut`: a structure used to define the shortcut for calling `isEnabled` and then `handler`.
 1. `stayOnMenu`: a function accepting the editor API used to prevent focusing on the editor after execution of the `handler`.
-1. `menuItemIndent`: integer value determines the additional indent of the menu item; it can be used to structure the plugins in the menu.
+1. `menuItemIndent`: an integer value determines the additional indent of the menu item, allowing for structured placement of plugins in the menu.
 
 A plugin can be registered if `handler` is `undefined` (or `null`). In this case, the menu item is always disabled, and the return of the `isEnabled` function, if any, is ignored. Such a plugin could be used as a group header for the plugins found lexicographically below it. In this case, it is shown in the menu in a special, recognizable style.
 
 The property `handler` is a function accepting exactly one argument, the editor API. This function can return a string. If a non-empty string is returned, it is shown in a modal dialog after the execution of the `handler`.
 
-The properties `isEnabled` and `stayOnMenu` are predicate functions, they can accept either no arguments or one argument, the editor API.
+The properties `isEnabled` and `stayOnMenu` are predicate functions; they can accept either no arguments or one argument, the editor API.
+
+The structure `shortcut` can have two or three properties: string `key`, an array of strings `keys`, and an array `prefix` with four valid items values: `metaKey`, `altKey`, `ctrlKey`, and `shiftKey`. The properties `key` and `keys` can be specified alternatively; `key` defines only one key, but `keys` define an array of alternative keys. If `key` and `keys` are both used, their key values are combined. The key values correspond to the string values of `KeyboardEvent.code`; they represent *physical* keys on the keyboard; this way, the shortcuts don't depend on culture-dependent keyboard layouts.
 
 ### Editor API
 
@@ -76,11 +78,11 @@ Methods:
 1. `pushSelection()` pushes the current selection onto the selection stack
 1. `popSelection(toMove)` pops the current selection out of the selection stack and returns it as an array `[selectionStart, selectionEnd]`; if `toMove` is specified, the returned array is used to set the editor selection and scroll it to the selection
 1. `clearSelectionStack()` removes all data from the selection stack; this is done before the `handler` call
-1. `subscribeToModified(handler)`, where the single parameter, the editor's *modified* state is passed to the `handler`; the `handler` is invoked every time `isModified` flag is changed to `true` or `false`.
+1. `subscribeToModified(handler)`, where the single parameter, the editor's *modified* state, is passed to the `handler`; the `handler` is invoked every time `isModified` flag is changed to `true` or `false`.
 
 The properties `currentLines`, `nextLine`, `previousLine`, `currentWord`, `nextWord`, and `previousWord` return the array of two integer elements: the start and the end of the editor position for the found word or line. These properties always return valid positions. If the requested word or line is not found, the current editor selection is returned.
 
-The property `isModified` returns the current modified state of the editor. The plugins are supposed to determine if their operations modify the editor text and assign `true` to the property `isModified`. This is an extremely important point, because the modified state affects the operations where the editor text could be potentially lost, for example, opening a file, or the termination of the application.
+The property `isModified` returns the current modified state of the editor. The plugins are supposed to determine if their operations modify the editor text and assign `true` to the property `isModified`. This is an extremely important point, because the modified state can affect the operations where the editor text could be potentially lost, for example, opening a file, or the termination of the application.
 
 The value returned by the property `canFindNextPrevious` depends on the state of the search system. It is updated by the call to the method `find`, depending on the number of occurrences found, and when the editor text is modified. Normally, this property is used to disable or enable the menu item that invokes the `handler` that can potentially use the methods `findNext` or `findPrevious`.
 
