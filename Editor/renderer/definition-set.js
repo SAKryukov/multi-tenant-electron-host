@@ -26,7 +26,7 @@ const definitionSet = (() => {
                 return `<p><span ${this.errorStyle}>Pluging registration failure:</span><br/>
                     <span>${fileName}</span></p>
                     ${errorText}
-                    <br/>A valid plugin should register itself by defining the object
+                    <br/>To register, a plugin should define the object
                     <br/><code style="font-family: monospace; font-size:140%; color: green">({ name, description, handler(api), isEnabled(api), shortcut, stayOnMenu(api), menuItemIndent });</code>
                     <br/>The property <code style="font-family: monospace; font-size:140%; color: green">name</code> is mandatory.
                     <br/><br/>Please see ${String.fromCharCode(0x201C)}plugins.readme.md${String.fromCharCode(0x201D)}.<br/><br/>`;
