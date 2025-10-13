@@ -6,7 +6,6 @@
     handler: api => {
         const point = api.nextWord;
         api.scrollTo(point[0], point[1]);
-        return "Done!";
     },
     shortcut: { key: "ArrowRight", prefix: ["metaKey", "altKey"]},
     menuItemIndent: demoGroupIndent,
