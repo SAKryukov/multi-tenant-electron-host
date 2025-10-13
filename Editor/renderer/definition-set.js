@@ -42,7 +42,7 @@ const definitionSet = (() => {
                     <br/>`;
             },
             returnResult: function (name, theResult, error) {
-                return `<p>${name}:</p><br/><span ${error ? this.errorStyle : this.character.empty}>${theResult}</span></br></br>`;
+                return `<p>${name}:</p><br/><span ${error ? this.errorStyle : ""}>${theResult}</span></br></br>`;
             },
             nameInMenu: name => `${name}`,
         }, //plugin
