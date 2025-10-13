@@ -54,19 +54,20 @@ The argument passed to `handler` and `isEnabled` (in the example above, `api`) h
 Properties:
 
 1. `editor`: read-only instance of `HTMLTextAreaElement`
-1. `isModified`: read-write Boolean property
+1. `isModified`: read-write `Boolean` property
 1. `currentLines`: read-only array
 1. `nextLine`: read-only array
 1. `previousLine`: read-only array
 1. `currentWord`: read-only array
 1. `nextWord`: read-only array
 1. `previousWord`: read-only array
-1. `newLine`: the string constant
-1. `empty`: the string constant
-1. `blankSpace`: the string constant
-1. `selectionLength`: read-only integer value
-1. `selectedText`: read-only string value
-1. `canFindNextPrevious`: read-only Boolean property
+1. `newLine`: the `String` constant
+1. `empty`: the `String` constant
+1. `blankSpace`: the `String` constant
+1. `selectionLength`: read-only integer property
+1. `selectedText`: read-only `String` property
+1. `canFindNextPrevious`: read-only `Boolean` property
+1. `pluginAPI`: read-only `Object` property
 
 Methods:
 
@@ -89,3 +90,21 @@ The property `isModified` returns the current modified state of the editor. The 
 The value returned by the property `canFindNextPrevious` depends on the state of the search system. It is updated by the call to the method `find`, depending on the number of occurrences found, and when the editor text is modified. Normally, this property is used to disable or enable the menu item that invokes the `handler` that can potentially use the methods `findNext` or `findPrevious`.
 
 The methods `find`, `findNext`, and `findPrevious` reproduce the behavior of the Find dialog.
+
+### Plugin API
+
+Plugin API is exposed through the Editor API to provide access to registered plugins and corresponding menu items.
+
+Properties:
+
+1. `lastPluginIndex`: read-only index property, returns the index of the last previously executed plugin.
+1. `currentPluginIndex`: read-only index property, returns the index of the currently running plugin.
+Normally, it should be called from `isEnabled`.
+1. `lastPluginName`: read-only `String` property, the name of the last previously executed plugin.
+1. `isLastPluginEnabled`: read-only `Boolean` property used to check if the last previously executed plugin is enabled.
+
+Methods:
+
+1. `executePlugin(index)` executes a registered plugin by its index.
+1. `getMenuItemText(index)` returns the text of the menu item corresponding to a registered plugin found by its index.
+1. `setMenuItemText(index, text)` modifies the text of the menu item corresponding to a registered plugin found by its index.
