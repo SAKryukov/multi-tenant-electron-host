@@ -3,7 +3,7 @@
 ({
     name: `Show Editor API`,
     description: "Show editor API as editor text",
-    handler: api => {
+    showAPI: (api, newLine) => {
         const keys = {
             arrow: "=>",
             brackets: ["(", ")"],
@@ -32,7 +32,12 @@
             } //loop
             apiItems.push(name);
         } //loop
-        api.editor.value = apiItems.join(api.newLine) + api.newLine;
+        return apiItems.join(newLine);
+    }, //showAPI
+    handler: function(api) {
+        const editorAPI = this.showAPI(api, api.newLine);
+        const pluginAPI = this.showAPI(api.pluginAPI, api.newLine);
+        api.editor.value = `Editor API:\n\n${editorAPI}\n\nPlugin API:\n\n${pluginAPI}\n`;
         api.isModified = true;
     }, //handler
     isEnabled: api => true,

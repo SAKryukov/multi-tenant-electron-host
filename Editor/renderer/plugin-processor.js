@@ -192,7 +192,11 @@ const pluginProcessor = (() => {
             enumerable: true,
         },
         lastPluginName: {
-            get() { return pluginRegistry[lastPluginIndex].name; },
+            get() {
+                if (!pluginRegistry[lastPluginIndex])
+                    return null;
+                return pluginRegistry[lastPluginIndex].name;
+            },
             enumerable: true,
         },
         isLastPluginEnabled: {
