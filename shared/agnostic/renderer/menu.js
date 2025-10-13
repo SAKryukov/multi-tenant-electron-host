@@ -460,19 +460,21 @@ function menuGenerator (container, focusElement) {
         if (!verticalMenu.options[verticalMenu.selectedIndex].disabled) return;
         // more complicated: removing selection from the disabled menu item:
         setTimeout(() => {
+            let found = -1;
             for (const menuItem of menuItems) {
                 if (!menuItem.disabled) {
                     for (const optionIndex in verticalMenu.options) {
                         if (verticalMenu.options[optionIndex] == menuItem) {
                             verticalMenu.selectedIndex = optionIndex;
+                            found = optionIndex;
                             return;
                         } //if
                     } //loop
                 } //if
             } //loop
+            if (found < 0)
+                verticalMenu.selectedIndex = -1;
         }); //removing selection from the disabled menu item
-        if (current)
-            select(current, false);
     }; //updateStates
 
     const select = (element, doSelect) => {
