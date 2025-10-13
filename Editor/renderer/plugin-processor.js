@@ -4,7 +4,9 @@ const pluginProcessor = (() => {
 
     const pluginRegistry = [];
     const indexInRegistryProperty = Symbol();
+    const menuItemProperty = Symbol();
     let lastPluginIndex = -1;
+    let currentPluginIndex = -1;
 
     const isValidPredicate = predicate => {
         if (!predicate) return true;
@@ -59,14 +61,13 @@ const pluginProcessor = (() => {
         return true;
     }; //isValidPlugin
 
-    const executePlugin = (pluginObject, itemData) => {
+    const executePlugin = pluginObject => {
         try {
             elementSet.editorAPI.clearSelectionStack();
             const pluginReturn = pluginObject.handler(elementSet.editorAPI);
             if (pluginReturn != null)
                 showMessage(definitionSet.plugin.returnResult(pluginObject.name, pluginReturn.toString()), elementSet.editor);
-            if (itemData)
-                lastPluginIndex = itemData.result[indexInRegistryProperty];
+            lastPluginIndex = pluginObject[indexInRegistryProperty];
             return true;
         } catch (e) {
             showMessage(definitionSet.plugin.returnResult(pluginObject.name, e.toString(), true), elementSet.editor);
@@ -110,12 +111,13 @@ const pluginProcessor = (() => {
             if (plugin.result?.handler) {
                 plugin.result[indexInRegistryProperty] = pluginRegistry.length;
                 pluginRegistry.push(plugin.result);
-                Object.seal(plugin.result);
             } //if
             const item = menu.subscribe(
                 index.toString(),
                 (actionRequested, _itemAction, itemData) => {
                     if (!actionRequested) {
+                        if (itemData?.result)
+                            currentPluginIndex = itemData.result[indexInRegistryProperty];
                         if (plugin.error) return true;
                         if (plugin.unregistered) return true;
                         if (plugin.result && !plugin.result.handler) return false;
@@ -126,15 +128,17 @@ const pluginProcessor = (() => {
                     if (plugin.unregistered)
                         showMessage(definitionSet.plugin.unregisteredExplanation(itemData.filename, itemData.error), elementSet.editor);
                     else if (plugin.result && plugin.result.handler)
-                        executePlugin(plugin.result, itemData);
+                        executePlugin(plugin.result);
                     else if (plugin.error)
                         showMessage(definitionSet.plugin.exceptionExplanation(itemData.filename, itemData.error), elementSet.editor);
-                    if (!(plugin?.result?.stayOnMenu && plugin.result.stayOnMenu(editorAPI)))
+                    if (!(plugin?.result?.stayOnMenu && plugin.result.stayOnMenu(elementSet.    editorAPI)))
                         elementSet.editor.focus();
                     return true;
                 }, //menu item handler
-                { filename: plugin.filename, error: plugin.error, result: plugin.result });
+                { filename: plugin.filename, error: plugin.error, result: plugin.result });                
             if (plugin.result) {
+                if (!plugin.unregistered)
+                    plugin.result[menuItemProperty] = item;
                 if (plugin.result.shortcut)
                     item.subscribeToShortcut(plugin.result.shortcut);
                 if (plugin.result.name && !plugin.unregistered) {
@@ -154,7 +158,9 @@ const pluginProcessor = (() => {
             const title = plugin?.result?.description;
             if (title)
                 item.title = title;
-        } //item
+            if (plugin.result)
+                Object.seal(plugin.result);
+        } //loop
         window.onerror = null;
     }; //processPlugins
 
@@ -164,11 +170,25 @@ const pluginProcessor = (() => {
             if (!plugin) return false;
             if (!plugin.isEnabled(elementSet.editorAPI)) return false;
             return executePlugin(plugin);
-        } //executePlugin
+        }, //executePlugin
+        getMenuItemText: index => {
+            const plugin = pluginRegistry[index];
+            if (!plugin) return null;
+            return plugin[menuItemProperty].text;
+        }, //getMenuItemText
+        setMenuItemText: (index, text) => {
+            const plugin = pluginRegistry[index];
+            if (!plugin) return;
+            plugin[menuItemProperty].changeText(text);
+        }, //getMenuItemText
     }; //pluginAPI
     Object.defineProperties(pluginAPI, {
         lastPluginIndex: {
             get() { return lastPluginIndex; },
+            enumerable: true,
+        },
+        currentPluginIndex: {
+            get() { return currentPluginIndex; },
             enumerable: true,
         },
         lastPluginName: {
@@ -176,7 +196,7 @@ const pluginProcessor = (() => {
             enumerable: true,
         },
         isLastPluginEnabled: {
-            get() { return pluginRegistry[lastPluginIndex].isEnabled(elementSet.editorAPI); },
+            get() { return lastPluginIndex >= 0 && pluginRegistry[lastPluginIndex].isEnabled(elementSet.editorAPI); },
             enumerable: true,
         },
     }); //pluginAPI properties
