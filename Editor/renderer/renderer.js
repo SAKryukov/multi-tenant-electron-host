@@ -26,9 +26,9 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
                 elementSet.menuItems.pluginParent.parentElement.remove();
             const menu = new menuGenerator(elementSet.menu, elementSet.editor);
             const searchDialogObject = createSearchDialog(definitionSet, elementSet);
-            createEditorAPI(elementSet, searchDialogObject.api);
+            createEditorAPI(elementSet, searchDialogObject.api, pluginProcessor.pluginAPI);
             subscribe(elementSet, menu, searchDialogObject.searchDialog, metadata);
-            pluginProcessor(definitionSet, elementSet, menu, plugins);
+            pluginProcessor.processPlugins(definitionSet, elementSet, menu, plugins);
             replaceTitlesWithHints();
         });
     else 

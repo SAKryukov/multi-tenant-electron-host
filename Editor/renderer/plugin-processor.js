@@ -2,6 +2,10 @@
 
 const pluginProcessor = (() => {
 
+    const pluginRegistry = [];
+    const indexInRegistryProperty = Symbol();
+    let lastPluginIndex = -1;
+
     const isValidPredicate = predicate => {
         if (!predicate) return true;
         if (!(predicate instanceof Function)) return false;
@@ -54,6 +58,21 @@ const pluginProcessor = (() => {
         if (!isValidShorcut(plugin.shortcut)) return false;
         return true;
     }; //isValidPlugin
+
+    const executePlugin = (pluginObject, itemData) => {
+        try {
+            elementSet.editorAPI.clearSelectionStack();
+            const pluginReturn = pluginObject.handler(elementSet.editorAPI);
+            if (pluginReturn != null)
+                showMessage(definitionSet.plugin.returnResult(pluginObject.name, pluginReturn.toString()), elementSet.editor);
+            if (itemData)
+                lastPluginIndex = itemData.result[indexInRegistryProperty];
+            return true;
+        } catch (e) {
+            showMessage(definitionSet.plugin.returnResult(pluginObject.name, e.toString(), true), elementSet.editor);
+        } //exception
+        return false;
+    }; //executePlugin
     
     const processPlugins = (definitionSet, elementSet, menu, plugins) => {
         let lastError = null;
@@ -62,32 +81,37 @@ const pluginProcessor = (() => {
         let validPlugins = [];
         let invalidPlugins = [];
         let exceptionThrowingPlugins = [];
-        const pluginRegistry = [];
-        for (const plugin of plugins) {
+        const allPlugins = [];
+        for (const filename of plugins) {
             lastError = null;
-            window.window.bridgePlugin.loadPlugin(plugin, (result, error) => {
+            window.window.bridgePlugin.loadPlugin(filename, (result, error) => {
                 if (result) {
                     if (isValidPlugin(result))
-                        validPlugins.push({ plugin, result });
+                        validPlugins.push({ filename, result });
                     else
-                        invalidPlugins.push({ plugin, result, unregistered: true });
+                        invalidPlugins.push({ filename, result, unregistered: true });
                 } else if (error)
-                    exceptionThrowingPlugins.push({ plugin, error: lastError });
+                    exceptionThrowingPlugins.push({ filename, error: lastError });
                 else
-                    invalidPlugins.push({ plugin, result: true, unregistered: true });
+                    invalidPlugins.push({ filename, result: true, unregistered: true });
             });
         } //loop
         for (const plugin of validPlugins)
-            pluginRegistry.push(plugin);
+            allPlugins.push(plugin);
         for (const plugin of invalidPlugins)
-            pluginRegistry.push(plugin);
+            allPlugins.push(plugin);
         for (const plugin of exceptionThrowingPlugins)
-            pluginRegistry.push(plugin);
+            allPlugins.push(plugin);
         validPlugins = null;
         invalidPlugins = null;
         exceptionThrowingPlugins = null;
-        for (let index = 0; index < pluginRegistry.length; ++index) {
-            const plugin = pluginRegistry[index];
+        for (let index = 0; index < allPlugins.length; ++index) {
+            const plugin = allPlugins[index];
+            if (plugin.result?.handler) {
+                plugin.result[indexInRegistryProperty] = pluginRegistry.length;
+                pluginRegistry.push(plugin.result);
+                Object.seal(plugin.result);
+            } //if
             const item = menu.subscribe(
                 index.toString(),
                 (actionRequested, _itemAction, itemData) => {
@@ -101,22 +125,15 @@ const pluginProcessor = (() => {
                     } //if
                     if (plugin.unregistered)
                         showMessage(definitionSet.plugin.unregisteredExplanation(itemData.filename, itemData.error), elementSet.editor);
-                    else if (plugin.result && plugin.result.handler) {
-                        try {
-                            elementSet.editorAPI.clearSelectionStack();
-                            const pluginReturn = plugin.result.handler(elementSet.editorAPI);
-                            if (pluginReturn != null)
-                                showMessage(definitionSet.plugin.returnResult(plugin.name, pluginReturn.toString()), elementSet.editor);
-                        } catch (e) {
-                            showMessage(definitionSet.plugin.returnResult(plugin.name, e.toString(), true), elementSet.editor);
-                        } //exception
-                    } else if (plugin.error)
+                    else if (plugin.result && plugin.result.handler)
+                        executePlugin(plugin.result, itemData);
+                    else if (plugin.error)
                         showMessage(definitionSet.plugin.exceptionExplanation(itemData.filename, itemData.error), elementSet.editor);
                     if (!(plugin?.result?.stayOnMenu && plugin.result.stayOnMenu(editorAPI)))
                         elementSet.editor.focus();
                     return true;
                 }, //menu item handler
-                { filename: plugin.plugin, error: plugin.error });
+                { filename: plugin.filename, error: plugin.error, result: plugin.result });
             if (plugin.result) {
                 if (plugin.result.shortcut)
                     item.subscribeToShortcut(plugin.result.shortcut);
@@ -141,6 +158,33 @@ const pluginProcessor = (() => {
         window.onerror = null;
     }; //processPlugins
 
-    return processPlugins;
+    const pluginAPI = {
+        executePlugin: index => {
+            const plugin = pluginRegistry[index];
+            if (!plugin) return false;
+            if (!plugin.isEnabled(elementSet.editorAPI)) return false;
+            return executePlugin(plugin);
+        } //executePlugin
+    }; //pluginAPI
+    Object.defineProperties(pluginAPI, {
+        lastPluginIndex: {
+            get() { return lastPluginIndex; },
+            enumerable: true,
+        },
+        lastPluginName: {
+            get() { return pluginRegistry[lastPluginIndex].name; },
+            enumerable: true,
+        },
+        isLastPluginEnabled: {
+            get() { return pluginRegistry[lastPluginIndex].isEnabled(elementSet.editorAPI); },
+            enumerable: true,
+        },
+    }); //pluginAPI properties
+    Object.freeze(pluginAPI);
+
+    const result = { processPlugins, pluginAPI };
+    Object.freeze(result);
+
+    return result;
 
 })();

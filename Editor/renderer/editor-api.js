@@ -1,8 +1,8 @@
 "use strict";
 
-const createEditorAPI = (elementSet, searchAPI) => {
+const createEditorAPI = (elementSet, searchAPI, pluginAPI) => {
 
-    elementSet.editorAPI = ((editor, searchAPI) => {
+    elementSet.editorAPI = ((editor, searchAPI, pluginAPI) => {
 
         let isModifiedFlag = false;
         const modifiedEventName = definitionSet.events.editorTextModified;
@@ -182,10 +182,14 @@ const createEditorAPI = (elementSet, searchAPI) => {
                 },
                 enumerable: true,
             }, //isModified
+            pluginAPI: {
+                get() { return pluginAPI; },
+                enumerable: true,
+            }, //pluginAPI
         }); // API properties
 
         return api;
 
-    })(elementSet.editor, searchAPI);
+    })(elementSet.editor, searchAPI, pluginAPI);
 
 };
