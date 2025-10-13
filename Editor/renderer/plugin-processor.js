@@ -168,7 +168,7 @@ const pluginProcessor = (() => {
         executePlugin: index => {
             const plugin = pluginRegistry[index];
             if (!plugin) return false;
-            if (!plugin.isEnabled(elementSet.editorAPI)) return false;
+            if (plugin.isEnabled && !plugin.isEnabled(elementSet.editorAPI)) return false;
             return executePlugin(plugin);
         }, //executePlugin
         getMenuItemText: index => {
@@ -196,7 +196,12 @@ const pluginProcessor = (() => {
             enumerable: true,
         },
         isLastPluginEnabled: {
-            get() { return lastPluginIndex >= 0 && pluginRegistry[lastPluginIndex].isEnabled(elementSet.editorAPI); },
+            get() {
+                if (lastPluginIndex < 0) return false;
+                const plugin = pluginRegistry[lastPluginIndex];
+                if (!plugin.isEnabled) return true;
+                return plugin.isEnabled(elementSet.editorAPI);
+            },
             enumerable: true,
         },
     }); //pluginAPI properties
