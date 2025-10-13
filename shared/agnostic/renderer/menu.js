@@ -10,7 +10,7 @@ http://www.codeproject.com/Members/SAKryukov
 
 function menuGenerator (container, focusElement) {
 
-    const version = "1.7.0";
+    const version = "1.8.0";
     if (!new.target) return version;
 
     if (!container) return;
@@ -178,6 +178,11 @@ function menuGenerator (container, focusElement) {
                     }; //window.addEventListener
                 }, enumerable: true,
             }, //subscribeToShortcut
+            text: {
+                get() {
+                    return menuItem.textContent;
+                }, enumerable: true
+            }, //text
             changeText: {
                 get() {
                     return text => {
@@ -407,7 +412,8 @@ function menuGenerator (container, focusElement) {
                 updateStates(container);
                 container.style.display = definitionSet.css.hide;
             } else
-                updateStates(row[menuItemData.xPosition].element);
+                for (const element of container.children)
+                    updateStates(element);    
         } //if
         if (menuOptions.afterActionBehavior.hide && current)
             select(current, false);
@@ -449,9 +455,10 @@ function menuGenerator (container, focusElement) {
         for (const menuItem of menuItems) {
             const menuItemData = elementMap.get(menuItem);
             const value = menuItemData.shadowValue;
-            const action = actionMap.get(value).action;
+            const actionMapData = actionMap.get(value);
+            const action = actionMapData.action;
             if (!action) continue;
-            const result = action(false, value);
+            const result = action(false, value, actionMapData.customItemData);
             if (result == null) continue;
             menuItem.disabled = !result;
             hasDisabled ||= menuItem.disabled;
