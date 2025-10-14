@@ -34,7 +34,7 @@ The registration method `pluginProcessor.registerPlugin` accepts one argument, t
 1. `name`: a string used to define the text of the menu item, mandatory
 1. `description`: a string used to define the title of the menu item; the title is shown by hovering over the menu item. It's trimmed length should be more than zero.
 1. `handler`: a function accepting the editor API used to perform the job with the editor.
-1. `isEnabled`: a function accepting the editor API used to enable or disable the menu item, depending on the current condition of the editor.
+1. `isEnabled`: a function accepting the editor API used to enable or disable the menu item, depending on the current condition of the editor. By default, if this function is not defined, the plugin is considered permanently enabled.
 1. `shortcut`: a structure used to define the shortcut for calling `isEnabled` and then `handler`.
 1. `stayOnMenu`: a function accepting the editor API used to prevent focusing on the editor after execution of the `handler`.
 1. `menuItemIndent`: an integer value determines the additional indent of the menu item, allowing for structured placement of plugins in the menu.
@@ -102,6 +102,7 @@ Properties:
 Normally, it should be called from `isEnabled`.
 1. `lastPluginName`: read-only `String` property, the name of the last previously executed plugin.
 1. `isLastPluginEnabled`: read-only `Boolean` property used to check if the last previously executed plugin is enabled.
+1. `noRepeat`: read-only constant property with the default `Symbol` value. It has to be used as a return value to prevent a plugin from being registered as the last previously executed plugin. It is important to prevent infinite recursion caused by the plugin used to repeat the execution of another plugin.
 
 Methods:
 
