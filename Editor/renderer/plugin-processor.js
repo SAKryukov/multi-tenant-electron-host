@@ -72,7 +72,7 @@ const pluginProcessor = (() => {
                 lastPluginIndex = pluginObject[indexInRegistryProperty];
             return true;
         } catch (exception) {
-            showMessage(definitionSet.plugin.returnResult(pluginObject.name, e.toString(), true), elementSet.editor);
+            showMessage(definitionSet.plugin.returnResult(pluginObject.name, exception.toString(), true), elementSet.editor);
         } //exception
         return false;
     }; //executePlugin
