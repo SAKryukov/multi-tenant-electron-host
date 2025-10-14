@@ -5,6 +5,7 @@ const pluginProcessor = (() => {
     const pluginRegistry = [];
     const indexInRegistryProperty = Symbol();
     const menuItemProperty = Symbol();
+    const noRepeatReturn = Symbol();
     let lastPluginIndex = -1;
     let currentPluginIndex = -1;
 
@@ -65,11 +66,12 @@ const pluginProcessor = (() => {
         try {
             elementSet.editorAPI.clearSelectionStack();
             const pluginReturn = pluginObject.handler(elementSet.editorAPI);
-            if (pluginReturn != null)
+            if (pluginReturn != null && pluginReturn != noRepeatReturn)
                 showMessage(definitionSet.plugin.returnResult(pluginObject.name, pluginReturn.toString()), elementSet.editor);
-            lastPluginIndex = pluginObject[indexInRegistryProperty];
+            if (pluginReturn != noRepeatReturn)
+                lastPluginIndex = pluginObject[indexInRegistryProperty];
             return true;
-        } catch (e) {
+        } catch (exception) {
             showMessage(definitionSet.plugin.returnResult(pluginObject.name, e.toString(), true), elementSet.editor);
         } //exception
         return false;
@@ -208,6 +210,10 @@ const pluginProcessor = (() => {
             },
             enumerable: true,
         },
+        noRepeat: {
+            get() { return noRepeatReturn; },
+            enumerable: true,
+        }, //noRepeatReturn
     }); //pluginAPI properties
     Object.freeze(pluginAPI);
 

@@ -13,7 +13,9 @@
         const apiItems = [];
         for (let index in api) {
             let name = index;
-            if (api[index] instanceof Function) {
+            const descriptor = Object.getOwnPropertyDescriptor(api, index);
+            const canRecurse = descriptor.get || descriptor.set;
+            if (!canRecurse && api[index] instanceof Function) {
                 const code = api[index].toString();
                 const arrow = code.indexOf(keys.arrow);
                 if (arrow >=0) {
