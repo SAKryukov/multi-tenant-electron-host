@@ -102,7 +102,7 @@ Properties:
 Normally, it should be called from `isEnabled`.
 1. `lastPluginName`: read-only `String` property, the name of the last previously executed plugin.
 1. `isLastPluginEnabled`: read-only `Boolean` property used to check if the last previously executed plugin is enabled.
-1. `noRepeat`: read-only constant property with the default `Symbol` value. It has to be used as a return value to prevent a plugin from being registered as the last previously executed plugin. It is important to prevent infinite recursion caused by the plugin used to repeat the execution of another plugin.
+1. `noRepeat`: read-only constant property with the unique `Symbol` value. It has to be used as a return value to prevent a plugin from being registered as the last previously executed plugin. It is important to prevent infinite recursion caused by the plugin used to repeat the execution of another plugin.
 
 Methods:
 
