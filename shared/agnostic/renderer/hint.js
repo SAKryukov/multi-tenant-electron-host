@@ -44,7 +44,7 @@ const Hint = function (elementOrString) {
         return;
 
     const element = document.createElement(definitionSet.hint.element);
-    element.textContent = text;
+    element.innerHTML = text;
     element.style.display = definitionSet.CSS.display.none;
     element.style.position = definitionSet.CSS.position.hint;
     element.style.zIndex = Number.MAX_SAFE_INTEGER;
