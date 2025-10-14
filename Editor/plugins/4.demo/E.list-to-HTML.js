@@ -4,7 +4,6 @@
     name: "List to HTML",
     description: "Convert selected lines to HTML list",
     handler: api => {
-        api.pushSelection();
         const domain = api.currentLines;
         const lines = api.editor.value.slice(domain[0], domain[1]).split(api.newLine);
         const starts = [];
@@ -23,7 +22,7 @@
             api.editor.setSelectionRange(start, start);
             api.editor.setRangeText(left);
         } //loop
-        api.popSelection();
+        api.isModified = true;
     },
     isEnabled: api => api.selectionLength > 0,
     menuItemIndent: demoGroupIndent,
