@@ -1,7 +1,7 @@
 "use strict";
 
 ({
-    name: `Repeat Last Plugin (Meta+Alt+F5)`,
+    name: `Repeat Last Plugin (F5)`,
     description: "Repeat last plugin",
     handler: api => {
         const lastPlugin = api.pluginAPI.lastPluginIndex;
