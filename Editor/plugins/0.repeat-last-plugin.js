@@ -23,5 +23,5 @@
         } //if
         return result; 
     }, //isEnabled
-    shortcut: { key: "F5", prefix: ["metaKey", "altKey"]},
+    shortcut: { key: "F5", prefix: []},
 });
