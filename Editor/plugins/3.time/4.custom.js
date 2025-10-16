@@ -5,8 +5,8 @@
     name: `Custom, From Selected Locale`,
 
     description: `Current time with optional locale in selection.
-        <br/>Example: en-GB
-        <br/>If no country code is specified, default system format is assumed.`,
+        <br/>Example: highlight ${String.fromCharCode(0x201C)}en-GB${String.fromCharCode(0x201D)}
+        <br/>If no locale code is specified, default system format is assumed.`,
 
     handler: api => {
 

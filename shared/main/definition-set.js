@@ -9,6 +9,8 @@ const definitionSet = {
     },
     paths: {
         preload: "./shared/IPC/preload.js",
+        parentHostPackageName: "../package.json",
+        userData: 0,
     },
     utility: {
         fileNaming: {
@@ -42,7 +44,7 @@ const definitionSet = {
     }, //createWindowProperties
 };
 
-for (const subset of [definitionSet.events])
+for (const subset of [definitionSet.events, definitionSet.paths])
     for (const index in subset)
         if (!subset[index])
             subset[index] = index;

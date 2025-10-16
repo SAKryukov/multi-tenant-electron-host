@@ -70,10 +70,9 @@ const extensibleDefinitionSet = (() => {
                 { isDefault: true, isEscape: true, text: "Cancel", action: cancelAction }],
         }, //modifiedTextOperationConfirmation        
         aboutDialog: (metadata, imagePath) => {
-            const hostVersionLine =
-                metadata?.package?.applicationHostDescription
-                    ? `<br/>${metadata.package.applicationHostDescription} version: ${metadata.applicationVersion}`
-                    : "";
+            const hostApplicationDescription = metadata?.package?.applicationHostDescription;
+            const hostApplicationVersion = metadata?.package?.applicationHostVersion ?? metadata.applicationVersion;
+            const hostVersionLine = `<br/>${hostApplicationDescription} version: ${hostApplicationVersion}`;
             const copyright = metadata?.package?.metadata?.copyright
                 ? `<br/> <br/>${metadata?.package?.metadata?.copyright}` : "";
             return `<h4> <img src="${imagePath}"/>${metadata?.package?.description}</h4>

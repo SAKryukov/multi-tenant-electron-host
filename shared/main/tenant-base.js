@@ -44,9 +44,25 @@ const tenantBase = {
             if (tenantRoot) {
                 const hostApplicationPackage = getJSON(this.paths.package, true);
                 packageJSON.applicationHostDescription = hostApplicationPackage.description;
+            } else {
+                const hostPackage = getJSON(definitionSet.paths.parentHostPackageName);
+                packageJSON.applicationHostName = hostPackage.name;
+                packageJSON.applicationHostDescription = hostPackage.description;
+                packageJSON.applicationHostVersion = hostPackage.version;
             } //if
             return packageJSON;
         })(); //applicationPackage
+
+        (() => { //redirect userData
+            const originalUserDataPath = app.getPath(definitionSet.paths.userData);
+            fs.rmSync(originalUserDataPath, { recursive: true, force: true });
+            const newUserDataPath = tenantRoot
+                ? path.join(originalUserDataPath, tenantRoot)
+                : path.join(path.dirname(originalUserDataPath),
+                    applicationPackage.applicationHostName,
+                    path.basename(app.getAppPath()));
+            app.setPath(definitionSet.paths.userData, newUserDataPath);
+        })(); //redirect userData
 
         const subscribeToEvents = (window, baseTitle) => {
             ipcMain.on(ipcChannel.metadata.source, () => {
