@@ -62,6 +62,7 @@ const tenantBase = {
                     applicationPackage.applicationHostName,
                     path.basename(app.getAppPath()));
             app.setPath(definitionSet.paths.userData, newUserDataPath);
+            applicationPackage.userDataDirectory = newUserDataPath;
         })(); //redirect userData
 
         const subscribeToEvents = (window, baseTitle) => {

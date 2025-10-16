@@ -70,8 +70,8 @@ const extensibleDefinitionSet = (() => {
                 { isDefault: true, isEscape: true, text: "Cancel", action: cancelAction }],
         }, //modifiedTextOperationConfirmation        
         aboutDialog: (metadata, imagePath) => {
-            const hostApplicationDescription = metadata?.package?.applicationHostDescription;
-            const hostApplicationVersion = metadata?.package?.applicationHostVersion ?? metadata.applicationVersion;
+            const hostApplicationDescription = metadata.package.applicationHostDescription;
+            const hostApplicationVersion = metadata.package.applicationHostVersion ?? metadata.applicationVersion;
             const hostVersionLine = `<br/>${hostApplicationDescription} version: ${hostApplicationVersion}`;
             const copyright = metadata?.package?.metadata?.copyright
                 ? `<br/> <br/>${metadata?.package?.metadata?.copyright}` : "";
@@ -85,6 +85,8 @@ const extensibleDefinitionSet = (() => {
             <br>Electron: v.&thinsp;${metadata.versions.electron}
             <br/>Chromium: v.&thinsp;${metadata.versions.chrome}
             <br/>Node.js: v.&thinsp;${metadata.versions.node}
+            <br/>
+            <br/>User data location:<br/><small>${metadata.package.userDataDirectory}</small>
             ${copyright}
             <br/><br/>`
         }, //aboutDialog        
