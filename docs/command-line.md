@@ -42,7 +42,7 @@ If the application is packaged, the executable file is `mt-host` (`mt-host.exe` 
 In the packaged form, the application can be started as
 
 ~~~
-mt-host :<tenant-application-name> <data-file(s)>
+mt-host :<tenant-application-name> <tenant-application-specific-arguments...>
 ~~~
 
 For example,
