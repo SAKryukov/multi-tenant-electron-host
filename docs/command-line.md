@@ -32,7 +32,7 @@ electron . :Editor <data_file>
 or
 
 ~~~
-electron . :Editor <data_file>
+electron . :Personal.Database <data_file>
 ~~~
 
 ### As the Packaged Application
