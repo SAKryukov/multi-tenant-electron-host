@@ -1,1 +1,5 @@
-@mklink /D ..\node_modules c:\app\Node.js\node_modules\
+@echo off
+
+cd %~dp0..
+npm install electron --save-dev
+
