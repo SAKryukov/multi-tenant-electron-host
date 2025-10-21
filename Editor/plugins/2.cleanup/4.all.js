@@ -23,9 +23,11 @@
             } //loop
             newLines.push((left + right).trimEnd());
         } //loop
-        api.editor.value = newLines.join(api.newLine).trimEnd() + api.newLine;
+        const newText = newLines.join(api.newLine)
+        const reducedLength = newText.length;
+        api.editor.value = newText.trimEnd() + api.newLine;
         api.scrollTo(oldSelectionEnd, oldSelectionEnd); //SA???
-        if (oldLength != api.editor.textLength)
+        if (oldLength != reducedLength || reducedLength != api.editor.textLength)
             api.isModified = true;
     },
     isEnabled: () => true,
