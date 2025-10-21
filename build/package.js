@@ -29,7 +29,7 @@ const parseCommandLine = () => {
     if (!(platform && architecture)) {
         console.warn("Speficy both platform and CPU architecture. The supported combinations are:");
         for (const combination of metadata.build.supported)
-            console.warn(`      ${combination}`);
+            console.warn(` ${combination}`);
         return;
     } //if
     return { platform, architecture, };
@@ -51,7 +51,7 @@ if (copyright)
 
 const command = `npx @electron/packager ../${application} --overwrite --platform=${parsedArguments.platform} --arch=${parsedArguments.architecture} ${exe} ${copyright} --asar`;
 
-const extractOutput = stdout => 
+const extractOutput = stdout =>
     stdout.substring(stdout.indexOf(module.path)).trim();
 const copyExtraFiles = (targetPath, platform) => {
     let sourceDirectory = path.join(module.path, metadata.build.startFileSource);
