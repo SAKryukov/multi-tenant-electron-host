@@ -19,7 +19,7 @@
                 lastText = lastText.substring(0, shortcutTextIndex);
             api.pluginAPI.setMenuItemText(
                 currentPlugin,
-                `Repeat ${String.fromCharCode(0x201C)}${lastText}${String.fromCharCode(0x201D)} (Meta+Alt+F5)`);
+                `Repeat ${String.fromCharCode(0x201C)}${lastText}${String.fromCharCode(0x201D)} (F5)`);
         } //if
         return result; 
     }, //isEnabled
