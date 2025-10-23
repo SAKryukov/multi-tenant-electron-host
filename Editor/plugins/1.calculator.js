@@ -30,7 +30,6 @@
 
         const objectSet = new Set();
         const decircle = object => { // precondition is: object && object instanceof Object
-            debugger;
             objectSet.add(object);
             for (const index in object) {
                 const child = object[index];
