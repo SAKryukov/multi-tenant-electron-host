@@ -115,6 +115,7 @@
         api.scrollTo(api.editor.selectionEnd, api.editor.selectionEnd);
         output(result);
         api.scrollTo(startPoint, insertPoint);
+        api.isModified = true;
     }, //handler
 
     isEnabled: api => api.selectionLength > 0,
