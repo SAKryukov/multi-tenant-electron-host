@@ -64,6 +64,7 @@ Properties:
 1. `newLine`: the `String` constant
 1. `empty`: the `String` constant
 1. `blankSpace`: the `String` constant
+1. `defaultIndent`: the `String` constant, four blank spaces
 1. `selectionLength`: read-only integer property
 1. `selectedText`: read-only `String` property
 1. `canFindNextPrevious`: read-only `Boolean` property

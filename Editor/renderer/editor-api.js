@@ -162,6 +162,7 @@ const createEditorAPI = (elementSet, searchAPI, pluginAPI) => {
             newLine: { get() { return definitionSet.characters.newLine; }, enumerable: true, },
             empty: { get() { return definitionSet.characters.empty; }, enumerable: true, },
             blankSpace: { get() { return definitionSet.characters.blankSpace; }, enumerable: true, },
+            defaultIndent: { get() { return definitionSet.editorAPI.tabReplacement; }, enumerable: true, },
             selectionLength: {
                 get() { return editor.selectionEnd - editor.selectionStart; },
                 enumerable: true,
