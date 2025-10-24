@@ -20,7 +20,7 @@
                 if (length < 1)
                     return `${object.constructor.name}[]`;
                 return `${object.constructor.name}[${length}]`;
-            } else { //Object
+            } else { //Object, Function is already excluded by the caller decircle
                 const length = Object.keys(object).length;
                 return length > 0
                     ? `${object.constructor.name} {${String.fromCharCode(0x2026)}}`
@@ -47,7 +47,7 @@
 
         const stringify = object => {
             objectSet.clear();
-            if (object instanceof Object)
+            if (object instanceof Object && !(object instanceof Function))
                 return JSON.stringify(decircle(object), null, jsonSpace);
             return object.toString();
         }; //stringify
