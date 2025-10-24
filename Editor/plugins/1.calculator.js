@@ -28,28 +28,20 @@
             } //if
         }; //replacementObject
 
-        const objectSet = new Set();
-        const decircle = object => { // precondition is: object && object instanceof Object
-            objectSet.add(object);
-            for (const index in object) {
-                const child = object[index];
-                if (child instanceof Function)
-                    object[index] = child.toString().replaceAll(api.newLine, api.empty);
-                else if (child != null && child instanceof Object) {
-                    if (objectSet.has(child))
-                        object[index] = replacementObject(object[index]);
-                    else
-                        decircle(child);
-                } //if
-            } //loop
-            return object;
-        }; //decircle
-
         const stringify = object => {
-            objectSet.clear();
-            if (object instanceof Object && !(object instanceof Function))
-                return JSON.stringify(decircle(object), null, jsonSpace);
-            return object.toString();
+            if (!(object instanceof Object))
+                return object.toString();    
+            const objectSet = new WeakSet();
+            return JSON.stringify(object, (_key, value) => {
+                if (value !== null && (value instanceof Function))
+                    return value.toString().replaceAll(api.newLine, api.empty);
+                else if (value !== null && (value instanceof Object)) {
+                    if (objectSet.has(value))
+                        return replacementObject(object);
+                    objectSet.add(value);
+                } //if
+                return value;
+            }, jsonSpace);
         }; //stringify
 
         const output = object => {
