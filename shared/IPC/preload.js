@@ -4,6 +4,10 @@ const { bridgeAPI, ipcChannel } = require("./ipc-channels.js");
 const { ipcRenderer, contextBridge} = require("electron/renderer");
 const { webFrame } = require('electron');
 const fs = require("node:fs");
+let acorn = null;
+try {
+    acorn = require("acorn");
+} catch { }
 
 let metadata = null;
 ipcRenderer.once(ipcChannel.metadata.metadataPush, (_event, received) => metadata = received);
@@ -61,6 +65,15 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgePlugin, {
         const code = fs.readFileSync(plugin).toString();
         webFrame.executeJavaScript(code, false, (result, error) => handler(result, error));
     }, //loadPlugin
+    validateCodeSyntax: code => {
+        if (!code) return null;
+        if (!acorn) return null;
+        try {
+            acorn.parse(code, { ecmaVersion: "latest", locations: true });
+        } catch (exception) {
+            return { message: exception.message, location: exception.loc, position: exception.pos };
+        } //exception
+    }, //validateCodeSyntax
 }); //contextBridge.exposeInMainWorld
 
 contextBridge.exposeInMainWorld(bridgeAPI.bridgeMetadata, {

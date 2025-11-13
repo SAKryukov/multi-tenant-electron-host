@@ -64,6 +64,7 @@ const createEditorAPI = (elementSet, searchAPI, pluginAPI) => {
                 return location;
             }, //popSelection
             clearSelectionStack: () => selectionStack.length = 0,
+            validateCodeSyntax: code => window.bridgePlugin.validateCodeSyntax(code),
         }; //api
 
         editor.addEventListener(definitionSet.events.input, () => api.isModified = true);

@@ -15,3 +15,24 @@ Presently, there are two tenant applications:
 [Command Line](https://github.com/SAKryukov/conceptual-electron-editor/blob/main/docs/command-line.md)
 
 [Editor API Documentation](https://github.com/SAKryukov/conceptual-electron-editor/blob/main/Editor/plugins/plugins.readme.md)
+
+## Installation (Optional)
+
+Before running Editor, installation of [Acorn](https://github.com/acornjs/acorn) is recommended.
+
+In the root directory of the Multi-Tenant Electron Host, issue the command:
+
+~~~
+npm install
+~~~
+
+Alternatively, execute `build/install-dependencies.cmd` on Windows or `build/install-dependencies.sh` on other OS.
+
+Acorn provides additional information on the JavaScript syntax errors (line and column) for some Editor plugins, notably Calculator.
+If Acorn is not installed, the behavior falls back to showing only the error message.
+
+## Packaging
+
+* Execute `build/install-dependencies.cmd` for Windows or `build/install-dependencies.sh` for other OS.
+* Execute on or more of the `build/package-*` scripts, depending on the target platform and CPU architecture.
+* Execute the application `mt-host` in the directory created by the packaging script. See the [command-line documentation](https://github.com/SAKryukov/multi-tenant-electron-host/blob/main/docs/command-line.md) for more information.

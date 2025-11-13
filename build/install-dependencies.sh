@@ -1,4 +1,4 @@
 #!/bin/bash
 pushd $(dirname "$0")/..
-npm install electron
+npm install
 popd

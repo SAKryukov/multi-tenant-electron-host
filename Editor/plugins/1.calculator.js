@@ -76,11 +76,17 @@
         const replacedGlobalObjects = Array(globalObjects.length).fill(undefined);
         const runScript = code => {
             try {
+                const modifiedCode = `"use strict";` + api.newLine + code;
+                const syntax = api.validateCodeSyntax(modifiedCode);
+                if (syntax) {
+                    const message = `${syntax.message}, line: ${syntax.location.line - 1}, column: ${syntax.location.column + 1}`;
+                    return [null, new Error(message)];
+                } //if
                 const script = new Function(
                     ...globalObjects,
                     codeArgument,
-                    `"use strict";` + api.newLine + code);
-                return [script(...replacedGlobalObjects, consoleApi), null];
+                    modifiedCode);
+                return [script(...replacedGlobalObjects, consoleApi), null];                
             } catch (error) {
                 return [null, error];
             } //exception

@@ -1,4 +1,4 @@
 @echo off
 pushd %~dp0..
-npm install electron
+npm install
 popd
