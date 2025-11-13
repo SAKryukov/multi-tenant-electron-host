@@ -33,6 +33,6 @@ If Acorn is not installed, the behavior falls back to showing only the error mes
 
 ## Packaging
 
-* Execute `build/install-dependencies.cmd` for Windows or `build/install-dependencies.sh` for other OS.
+* Execute execute `build/install-dependencies.cmd` on Windows or `build/install-dependencies.sh` on other OS.
 * Execute on or more of the `build/package-*` scripts, depending on the target platform and CPU architecture.
 * Execute the application `mt-host` in the directory created by the packaging script. See the [command-line documentation](https://github.com/SAKryukov/multi-tenant-electron-host/blob/main/docs/command-line.md) for more information.
