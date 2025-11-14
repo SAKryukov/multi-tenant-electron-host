@@ -7,6 +7,13 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
     elementSet.statusBar.cursorPositionIndicator.innerHTML =
         definitionSet.status.cursorPosition(); // initial default, to reduce flicker
 
+    const addMenuItem = (parent, index) => {
+        const option = document.createElement(definitionSet.elements.option);
+        const name = index.toString();
+        option.textContent = name;
+        parent.appendChild(option);
+    }; //addMenuItem
+
     if (window.bridgePlugin)
         window.bridgePlugin.subscribeToPlugin(async plugins => {
             elementSet.editor.addEventListener(definitionSet.events.selectionchange, event => {
@@ -16,18 +23,10 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
                     definitionSet.status.cursorPosition(start, end);
             }); //editor.onselectionchange
             const metadata = window.bridgeMetadata.pushedMetadata();
-            for (let index = 0; index < plugins.length; ++index) {
-                const option = document.createElement(definitionSet.elements.option);
-                const name = index.toString();
-                option.textContent = name;
-                elementSet.menuItems.pluginParent.appendChild(option);
-            } //loop
-            if (!window.bridgePlugin.isCodeSyntaxValidationEnabled()) {
-                const option = document.createElement(definitionSet.elements.option);
-                const name = plugins.length.toString();
-                option.textContent = name;
-                elementSet.menuItems.pluginParent.appendChild(option);
-            } //if !isCodeSyntaxValidationEnabled
+            for (let index = 0; index < plugins.length; ++index)
+                addMenuItem(elementSet.menuItems.pluginParent, index);
+            if (!window.bridgePlugin.isCodeSyntaxValidationEnabled())
+                addMenuItem(elementSet.menuItems.pluginParent, plugins.length.toString());
             if (plugins.length < 1)
                 elementSet.menuItems.pluginParent.parentElement.remove();
             const menu = new menuGenerator(elementSet.menu, elementSet.editor);
@@ -36,7 +35,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
             subscribe(elementSet, menu, searchDialogObject.searchDialog, metadata);
             pluginProcessor.processPlugins(definitionSet, elementSet, menu, plugins);
             replaceTitlesWithHints();
-        });
+        }); //window.bridgePlugin.subscribeToPlugin
     else 
         return definitionSet.standaloneExecutionProtection.show();
 
