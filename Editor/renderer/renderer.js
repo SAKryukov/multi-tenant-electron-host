@@ -22,6 +22,12 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
                 option.textContent = name;
                 elementSet.menuItems.pluginParent.appendChild(option);
             } //loop
+            if (!window.bridgePlugin.isCodeSyntaxValidationEnabled()) {
+                const option = document.createElement(definitionSet.elements.option);
+                const name = plugins.length.toString();
+                option.textContent = name;
+                elementSet.menuItems.pluginParent.appendChild(option);
+            } //if !isCodeSyntaxValidationEnabled
             if (plugins.length < 1)
                 elementSet.menuItems.pluginParent.parentElement.remove();
             const menu = new menuGenerator(elementSet.menu, elementSet.editor);

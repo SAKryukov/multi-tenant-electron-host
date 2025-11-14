@@ -45,6 +45,14 @@ const definitionSet = (() => {
                 return `<p>${name}:</p><br/><span ${error ? this.errorStyle : ""}>${theResult}</span></br></br>`;
             },
             nameInMenu: name => `${name}`,
+            acornRecommendation: `Acorn installation is recommended ${String.fromCharCode(0x2014)} click to see the explanation`,
+            acornExplanation: `<h3 style="text-align: center">Acorn parser is not installed</h3>`
+                + "<br/>It is useful to improve the location of syntax errors in some plugins."
+                + "<br/>"
+                + "<br/><h3>Installation:</h3>"
+                + `<br/><p style="padding-left: 3em">In the root of the application, execute:</p>`
+                + `<br/><p style="padding-left: 3em"><code>npm install</code></p>`
+                + "<br/>",
         }, //plugin
         fileDialog: {
             titleOpenFile: `Open text file`,

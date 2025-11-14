@@ -164,6 +164,15 @@ const pluginProcessor = (() => {
                 Object.seal(plugin.result);
         } //loop
         window.onerror = null;
+        if (!window.bridgePlugin.isCodeSyntaxValidationEnabled()) {
+            const item = menu.subscribe(allPlugins.length.toString(), 
+            actionRequested => {
+                if (!actionRequested) return true;
+                showMessage(definitionSet.plugin.acornExplanation, elementSet.editor);                
+            });
+            item.changeText(definitionSet.plugin.acornRecommendation);
+            definitionSet.plugin.styleMenuItem(item, false, true);
+        } //if !isCodeSyntaxValidationEnabled
     }; //processPlugins
 
     const pluginAPI = {

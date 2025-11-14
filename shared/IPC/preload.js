@@ -75,6 +75,7 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgePlugin, {
                 message: exception.message, location: exception.loc, position: exception.pos };
         } //exception
     }, //validateCodeSyntax
+    isCodeSyntaxValidationEnabled: () =>  acorn != null,
 }); //contextBridge.exposeInMainWorld
 
 contextBridge.exposeInMainWorld(bridgeAPI.bridgeMetadata, {
