@@ -72,15 +72,21 @@
             warn: output,
         }; //consoleApi
 
+        const scriptPrefix = `"use strict";` + api.newLine;
+        const highlightPosition = error => 
+            api.scrollTo(error.cause.position - scriptPrefix.length, error.cause.position  - scriptPrefix.length + 1);
+        const cleanMessage = message => 
+            message.replace(/\s\([:0-9]+\)/, "");
+
         const globalObjects = Object.keys(window);
         const replacedGlobalObjects = Array(globalObjects.length).fill(undefined);
         const runScript = code => {
             try {
-                const modifiedCode = `"use strict";` + api.newLine + code;
+                const modifiedCode = scriptPrefix + code;
                 const syntax = api.validateCodeSyntax(modifiedCode);
                 if (syntax) {
-                    const message = `${syntax.message}, line: ${syntax.location.line - 1}, column: ${syntax.location.column + 1}`;
-                    return [null, new Error(message)];
+                    const message = `${cleanMessage(syntax.message)}<br/>Line: ${syntax.location.line - 1}, column: ${syntax.location.column + 1}`;
+                    return [null, new Error(message, { cause: syntax })];
                 } //if
                 const script = new Function(
                     ...globalObjects,
@@ -100,6 +106,12 @@
             runScript(codeReturn + `(${code.replace(/[;\s]+$/, api.empty)})`); // expression
         if (expressionError) //function
             [result, functionError] = runScript(code);
+        if (functionError && functionError.cause)
+            highlightPosition(functionError);
+        else if (expressionError && expressionError.cause)
+            highlightPosition(expressionError);
+        else
+            api.scrollTo(startPoint, insertPoint);
         if (expressionError && functionError) {
             if (functionError.message == expressionError.message)
                 throw functionError;
@@ -111,7 +123,6 @@
             throw new Error(`<br/>Function error:<br/><br/>${functionError.message}`);
         api.scrollTo(api.editor.selectionEnd, api.editor.selectionEnd);
         output(result);
-        api.scrollTo(startPoint, insertPoint);
         api.isModified = true;
     }, //handler
 

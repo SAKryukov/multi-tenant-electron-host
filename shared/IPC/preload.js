@@ -69,9 +69,10 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgePlugin, {
         if (!code) return null;
         if (!acorn) return null;
         try {
-            acorn.parse(code, { ecmaVersion: "latest", locations: true });
+            acorn.parse(code, { ecmaVersion: definitionSet.words.latest, locations: true });
         } catch (exception) {
-            return { message: exception.message, location: exception.loc, position: exception.pos };
+            return {
+                message: exception.message, location: exception.loc, position: exception.pos };
         } //exception
     }, //validateCodeSyntax
 }); //contextBridge.exposeInMainWorld

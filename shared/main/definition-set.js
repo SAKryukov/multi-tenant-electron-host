@@ -7,6 +7,7 @@ const definitionSet = {
         readyToShow: "ready-to-show",
         windowAllClosed: "window-all-closed",
     },
+    words: { latest: 0, },
     paths: {
         preload: "./shared/IPC/preload.js",
         parentHostPackageName: "../package.json",
@@ -44,7 +45,7 @@ const definitionSet = {
     }, //createWindowProperties
 };
 
-for (const subset of [definitionSet.events, definitionSet.paths])
+for (const subset of [definitionSet.words, definitionSet.events, definitionSet.paths])
     for (const index in subset)
         if (!subset[index])
             subset[index] = index;
