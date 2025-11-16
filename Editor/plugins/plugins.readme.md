@@ -83,12 +83,21 @@ Methods:
 1. `popSelection(toMove)` pops the current selection out of the selection stack and returns it as an array `[selectionStart, selectionEnd]`; if `toMove` is specified, the returned array is used to set the editor selection and scroll it to the selection
 1. `clearSelectionStack()` removes all data from the selection stack; this is done before the `handler` call
 1. `subscribeToModified(handler)`, where the single parameter, the editor's *modified* state, is passed to the `handler`; the `handler` is invoked every time `isModified` flag is changed to `true` or `false`.
+1. `validateCodeSyntax(code)` validates JavaScript `code` string.
 
 The properties `currentLines`, `nextLine`, `previousLine`, `currentWord`, `nextWord`, and `previousWord` return the array of two integer elements: the start and the end of the editor position for the found word or line. These properties always return valid positions. If the requested word or line is not found, the current editor selection is returned.
 
 The property `isModified` returns the current modified state of the editor. The plugins are supposed to determine if their operations modify the editor text and assign `true` to the property `isModified`. This is an extremely important point, because the modified state can affect the operations where the editor text could be potentially lost, for example, opening a file, or the termination of the application.
 
 The value returned by the property `canFindNextPrevious` depends on the state of the search system. It is updated by the call to the method `find`, depending on the number of occurrences found, and when the editor text is modified. Normally, this property is used to disable or enable the menu item that invokes the `handler` that can potentially use the methods `findNext` or `findPrevious`.
+
+The method `validateCodeSyntax(code)` returns returns `null` if the code is valid JavaScript. Otherwise, it returns the syntax error description object
+
+~~~
+{ message, location: {line, column}, position }
+~~~
+
+If Acorn parser is not installed, `validateCodeSyntax(code)` falls back to return `null` (valid code) in all cases.
 
 The methods `find`, `findNext`, and `findPrevious` reproduce the behavior of the Find dialog.
 
