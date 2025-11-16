@@ -115,19 +115,26 @@
             } //exception
         }; //runScript
 
+        const epilog = result => {
+            output(result);
+            api.scrollTo(startPoint, insertPoint);
+            api.isModified = true;
+        }; //epilog
+
         let code = api.selectedText;
         let functionError = undefined;
         let expressionError = undefined;
         let functionResult = undefined;
         let expressionResult = undefined;
-        [functionResult, functionError] = runScript(code);
+
         expressionMode = true;
         outputDetected = false;
         [expressionResult, expressionError] = runScript(`${codeReturn}${code}`);
         expressionMode = false;
-        let result = outputDetected 
-            ? functionResult
-            : functionResult ?? expressionResult;
+        if ((!expressionError) && (!outputDetected) && expressionResult)
+            return epilog(expressionResult);
+        [functionResult, functionError] = runScript(code);
+        const result = functionResult ?? expressionResult;
         const hasSolution = (!functionError) || (!expressionError);
         if (!hasSolution) {
             if (functionError && functionError.cause)
@@ -144,9 +151,7 @@
                     `<br/><br/>If code is interpreted as expression:<br/>${expressionError.message}`);
         } else if (functionError) //SA???
             throw new Error(`<br/>Function error:<br/><br/>${functionError.message}`);
-        output(result);
-        api.scrollTo(startPoint, insertPoint);
-        api.isModified = true;
+        epilog(result);
     }, //handler
 
     isEnabled: api => api.selectionLength > 0,
