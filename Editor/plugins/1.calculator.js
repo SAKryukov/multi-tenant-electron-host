@@ -8,6 +8,11 @@
 
     handler: api => {
         const codeReturn = "return ";
+        const codePrefix = `"use strict"; ${codeReturn} (() => {${api.newLine}`;
+        const codeAcornPrefix = codePrefix.replace(codeReturn, api.blankSpace.repeat(codeReturn.length));
+        const codeSuffix = `${api.newLine}})()`;
+        const sandwichCode = (userCode, isAcorn) =>
+            `${isAcorn ? codeAcornPrefix : codePrefix}${userCode}${codeSuffix}`;
         const codeArgument = "console";
         const jsonSpace = api.blankSpace.repeat(4);
         const startPoint = api.editor.selectionStart;
@@ -44,7 +49,11 @@
             }, jsonSpace);
         }; //stringify
 
+        let outputDetected = false;
+        let expressionMode = false;
         const output = object => {
+            outputDetected = true;
+            if (expressionMode) return;
             if (!object) object = api.empty + object;
             const text =
                 (firstLine ? api.newLine : api.empty)
@@ -72,9 +81,11 @@
             warn: output,
         }; //consoleApi
 
-        const scriptPrefix = `"use strict";` + api.newLine;
-        const highlightPosition = error => 
-            api.scrollTo(error.cause.position - scriptPrefix.length, error.cause.position  - scriptPrefix.length + 1);
+        const highlightPosition = (error, isExpression) => {
+            let shift = startPoint - codePrefix.length;
+            if (isExpression) shift -= codeReturn.length;
+            api.scrollTo(error.cause.position + shift, error.cause.position  + shift + 1);
+        } //highlightPosition
         const cleanMessage = message => 
             message.replace(/\s\([:0-9]+\)/, "");
 
@@ -82,12 +93,13 @@
         const replacedGlobalObjects = Array(globalObjects.length).fill(undefined);
         const runScript = code => {
             try {
-                const modifiedCode = scriptPrefix + code;
+                let modifiedCode = sandwichCode(code, true);
                 const syntax = api.validateCodeSyntax(modifiedCode);
                 if (syntax) {
                     const message = `${cleanMessage(syntax.message)}<br/>Line: ${syntax.location.line - 1}, column: ${syntax.location.column + 1}`;
                     return [null, new Error(message, { cause: syntax })];
                 } //if
+                modifiedCode = sandwichCode(code, false);
                 const script = new Function(
                     ...globalObjects,
                     codeArgument,
@@ -101,17 +113,23 @@
         let code = api.selectedText;
         let functionError = undefined;
         let expressionError = undefined;
-        let result = undefined;
-        [result, expressionError] =
-            runScript(codeReturn + `(${code.replace(/[;\s]+$/, api.empty)})`); // expression
-        if (expressionError) //function
-            [result, functionError] = runScript(code);
-        if (functionError && functionError.cause)
-            highlightPosition(functionError);
-        else if (expressionError && expressionError.cause)
-            highlightPosition(expressionError);
-        else
-            api.scrollTo(startPoint, insertPoint);
+        let functionResult = undefined;
+        let expressionResult = undefined;
+        [functionResult, functionError] = runScript(code);
+        expressionMode = true;
+        outputDetected = false;
+        [expressionResult, expressionError] = runScript(`${codeReturn}${code}`);
+        expressionMode = false;
+        let result = outputDetected 
+            ? functionResult
+            : functionResult ?? expressionResult;
+        const hasSolution = (!functionError) || (!expressionError);
+        if (!hasSolution) {
+            if (functionError && functionError.cause)
+                highlightPosition(functionError, false);
+            else if (expressionError && expressionError.cause)
+                highlightPosition(expressionError, true);
+        } //hasError
         if (expressionError && functionError) {
             if (functionError.message == expressionError.message)
                 throw functionError;
@@ -121,8 +139,8 @@
                     `<br/><br/>If code is interpreted as expression:<br/>${expressionError.message}`);
         } else if (functionError) //SA???
             throw new Error(`<br/>Function error:<br/><br/>${functionError.message}`);
-        api.scrollTo(api.editor.selectionEnd, api.editor.selectionEnd);
         output(result);
+        api.scrollTo(startPoint, insertPoint);
         api.isModified = true;
     }, //handler
 
