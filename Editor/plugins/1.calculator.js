@@ -19,6 +19,11 @@
         const insertPoint = api.editor.selectionEnd;
         let firstLine = true;
 
+        const linesBefireStartingPoint = (startPoint => {
+            const text = api.editor.value.slice(0, startPoint);
+            return text.split(api.newLine).length;
+        })(startPoint);
+
         const replacementObject = object => { // precondition is: object && object instanceof Object
             if (object instanceof Array) {
                 const length = object.length;
@@ -96,7 +101,7 @@
                 let modifiedCode = sandwichCode(code, true);
                 const syntax = api.validateCodeSyntax(modifiedCode);
                 if (syntax) {
-                    const message = `${cleanMessage(syntax.message)}<br/>Line: ${syntax.location.line - 1}, column: ${syntax.location.column + 1}`;
+                    const message = `${cleanMessage(syntax.message)}<br/>Line: ${syntax.location.line + linesBefireStartingPoint - 2}, column: ${syntax.location.column + 1}`;
                     return [null, new Error(message, { cause: syntax })];
                 } //if
                 modifiedCode = sandwichCode(code, false);
