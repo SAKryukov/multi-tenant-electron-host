@@ -43,7 +43,24 @@ const definitionSet = {
             } //webPreferences
         };
     }, //createWindowProperties
-};
+    commandLine: {
+        prefixes: [..."-/"],
+        isOption: function(argument) {
+            return argument.startsWith(this.prefixes[0]) || argument.startsWith(this.prefixes[1]);
+        }, //isOption
+        optionRecognition: {
+            regularExpression: /^([a-zAz]+)(:?)(.*?)([+-]?)$/,
+            components: match => {
+                return {
+                    key: match[1],
+                    value: match[3] + match[4],
+                    plus: match[4] == "+",
+                    minus: match[4] == "-",
+                };
+            }, //components
+        }, //optionRecognition
+    }, //commandLine
+}; //definitionSet
 
 for (const subset of [definitionSet.words, definitionSet.events, definitionSet.paths])
     for (const index in subset)
