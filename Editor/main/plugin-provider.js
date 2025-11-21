@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports.pluginProvider = (() => {
 
     const { definitionSet } = require("./definition-set.js");
@@ -7,7 +9,7 @@ module.exports.pluginProvider = (() => {
 
     let applicationPath, window;
 
-    pluginProvider = {
+    const pluginProvider = {
         setup: environment => {
             applicationPath = environment.applicationPath;
             window = environment.window;

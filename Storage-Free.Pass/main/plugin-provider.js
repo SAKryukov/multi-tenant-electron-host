@@ -23,7 +23,7 @@ module.exports.pluginProvider = (() => {
         return { filename, found, isMissing: false }
     }; //getOption
 
-    pluginProvider = {
+    const pluginProvider = {
         setup: environment => {
             window = environment.window;
         }, //setup
