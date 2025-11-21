@@ -16,7 +16,7 @@ const tenantBase = {
         metadata: null, // optional (copyright won't show in the About dialog)
         applicationIcon: null, // optional
     }, //paths
-    useCommandLine: true, // customize
+    useFileOnlyCommandLine: true, // customize
     pluginProvider: null, // optional, has to be customized or left unimplemented
     // end customization
 
@@ -118,7 +118,7 @@ const tenantBase = {
         }; //subscribeToEvents
 
         const handleCommandLine = (window, filename) => {
-            if (!this.useCommandLine) return;
+            if (!this.useFileOnlyCommandLine) return;
             if (filename)
                 utilitySet.openKnownFile(filename, (text, error) =>
                     window.webContents.send(
@@ -170,7 +170,7 @@ const tenantBase = {
         }; //createWindow
 
         app.whenReady().then(() => {
-            const filename = this.useCommandLine         
+            const filename = this.useFileOnlyCommandLine         
                 ? utilitySet.processCommandLine()
                 : null;
             const baseTitle = applicationPackage?.description;

@@ -11,6 +11,7 @@ function CommandLine(options) {
     const duplicateOptions = [];
 
     for (const index in options) {
+        options[index].key = index;
         metadataMap.set(index, options[index]);
         if (options[index].abbreviation) {
             const abbreviation = index.slice(0, options[index].abbreviation);
@@ -19,7 +20,10 @@ function CommandLine(options) {
     } //loop
 
     const propertyHandler = {
-        get (_target, property, _receiver) { return optionMap.get(property); }
+        get (_target, property, _receiver) { 
+            const value = optionMap.get(property);
+            return optionMap.get(property);
+        }
     } //propertyHandler
     this.option = new Proxy(this, propertyHandler);
 
@@ -38,7 +42,7 @@ function CommandLine(options) {
         for (const argument of process.argv) {
             if (++index < startFrom) continue;
             if (argument.startsWith(definitionSet.commandLine.prefixes[0]) || definitionSet.commandLine.prefixes[1]) {
-                if (argument.length < 2) { unrecognizedOptions.push(argument); continue; }
+                if (argument.   length < 2) { unrecognizedOptions.push(argument); continue; }
                 const argumentBody = argument.slice(1);
                 const match = definitionSet.commandLine.optionRecognition.regularExpression.exec(argumentBody);
                 if (!match) continue;
@@ -47,7 +51,7 @@ function CommandLine(options) {
                 if (optionMap.has(key)) { duplicateOptions.push(argument); continue; }
                 const metadata = metadataMap.get(key);
                 if (metadata)
-                    optionMap.set(key, {
+                    optionMap.set(metadata.key, {
                         index: parseInt(index),
                         isMissing: false,
                         name: metadata.name ?? key,

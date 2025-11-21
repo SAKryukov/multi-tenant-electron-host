@@ -24,7 +24,7 @@ module.exports.tenant = tenantRoot => {
     tenantBase.paths.applicationIcon = definitionSet.paths.applicationIcon;
     tenantBase.paths.index = definitionSet.paths.index;
     tenantBase.pluginProvider = pluginProvider;
-    tenantBase.useCommandLine = false;
+    tenantBase.useFileOnlyCommandLine = false;
 
     tenantBase.run(tenantRoot);
 
