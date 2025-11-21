@@ -6,7 +6,7 @@ const definitionSet = {
         index: "renderer/index.html",
         package: "package.json",
         metadata: "metadata.json",
-        applicationIcon: "images/sadb.png",
+        applicationIcon: "images/pass.png",
     },
     invalidApplicationPack: {
         title: "Invalid application pack",
@@ -22,6 +22,14 @@ const definitionSet = {
                 `${baseFilename} ${String.fromCharCode(0x2014)} ${title}`,
         },
     }, //utility
+    commandLine: {
+        options: {
+            crypto: { abbreviation: 1, name: "Crypto", description: "A file with substiture Crypto unit", },
+            accounts: { abbreviation: 1, name: "Accounts", description: "Set of accounts and password rules", },
+            documentation: { abbreviation: 1, name: "Account Documentation", description: "Documentation on account detils, informal", },
+        }, //options
+        start: 4,
+    }, //commandLine
 };
 
 for (const subset of [definitionSet.events])

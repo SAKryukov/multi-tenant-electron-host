@@ -9,8 +9,6 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
     }; //window.bridgePlugin.subscribeToPlugin
 
     if (window.bridgePlugin)
-        window.bridgePlugin.subscribeToPlugin(async plugins => {
-            const filename = plugins.crypto; //SA???
-    });
+        window.bridgePlugin.subscribeToPlugin(async plugins => pluginHandler.load(plugins));
 
 }); //DOMContentLoaded

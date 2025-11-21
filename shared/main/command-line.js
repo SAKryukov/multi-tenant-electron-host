@@ -52,6 +52,7 @@ function CommandLine(options) {
                 const metadata = metadataMap.get(key);
                 if (metadata)
                     optionMap.set(metadata.key, {
+                        key: metadata.key,
                         index: parseInt(index),
                         isMissing: false,
                         name: metadata.name ?? key,
@@ -67,6 +68,7 @@ function CommandLine(options) {
         for (const [key, metadata] of metadataMap) { // missing options
             if (optionMap.has(key)) continue;
             optionMap.set(key, {
+                key,
                 isMissing: true,
                 name: metadata.name ?? key,
                 description: metadata.description });
