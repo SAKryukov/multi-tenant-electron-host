@@ -1,0 +1,27 @@
+{
+  "name": "storage-free-pass",
+  "version": "5.0.0",
+  "description": "Storage-Free Pass",
+  "main": "./main/entry-point.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/SAKryukov/multi-tenant-electron-host",
+  "author": "Sergey A Kryukov",
+  "license": "MIT",
+  "keywords": [
+    "electron",
+    "nodejs",
+    "javascript",
+    "plugin",
+    "cross-platform",
+    "chrome-browser",
+    "chromium-browser",
+    "keyboard-macros",
+    "remote-debugger",
+    "remote-debugging"
+  ],
+  "devDependencies": {
+    "electron": "^37.4.0"
+  }
+}

@@ -14,6 +14,18 @@
       "outputCapture": "std"
     },
     {
+      "name": "Storage-Free.Pass",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "c:/app/Node.js/node_modules/.bin/electron.cmd",
+      "windows": {
+        "runtimeExecutable": "c:/app/Node.js/node_modules/electron/dist/electron.exe"
+      },
+      "args" : ["${workspaceFolder}/Storage-Free.Pass", "--remote-debugging-port=9223", "--trace-warnings", "${workspaceFolder}/test.txt"],
+      "outputCapture": "std"
+    },
+    {
       "name": "Database",
       "type": "node",
       "request": "launch",
@@ -39,6 +51,14 @@
       "request": "attach",
       "port": 9223,
       "webRoot": "${workspaceFolder}/Personal.Database",
+      "timeout": 30000
+    },
+    {
+      "name": "Storage-Free.Pass.Renderer",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "webRoot": "${workspaceFolder}/Storage-Free.Pass",
       "timeout": 30000
     },
     {
@@ -85,6 +105,13 @@
       "configurations": [
         "Database", "DatabaseRenderer",
       ]
-    }
+    },
+    {
+      "name": "Storage-Free.Pass: All",
+      "configurations": [
+        "Storage-Free.Pass", "Storage-Free.Pass.Renderer",
+      ]
+    },
+
   ]
 }

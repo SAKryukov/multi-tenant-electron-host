@@ -9,13 +9,16 @@ const path = require("node:path");
 
 const tenantBase = {
 
+    // customization: 
     paths: { // has to be customized
         package: null, // mandatory
         index: null, // mandatory
         metadata: null, // optional (copyright won't show in the About dialog)
         applicationIcon: null, // optional
     }, //paths
+    useCommandLine: true, // customize
     pluginProvider: null, // optional, has to be customized or left unimplemented
+    // end customization
 
     run: function(tenantRoot) {
 
@@ -115,6 +118,7 @@ const tenantBase = {
         }; //subscribeToEvents
 
         const handleCommandLine = (window, filename) => {
+            if (!this.useCommandLine) return;
             if (filename)
                 utilitySet.openKnownFile(filename, (text, error) =>
                     window.webContents.send(
@@ -166,7 +170,9 @@ const tenantBase = {
         }; //createWindow
 
         app.whenReady().then(() => {
-            const filename = utilitySet.processCommandLine();
+            const filename = this.useCommandLine         
+                ? utilitySet.processCommandLine()
+                : null;
             const baseTitle = applicationPackage?.description;
             const title = filename
                 ? definitionSet.utility.fileNaming.title(path.basename(filename), baseTitle)
