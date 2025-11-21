@@ -17,7 +17,7 @@
       "name": "Storage-Free.Pass",
       "type": "node",
       "request": "launch",
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/Storage-Free.Pass/test",
       "runtimeExecutable": "c:/app/Node.js/node_modules/.bin/electron.cmd",
       "windows": {
         "runtimeExecutable": "c:/app/Node.js/node_modules/electron/dist/electron.exe"
