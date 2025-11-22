@@ -87,7 +87,7 @@ const pluginProcessor = (() => {
         const allPlugins = [];
         for (const filename of plugins) {
             lastError = null;
-            window.window.bridgePlugin.loadPlugin(filename, (result, error) => {
+            window.bridgePlugin.loadPlugin(filename, (result, error) => {
                 if (result) {
                     if (isValidPlugin(result))
                         validPlugins.push({ filename, result });
