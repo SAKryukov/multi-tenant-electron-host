@@ -95,6 +95,10 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgeUI, {
         });
     }, //subscribeToApplicationClose
     showExternalUri: uri => ipcRenderer.send(ipcChannel.ui.showExternalUri, uri),
+    openLocalFile: (filename, relativeToApplicationPath) =>
+        ipcRenderer.send(ipcChannel.ui.openLocalFile, filename, relativeToApplicationPath),
+    showInBrowserHelp: () =>
+        ipcRenderer.send(ipcChannel.ui.showInBrowserHelp),
     canZoomIn: () => zoom.canZoomIn(),
     canZoomOut: () => zoom.canZoomOut(),
     zoomIn: () => zoom.zoomIn(),

@@ -21,6 +21,8 @@ const ipcChannel = {
         fullscreenToggle: 0,
         requestToIgnoreUnsavedData: 0,
         showExternalUri: 0,
+        openLocalFile: 0, // (filename, relativeToApplicationPath (if false, relative to current working directory))
+        showInBrowserHelp: 0 // no parameters, help or helpURI from metadata.json
     }, //ui
 }; //ipcChannel
 
