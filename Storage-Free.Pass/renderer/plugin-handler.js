@@ -76,6 +76,9 @@ const pluginHandler = (() => {
         accountDocumentation: {
             get() { return accountDocumentation; }
         },
+        hasCriticalErrors: {
+            get() { return issues.length > 0; }
+        },
     }); //Object.defineProperties
 
     return pluginHandler;

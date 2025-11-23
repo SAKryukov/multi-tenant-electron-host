@@ -15,6 +15,7 @@ dialog > section > h4 > img { margin-right: 1.2em; }
 dialog > section:first-of-type { background-color: floralWhite; padding-top: var(--vertical-gap-clipboard); }
 dialog > section:last-of-type { background-color: hsl(300, 10%, 84%); border-top: darkviolet solid thin; display: flex; justify-content: space-around; }
 dialog button {
+    font-size: 100%;
     background-color: ghostwhite;
     border: solid thin darkviolet;
     padding-left: var(--horizontal-gap);

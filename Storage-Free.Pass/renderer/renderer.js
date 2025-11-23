@@ -11,7 +11,11 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
     if (window.bridgePlugin)
         window.bridgePlugin.subscribeToPlugin(async plugins => {
             pluginHandler.load(plugins);
-            ui(pluginHandler.accountSet);
+            if (pluginHandler.hasCriticalErrors)
+                // temporarily:
+                showMessage("<p>There are command-line errors</p><br/>", null, true); //close                
+            else
+                ui(pluginHandler.accountSet);
     }); //if
 
 }); //DOMContentLoaded

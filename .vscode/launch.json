@@ -23,7 +23,7 @@
         "runtimeExecutable": "c:/app/Node.js/node_modules/electron/dist/electron.exe"
       },
       "args" : ["${workspaceFolder}/Storage-Free.Pass", "--remote-debugging-port=9223", "--trace-warnings",
-        "-a:accounts.js", "-c:crypto.js"],
+        "-a:accounts.js", "-c:crypto.js", "-d:accountInfo.html"],
       "outputCapture": "std"
     },
     {
