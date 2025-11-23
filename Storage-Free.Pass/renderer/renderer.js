@@ -9,6 +9,9 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
     }; //window.bridgePlugin.subscribeToPlugin
 
     if (window.bridgePlugin)
-        window.bridgePlugin.subscribeToPlugin(async plugins => pluginHandler.load(plugins));
+        window.bridgePlugin.subscribeToPlugin(async plugins => {
+            pluginHandler.load(plugins);
+            ui(pluginHandler.accountSet());
+    }); //if
 
 }); //DOMContentLoaded
