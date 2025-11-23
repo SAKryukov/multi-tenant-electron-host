@@ -11,7 +11,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
     if (window.bridgePlugin)
         window.bridgePlugin.subscribeToPlugin(async plugins => {
             pluginHandler.load(plugins);
-            ui(pluginHandler.accountSet());
+            ui(pluginHandler.accountSet);
     }); //if
 
 }); //DOMContentLoaded
