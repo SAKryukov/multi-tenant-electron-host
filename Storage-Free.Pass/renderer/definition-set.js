@@ -22,6 +22,7 @@ const definitionSet = (() => {
         ///////////////// End From legacy
         elements: {
             button: 0,
+            span: 0,
             a: 0,
         }, //elements
         cssClasses: {
@@ -42,6 +43,11 @@ const definitionSet = (() => {
         documentationError: (uri, error) =>
             `Error loading ${uri}<br/>` +
             `<p style="color:red">${error}</p><br/>`,
+        paths: {
+            image: "../images/pass.png",
+        },
+        buttonActivation: event =>
+            event.code == "Enter" || event.code == "Space",
     }; //definitionSetExtension
 
     namespaces.initializeNames([

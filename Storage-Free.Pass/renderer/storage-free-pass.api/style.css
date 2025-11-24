@@ -57,6 +57,7 @@
       main > section { display: inline-block; vertical-align: top; }
       footer { border-top: var(--border); }
       footer a { margin-left: var(--big-horizontal-gap); }
+      footer { padding-top: 0; padding-bottom: 0; }
       header > section, h1, footer, td { white-space: nowrap; }
       header { background-color: transparent; }
       footer { background-color: azure; }

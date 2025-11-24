@@ -1,6 +1,6 @@
 "use strict";
 
-const ui = (accountData, effectivePasswordGenerator) => {
+const ui = (accountData, effectivePasswordGenerator, metadata) => {
 
     const prepareData = data => {
         //var data... accounts
@@ -134,7 +134,7 @@ const ui = (accountData, effectivePasswordGenerator) => {
 
     const main = () => {
         const elementSet = createContent();
-        elements = createElements();
+        elements = createElements(metadata);
         elements.populate(elementSet, inputData, refresh, accountIndexMap);
         setTimeout( () => { elements.masterPassword.focus(); });
         const clipboardCopyHandler = textCreator => {

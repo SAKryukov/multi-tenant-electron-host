@@ -2,24 +2,35 @@
 
 function ElectronAnchorButton() {
 
-    const element = document.createElement(definitionSet.elements.button);
+    const element = document.createElement(definitionSet.elements.span);
     element.className = definitionSet.cssClasses.anchor;
+    element.tabIndex = 0;
     let uri = null;
     let filename = null;
     let help = false;
+    let customHandler = null;
     let errorHandler = error => alert(error);
 
     this.append = parent =>
         parent.appendChild(element);
 
-    element.onclick = () => {
-        if (help) // priority
+    const inputHandler = () => {
+        if (customHandler) // priority
+            customHandler();
+        else if (help) 
             window.bridgeUI.showInBrowserHelp();
         else if (filename != null)
             window.bridgeUI.openLocalFile(filename, false, (filename, error) => errorHandler?.(filename, error));
-        else 
+        else if (uri != null)
             window.bridgeUI.showExternalUri(uri, (uri, error) => errorHandler?.(uri, error));
-    } //element.onclick
+    }; //inputHandler
+
+    element.onclick = () => inputHandler();
+    element.onkeydown = event => {
+        if (!definitionSet.buttonActivation(event)) return;
+        inputHandler();
+        event.preventDefault();
+    }; //element.onkeydown
 
     Object.defineProperties(this, {
         text: {
@@ -36,6 +47,9 @@ function ElectronAnchorButton() {
         },
         help: {
             set(value) { help = value; }
+        },
+        customHandler: {
+            set(value) { customHandler = value; }
         },
         errorHandler: {
             set(value) { errorHandler = value; }

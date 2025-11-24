@@ -1,6 +1,6 @@
 "use strict";
 
-    const createElements = () => {
+    const createElements = metadata => {
 
         const elements = {        
 
@@ -115,9 +115,11 @@
                 const copyrightElement = elementSet.copyrightElement;
                 const versionElement = elementSet.versionPlaceholder;
                 const userMetadataPlaceholder = elementSet.userMetadataPlaceholder;
-                const directory = "directory/"; //api.getCurrentDirectory(); SA??? //SA adjust help URI
                 document.title = definitionSet.title;
-                elementSet.helpAnchor.href = directory + definitionSet.help;
+                elementSet.helpAnchor.customHandler = () =>
+                    window.bridgeUI.showInBrowserHelp();
+                elementSet.helpAboutAnchor.customHandler = () => 
+                    showMessage(definitionSet.aboutDialog(metadata, definitionSet.paths.image), elementSet.helpAboutAnchor);
                 mainTitleElement.textContent = definitionSet.title;
                 mainTitleElement.title =
                     definitionSet.formats.mainTitleTooltip(definitionSet.description, definitionSet.version, this.inputData.metadata.title, this.inputData.metadata.version);

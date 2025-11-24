@@ -94,7 +94,10 @@ const tenantBase = {
                     window.webContents.send(ipcChannel.ui.openLocalFile, normalizedPath, error.message));
             }), //openLocalFile
             ipcMain.on(ipcChannel.ui.showInBrowserHelp, (_event) => {
-                //SA???
+                const documentation = applicationPackage.metadata.documentation;
+                if (!documentation) return;
+                const fullPath = path.join(app.getAppPath(), tenantRoot, documentation);
+                shell.openPath(fullPath);
             }); //openLocalFile
             ipcMain.on(ipcChannel.fileIO.openFile, (_event, dialogTitle, defaultPath, filters) => {
                 utilitySet.openFile(window, (filename, text, error) => {

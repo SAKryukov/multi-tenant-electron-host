@@ -140,11 +140,14 @@ const createContent = () => {
         const span = document.createElement("span");
         span.innerHTML = "Copyright &copy; ";
         elementSet.copyrightElement = document.createElement("span");
-        elementSet.helpAnchor = document.createElement("a");
-        elementSet.helpAnchor.textContent = "Help";
+        elementSet.helpAnchor = new ElectronAnchorButton();
+        elementSet.helpAboutAnchor = new ElectronAnchorButton();
+        elementSet.helpAnchor.text = "Help";
+        elementSet.helpAboutAnchor.text = "About";
         footerContent.appendChild(span);
         footerContent.appendChild(elementSet.copyrightElement);
-        footerContent.appendChild(elementSet.helpAnchor);
+        elementSet.helpAnchor.append(footerContent);
+        elementSet.helpAboutAnchor.append(footerContent);
         footer.appendChild(footerContent);
         document.body.appendChild(footer);
     })(); //footer

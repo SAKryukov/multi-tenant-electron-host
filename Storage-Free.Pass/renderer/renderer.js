@@ -15,7 +15,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
                 // temporarily:
                 showMessage(pluginHandler.issues, null, true); //close                
             else
-                ui(pluginHandler.accountSet, pluginHandler.crypto);
+                ui(pluginHandler.accountSet, pluginHandler.crypto, window.bridgeMetadata.pushedMetadata());
     }); //if
 
 }); //DOMContentLoaded
