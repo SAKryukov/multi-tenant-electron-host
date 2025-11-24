@@ -10,22 +10,38 @@ const pluginHandler = (() => {
     const loadPlugin = filename => {
         let error = null;
         let plugin = null;
-        window.bridgePlugin.loadPlugin(filename, (result, error) => {
-            if (error)
+        window.bridgePlugin.loadPlugin(filename, (aPlugin, anError) => {
+            if (anError)
                 error = lastError;
             else
-                plugin = result;
+                plugin = aPlugin;
         });
         return { error, plugin };
     }; //loadPlugin
 
     const issueClassifier = {
-        missing: { optionKey: 0, },
-        fileNotFound: { optionKey: 0, filename: 0, },
-        codeException: { optionKey: 0, filename: 0, errorMessage: null, line: null, column: null, },
+        missing: 1, //{ optionKey, },
+        fileNotFound: 2, // { optionKey, filename, },
+        codeException: 3, // { optionKey, filename, errorMessage, line, column, },
     }; //issueClassifier
 
     const issues = [];
+    const formatIssues = () => {
+        const items = [];
+        for (const issue of issues)
+            switch (issue.classified) {
+                case issueClassifier.missing:
+                items.push(definitionSet.pluginErrors.missingOption(issue.optionKey)); break;
+                case issueClassifier.fileNotFound:
+                items.push(definitionSet.pluginErrors.fileNotFound(issue.optionKey, issue.filename)); break;
+                case issueClassifier.codeException:
+                items.push(definitionSet.pluginErrors.codeException(
+                    issue.filename,
+                    issue.errorMessage,
+                    issue.line, issue.column)); break;
+            } //switch
+        return definitionSet.pluginErrors.allIssues(items);
+    } //formatIssues
 
     const processPlugin = (option, isDocumentation, isOptional) => {
         if (option.isMissing && isOptional)
@@ -78,6 +94,9 @@ const pluginHandler = (() => {
         },
         hasCriticalErrors: {
             get() { return issues.length > 0; }
+        },
+        issues: {
+            get() { return formatIssues(issues); }
         },
     }); //Object.defineProperties
 

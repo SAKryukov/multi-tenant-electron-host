@@ -13,7 +13,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
             pluginHandler.load(plugins);
             if (pluginHandler.hasCriticalErrors)
                 // temporarily:
-                showMessage("<p>There are command-line errors</p><br/>", null, true); //close                
+                showMessage(pluginHandler.issues, null, true); //close                
             else
                 ui(pluginHandler.accountSet, pluginHandler.crypto);
     }); //if
