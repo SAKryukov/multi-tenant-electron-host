@@ -26,9 +26,8 @@ const definitionSet = {
         options: {
             crypto: { abbreviation: 1, name: "Crypto", description: "A file with substiture Crypto unit", },
             accounts: { abbreviation: 1, name: "Accounts", description: "Set of accounts and password rules", },
-            documentation: { abbreviation: 1, name: "Account Documentation", description: "Documentation on account detils, informal", },
         }, //options
-        start: 4,
+        start: 2,
     }, //commandLine
 };
 

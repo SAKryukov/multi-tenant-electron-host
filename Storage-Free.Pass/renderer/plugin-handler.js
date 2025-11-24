@@ -4,7 +4,6 @@ const pluginHandler = (() => {
 
     let crypto = passwordGenerator;
     let accountSet = null;
-    let accountDocumentation = null;
     let lastError = null;
 
     const loadPlugin = filename => {
@@ -43,7 +42,7 @@ const pluginHandler = (() => {
         return definitionSet.pluginErrors.allIssues(items);
     } //formatIssues
 
-    const processPlugin = (option, isDocumentation, isOptional) => {
+    const processPlugin = (option, isOptional) => {
         if (option.isMissing && isOptional)
             return null;
         if (option.isMissing)
@@ -51,8 +50,6 @@ const pluginHandler = (() => {
         if (!option.found)
             return issues.push({ classified: issueClassifier.fileNotFound, optionKey: option.key,
                 filename: option.filename });
-        if (isDocumentation)
-            return option.filename;
         const accountSetCandidate = loadPlugin(option.filename);
         if (accountSetCandidate.error)
             return issues.push({ classified: issueClassifier.codeException, optionKey: option.key,
@@ -76,8 +73,7 @@ const pluginHandler = (() => {
             window.onerror = (message, source, line, column, error) =>
                 lastError = { message, source, line, column, error };
             processAccounts(plugins.accounts);
-            processAccountDocumentation(plugins.accountDocumentation, true); // documentation
-            processCrypto(plugins.crypto, false, true); // not documentation, optional
+            processCrypto(plugins.crypto, true); // not documentation, optional
             window.onerror = null;
         }, //load
     }; //pluginHandler
@@ -88,9 +84,6 @@ const pluginHandler = (() => {
         },
         accountSet: {
             get() { return accountSet; }
-        },
-        accountDocumentation: {
-            get() { return accountDocumentation; }
         },
         hasCriticalErrors: {
             get() { return issues.length > 0; }

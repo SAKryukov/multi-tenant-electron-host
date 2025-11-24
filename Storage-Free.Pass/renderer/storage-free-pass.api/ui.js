@@ -111,18 +111,25 @@ const ui = (accountData, effectivePasswordGenerator) => {
     const refresh = accountIndex => {
         showPassword();
         const value = inputData.accounts[accountIndex];
-        if (value.display.url)
-            elements.url.innerHTML = `<a href="${value.display.url}">${value.display.name}</a>`;
-        else
+        if (value.display.url) {
+            elements.url.innerHTML = new String();
+            const button = new ElectronAnchorButton();
+            button.errorHandler = (uri, error) =>
+                showMessage(definitionSet.documentationError(uri, error));
+            button.text = value.display.name;
+            button.uri = value.display.url;
+            button.append(elements.url);
+        } else
             elements.url.innerHTML = `<b>${value.display.name}</b>`;
         elements.userInfo.name.textContent = elements.isButtonDown(elements.userInfo.visibilityButton) ?
             value.display.user.name : value.display.hiddenUserAuthenticationName;
         elements.seed.textContent = value.identity.seed;
         elements.positions.textContent = `${value.identity.selection.start} ${value.identity.selection.length} ${value.identity.selection.shift}`;
+        elements.anchorUser.enabled = !!value.display.user.url;
         if (value.display.user.url)
-            elements.userInfo.url.setAttribute("href", value.display.user.url);
+            elements.anchorUser.filename = value.display.user.url;
         else
-            elements.userInfo.url.removeAttribute("href");
+            elements.anchorUser.filename = null;
     }; //refresh
 
     const main = () => {

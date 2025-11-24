@@ -5,6 +5,7 @@
         const elements = {        
 
             populate: function (elementSet, inputData, refresh, accountIndexMap) {
+                this.anchorUser = elementSet.anchorUser;
                 this.accountIndexMap = accountIndexMap;
                 this.refresh = refresh;
                 this.inputData = inputData;

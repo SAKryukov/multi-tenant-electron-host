@@ -94,9 +94,14 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgeUI, {
             ipcRenderer.send(ipcChannel.ui.requestToIgnoreUnsavedData, request());
         });
     }, //subscribeToApplicationClose
-    showExternalUri: uri => ipcRenderer.send(ipcChannel.ui.showExternalUri, uri),
-    openLocalFile: (filename, relativeToApplicationPath) =>
-        ipcRenderer.send(ipcChannel.ui.openLocalFile, filename, relativeToApplicationPath),
+    showExternalUri: (uri, errorHandler) => {
+        ipcRenderer.send(ipcChannel.ui.showExternalUri, uri);
+        ipcRenderer.once(ipcChannel.ui.showExternalUri, (_event, uri, error) => errorHandler?.(uri, error));
+    }, //showExternalUri
+    openLocalFile: (filename, relativeToApplicationPath, errorHandler) => {
+        ipcRenderer.send(ipcChannel.ui.openLocalFile, filename, relativeToApplicationPath);
+        ipcRenderer.once(ipcChannel.ui.openLocalFile, (_event, filename, error) => errorHandler?.(filename, error));
+    }, //openLocalFile
     showInBrowserHelp: () =>
         ipcRenderer.send(ipcChannel.ui.showInBrowserHelp),
     canZoomIn: () => zoom.canZoomIn(),

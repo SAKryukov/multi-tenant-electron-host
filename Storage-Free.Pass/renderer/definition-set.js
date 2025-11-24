@@ -20,6 +20,13 @@ const definitionSet = (() => {
                 `${description}\nv.${String.fromCodePoint(0x2009)}${version}\nUser data: ${userTitle} ${userVersion ? "v." + String.fromCodePoint(0x2009) + userVersion.toString() : ""}`,
         },
         ///////////////// End From legacy
+        elements: {
+            button: 0,
+            a: 0,
+        }, //elements
+        cssClasses: {
+            anchor: 0,
+        }, //cssClasses
         pluginErrors: {
             missingOption: optionKey =>
                 `<p>Add option -${optionKey}:&lt;file name&gt;</p>`,
@@ -32,9 +39,14 @@ const definitionSet = (() => {
             allIssues: issues =>
                 `<h2>Plugin ${issues.length > 1 ? "errors" : "error"}:</h2><br/>${issues.join("<br/")}</br>`,
         },
+        documentationError: (uri, error) =>
+            `Error loading ${uri}<br/>` +
+            `<p style="color:red">${error}</p><br/>`,
     }; //definitionSetExtension
 
-    //namespaces.initializeNames([]);
+    namespaces.initializeNames([
+        definitionSetExtension.elements,
+        definitionSetExtension.cssClasses]);
 
     namespaces.extend(extensibleDefinitionSet, definitionSetExtension);
 

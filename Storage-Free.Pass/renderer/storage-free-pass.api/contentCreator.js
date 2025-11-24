@@ -87,13 +87,17 @@ const createContent = () => {
         elementSet.table.rows[3].title = "Selection of data used for password generation: start of password in cryptographic hash, password length, character repertoire offset, inserts";
         elementSet.table.rows[4].title = "Account password";
         // row 1:
-        elementSet.anchorUser = document.createElement("a");
-        elementSet.anchorUser.textContent = "User";
+        const anchorUserSpan = document.createElement("span");
+        elementSet.anchorUser = new ElectronAnchorButton();
+        elementSet.anchorUser.errorHandler = (uri, error) =>
+            showMessage(definitionSet.documentationError(uri, error));
+        elementSet.anchorUser.text = "User";
+        elementSet.anchorUser.append(anchorUserSpan);
         const anchorUserSpacing = document.createTextNode(" ");
         const userLabel = document.createElement("label");
         userLabel.accessKey = "N";
         userLabel.innerHTML = "<u>N</u>ame:";
-        elementSet.table.rows[1].cells[0].appendChild(elementSet.anchorUser);
+        elementSet.table.rows[1].cells[0].appendChild(anchorUserSpan);
         elementSet.table.rows[1].cells[0].appendChild(anchorUserSpacing);
         elementSet.table.rows[1].cells[0].appendChild(userLabel);
         elementSet.userNameToClipboardButton = document.createElement("button");

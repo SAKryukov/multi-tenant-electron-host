@@ -11,9 +11,10 @@
         <script src="../../shared/renderer/definition-set.js"></script>
         <script src="../../shared/renderer/default-message-dialog.js"></script>
         <script src="../../shared/renderer/view-menu-subscription.js"></script>
+        <script src="./definition-set.js"></script>
         <script src="./crypto.js"></script>
         <script src="./plugin-handler.js"></script>
-        <script src="./definition-set.js"></script>
+        <script src="./components/electron-anchor-button.js"></script>
         <script src="./storage-free-pass.api/utility.js"></script>
         <script src="./storage-free-pass.api/contentCreator.js"></script>
         <script src="./storage-free-pass.api/controls.js"></script>
@@ -25,6 +26,24 @@
         <style>
             @import url(storage-free-pass.api/style.css);
             @import url(../../shared/agnostic/renderer/modal-dialog.css);
+            button.anchor {
+                font-size: 100%;
+                border: none;
+                outline: none;
+                background-color: transparent;
+                color: blue;
+                padding: 0;
+                text-decoration: underline;
+            }
+            button.anchor:focus {
+                outline: solid blue 2px;
+                border-radius: 3.2px;
+                outline-offset: 0.2em;
+            }
+            button:disabled {
+                color: black;
+                text-decoration: none;
+            }
         </style>
     </head>
 <body /> 

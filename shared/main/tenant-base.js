@@ -6,6 +6,7 @@ const { definitionSet } = require("./definition-set.js");
 const { app, BrowserWindow, Menu, ipcMain, shell } = require("electron");
 const fs = require("node:fs");
 const path = require("node:path");
+const url = require('url');
 
 const tenantBase = {
 
@@ -76,14 +77,23 @@ const tenantBase = {
                         shell.openExternal(source);
                 } //if
             }); //metadata.source
-            ipcMain.on(ipcChannel.ui.showExternalUri, (_event, uri) => shell.openExternal(uri));
+            ipcMain.on(ipcChannel.ui.showExternalUri, (_event, uri) => {
+                const promise = shell.openExternal(uri);
+                promise.then(() => {}, error =>
+                    window.webContents.send(ipcChannel.ui.showExternalUri, uri, error.message));
+            }), //showExternalUri
             ipcMain.on(ipcChannel.ui.openLocalFile, (_event, filename, relativeToApplicationPath) => {
                 const fullPath = relativeToApplicationPath // relative to current working directory otherwise
                     ? path.join(app.getAppPath(), tenantRoot, filename)
                     : path.join(process.cwd(), filename);
-                shell.openPath(fullPath);
-            }); //openLocalFile
-            ipcMain.on(ipcChannel.ui.showInBrowserHelp, (_event, uri) => {
+                //shell.openPath(fullPath);
+                const normalizedPath = path.normalize(fullPath);
+                const fileURL = url.pathToFileURL(normalizedPath).href;
+                const promise = shell.openExternal(fileURL);
+                promise.then(() => {}, error =>
+                    window.webContents.send(ipcChannel.ui.openLocalFile, normalizedPath, error.message));
+            }), //openLocalFile
+            ipcMain.on(ipcChannel.ui.showInBrowserHelp, (_event) => {
                 //SA???
             }); //openLocalFile
             ipcMain.on(ipcChannel.fileIO.openFile, (_event, dialogTitle, defaultPath, filters) => {

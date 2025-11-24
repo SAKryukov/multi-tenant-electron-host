@@ -26,11 +26,9 @@ module.exports.pluginProvider = (() => {
             const cwd = process.cwd();
             const crypto = getOption(commandLine.option.crypto, cwd);
             const accounts = getOption(commandLine.option.accounts, cwd);
-            const accountDocumentation = getOption(commandLine.option.documentation, cwd);
             window.webContents.send(channel, {
                 crypto,
                 accounts,
-                accountDocumentation,
             });
         }, //sendScripts
     }; //pluginProvider
