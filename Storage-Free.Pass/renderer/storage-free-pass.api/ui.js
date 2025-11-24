@@ -1,6 +1,6 @@
 "use strict";
 
-const ui = accountData => {
+const ui = (accountData, effectivePasswordGenerator) => {
 
     const prepareData = data => {
         //var data... accounts
@@ -22,7 +22,7 @@ const ui = accountData => {
         for (let accountIndex in inputData.accounts)
             generatedData[accountIndex] = undefined;
         const index = accountIndexMap[elements.accountSelector.selectedIndex];
-        passwordGenerator(
+        effectivePasswordGenerator(
             elements.masterPassword.value,
             inputData.accounts[index].identity.seed,
             inputData.accounts[index].identity.selection.start,

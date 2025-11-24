@@ -15,7 +15,7 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
                 // temporarily:
                 showMessage("<p>There are command-line errors</p><br/>", null, true); //close                
             else
-                ui(pluginHandler.accountSet);
+                ui(pluginHandler.accountSet, pluginHandler.crypto);
     }); //if
 
 }); //DOMContentLoaded
