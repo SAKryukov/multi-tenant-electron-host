@@ -12,7 +12,7 @@ function ElectronAnchorButton() {
     let errorHandler = error => alert(error);
     let isEnabled = true;
 
-    this.append = parent =>
+    this.appendSelf = parent =>
         parent.appendChild(element);
 
     const inputHandler = () => {

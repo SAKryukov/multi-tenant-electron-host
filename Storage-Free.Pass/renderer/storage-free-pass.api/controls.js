@@ -5,7 +5,6 @@
         const elements = {        
 
             populate: function (elementSet, inputData, refresh, accountIndexMap) {
-                this.anchorUser = elementSet.anchorUser;
                 this.accountIndexMap = accountIndexMap;
                 this.refresh = refresh;
                 this.inputData = inputData;
@@ -21,9 +20,10 @@
                 this.masterPasswordVisibilityButton = elementSet.masterPasswordVisibilityButton;
                 this.accountSelector = elementSet.accountSelector;
                 this.url = elementSet.tableAccountCell;
+                this.buttonUrl = elementSet.buttonUrl;
                 this.userInfo = {};
                 this.userInfo.name = this.table.rows[1].cells[1];
-                this.userInfo.url = elementSet.anchorUser;
+                this.userInfo.url = elementSet.buttonUserUrl;
                 this.userInfo.clipboardButton = elementSet.userNameToClipboardButton;
                 this.userInfo.visibilityButton = elementSet.userNameToggleVisibilityButton;
                 this.seed = this.table.rows[2].cells[1];

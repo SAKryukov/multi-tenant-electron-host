@@ -87,17 +87,21 @@ const createContent = () => {
         elementSet.table.rows[3].title = "Selection of data used for password generation: start of password in cryptographic hash, password length, character repertoire offset, inserts";
         elementSet.table.rows[4].title = "Account password";
         // row 1:
-        const anchorUserSpan = document.createElement("span");
-        elementSet.anchorUser = new ElectronAnchorButton();
-        elementSet.anchorUser.errorHandler = (uri, error) =>
+        const userSpan = document.createElement("span");
+        elementSet.buttonUserUrl = new ElectronAnchorButton();
+        elementSet.buttonUrl = new ElectronAnchorButton();
+        elementSet.buttonUserUrl.errorHandler = (uri, error) =>
             showMessage(definitionSet.documentationError(uri, error));
-        elementSet.anchorUser.text = "User";
-        elementSet.anchorUser.append(anchorUserSpan);
-        const anchorUserSpacing = document.createTextNode(" ");
+        elementSet.buttonUrl.errorHandler = (uri, error) =>
+            showMessage(definitionSet.documentationError(uri, error));
+        elementSet.buttonUserUrl.text = "User";
+        elementSet.buttonUserUrl.appendSelf(userSpan);
+        elementSet.buttonUrl.appendSelf(elementSet.tableAccountCell);
+        const userSpacing = document.createTextNode(" ");
         const userLabel = document.createElement("label");
         userLabel.innerHTML = "Name:";
-        elementSet.table.rows[1].cells[0].appendChild(anchorUserSpan);
-        elementSet.table.rows[1].cells[0].appendChild(anchorUserSpacing);
+        elementSet.table.rows[1].cells[0].appendChild(userSpan);
+        elementSet.table.rows[1].cells[0].appendChild(userSpacing);
         elementSet.table.rows[1].cells[0].appendChild(userLabel);
         elementSet.userNameToClipboardButton = document.createElement("button");
         elementSet.userNameToClipboardButton.title = "Copy to clipboard";
@@ -149,10 +153,10 @@ const createContent = () => {
         elementSet.helpAboutButton.title = "F1";
         footerContent.appendChild(span);
         footerContent.appendChild(elementSet.copyrightElement);
-        elementSet.helpButton.append(footerContent);
-        elementSet.helpAboutButton.append(footerContent);
-        elementSet.helpSourceCodeButton.append(footerContent);
-        elementSet.helpArticleButton.append(footerContent);
+        elementSet.helpButton.appendSelf(footerContent);
+        elementSet.helpAboutButton.appendSelf(footerContent);
+        elementSet.helpSourceCodeButton.appendSelf(footerContent);
+        elementSet.helpArticleButton.appendSelf(footerContent);
         footer.appendChild(footerContent);
         document.body.appendChild(footer);
     })(); //footer
