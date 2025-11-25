@@ -3,18 +3,21 @@
 function ElectronAnchorButton() {
 
     const element = document.createElement(definitionSet.elements.span);
-    element.className = definitionSet.cssClasses.anchor;
+    element.classList.add(definitionSet.cssClasses.anchor);
     element.tabIndex = 0;
     let uri = null;
     let filename = null;
     let help = false;
     let customHandler = null;
     let errorHandler = error => alert(error);
+    let isEnabled = true;
 
     this.append = parent =>
         parent.appendChild(element);
 
     const inputHandler = () => {
+        if (!isEnabled)
+            returnl
         if (customHandler) // priority
             customHandler();
         else if (help) 
@@ -39,6 +42,9 @@ function ElectronAnchorButton() {
         text: {
             set(value) { element.textContent = value; }
         },
+        title: {
+            set(value) { element.title = value; }
+        },
         uri: {
             set(value) { uri = value; }
         },
@@ -55,8 +61,15 @@ function ElectronAnchorButton() {
             set(value) { errorHandler = value; }
         },
         enabled: {
-            set(value) { element.disabled = !value; }
-        },
+            set(value) {
+                isEnabled = value;
+                if (value)
+                    element.classList.remove(definitionSet.cssClasses.disabled);
+                else
+                    element.classList.add(definitionSet.cssClasses.disabled);
+                element.tabIndex = value ? 0 : -1;
+            } //enabled set
+        }, //enabled
     });
 
 }; //ElectronAnchorButton

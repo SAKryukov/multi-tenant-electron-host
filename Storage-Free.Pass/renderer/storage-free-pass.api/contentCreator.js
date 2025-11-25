@@ -95,8 +95,7 @@ const createContent = () => {
         elementSet.anchorUser.append(anchorUserSpan);
         const anchorUserSpacing = document.createTextNode(" ");
         const userLabel = document.createElement("label");
-        userLabel.accessKey = "N";
-        userLabel.innerHTML = "<u>N</u>ame:";
+        userLabel.innerHTML = "Name:";
         elementSet.table.rows[1].cells[0].appendChild(anchorUserSpan);
         elementSet.table.rows[1].cells[0].appendChild(anchorUserSpacing);
         elementSet.table.rows[1].cells[0].appendChild(userLabel);
@@ -115,8 +114,7 @@ const createContent = () => {
         elementSet.table.rows[3].cells[0].textContent = "Selection:";
         // row 4:
         const passwordLabel = document.createElement("label");
-        passwordLabel.accessKey = "P";
-        passwordLabel.innerHTML = "<u>P</u>assword:";
+        passwordLabel.innerHTML = "Password:";
         elementSet.table.rows[4].cells[0].appendChild(passwordLabel);
         elementSet.passwordToClipboardButton = document.createElement("button");
         elementSet.passwordToClipboardButton.title = "Copy to clipboard";
@@ -143,6 +141,8 @@ const createContent = () => {
         elementSet.helpAboutAnchor = new ElectronAnchorButton();
         elementSet.helpAnchor.text = "Help";
         elementSet.helpAboutAnchor.text = "About";
+        elementSet.helpAnchor.title = "Ctrl+F1";
+        elementSet.helpAboutAnchor.title = "F1";
         footerContent.appendChild(span);
         footerContent.appendChild(elementSet.copyrightElement);
         elementSet.helpAnchor.append(footerContent);

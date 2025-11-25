@@ -115,7 +115,6 @@
                 const copyrightElement = elementSet.copyrightElement;
                 const versionElement = elementSet.versionPlaceholder;
                 const userMetadataPlaceholder = elementSet.userMetadataPlaceholder;
-                document.title = definitionSet.title;
                 elementSet.helpAnchor.customHandler = () =>
                     window.bridgeUI.showInBrowserHelp();
                 elementSet.helpAboutAnchor.customHandler = () => 

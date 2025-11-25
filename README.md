@@ -6,11 +6,13 @@ A tenant application has dual usage, as a separate Electron application or as a 
 
 The solution features cross-platform packaging and multi-process debugging and refined UI conceptions: culture-independent menus with the unified subscription based on *command sets*, hot keys, replacement for HTML *access keys*, hints used as the replacement for HTML titles.
 
-Presently, there are two tenant applications:
+Presently, there are three tenant applications:
 
 * Conceptual Electron Editor is a proof-of-concept text editor that showcases interesting techniques related to Electron, Node.js, and Web technologies. It includes a plugin architecture, macros, refined search and replace conceptions.
 
 * Personal Database is a single-file database featuring dynamic schemas.
+
+* [Storage-Free Pass](https://sakryukov.github.io/publications/2022-12-06.No-need-to-Store-Encrypt-or-Memorize-Passwords!.html) is a password generator that combines master passwords with non-secret account information (seed) to create strong passwords. Passwords are not stored anywhere; they are generated every time they are used.
 
 [Command Line](https://github.com/SAKryukov/conceptual-electron-editor/blob/main/docs/command-line.md)
 

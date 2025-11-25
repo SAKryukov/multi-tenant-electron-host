@@ -141,7 +141,7 @@ const ui = (accountData, effectivePasswordGenerator, metadata) => {
         elements.userInfo.clipboardButton.onclick = () => {
             clipboardCopyHandler(() => inputData.accounts[accountIndexMap[elements.accountSelector.selectedIndex]].display.user.name);
         }; //elements.userInfo.clipboardButton.onclick
-        elements.password.visibilityButton.addEventListener("click", () => {
+        elements.password.visibilityButton.addEventListener(definitionSet.events.click, () => {
             showPassword();
         }); //elements.password.visibilityButton on click        
         populate();
@@ -153,6 +153,12 @@ const ui = (accountData, effectivePasswordGenerator, metadata) => {
             elements.accountSelector.selectedIndex = 0;
             refresh(0);
         } //if
+        window.addEventListener(definitionSet.events.keydown, event => {
+            if (definitionSet.isShortcut(event, definitionSet.menuShortcuts.helpAbout))
+                showMessage(definitionSet.aboutDialog(metadata, definitionSet.paths.image));
+            if (definitionSet.isShortcut(event, definitionSet.menuShortcuts.helpDocument))
+                window.bridgeUI.showInBrowserHelp();
+        }); //window.addEventListener
     }; //main
 
     main(accountData);

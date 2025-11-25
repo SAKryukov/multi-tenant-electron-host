@@ -19,7 +19,7 @@
       "ሠሡሢሣሤሥሦሧረሩሪራሬርሮሯሰሱሲሳሴስሶሷሸሹሺሻሼሽሾሿ";
 
    const groups = {
-      no: String.fromCodePoint(0x26D4), //String.fromCodePoint(0x1F590),
+      no: String.fromCodePoint(0x26D4),
       dollar: String.fromCodePoint(0x1F4B2),
       work: String.fromCodePoint(0x2692),
       software: String.fromCodePoint(0x1F4BB),
@@ -72,7 +72,7 @@
             seed: "My work 2022/07/16",
             selection: { characterRepertoire: strongCharacterRepertoire, inserts: { value: "1Fb", position: 4 }, start: 0, length: 16, shift: 0 }
          },
-         display: { group: groups.work, name: "My work", user: { name: "employee", url: "./account-info/work.html" } },
+         display: { group: groups.work, name: "My work", user: { name: "Employee", url: "./account-info/work.html" } },
       },
 
       {
@@ -85,23 +85,23 @@
       {
          identity: {
             seed: "Car repair shop 2025/1/15",
-            selection: { characterRepertoire: strongCharacterRepertoire, inserts: { value: "1Fb", position: 4 }, start: 0, length: 16, shift: 0 }
+            selection: { characterRepertoire: strongCharacterRepertoire, inserts: { value: "5kF", position: 4 }, start: 0, length: 16, shift: 0 }
          },
-         display: { group: groups.car, name: "Car Repair Shop", user: { name: "Insured", url: "./account-info/car.html" } },
+         display: { group: groups.car, name: "Car Repair Shop", user: { name: "Customer", url: "./account-info/car.html" } },
       },
       {
          identity: {
             seed: "Unvalid user info",
-            selection: { characterRepertoire: strongCharacterRepertoire, inserts: { value: "1Fb", position: 4 }, start: 0, length: 16, shift: 0 }
+            selection: { characterRepertoire: strongCharacterRepertoire, inserts: { value: "4bG", position: 4 }, start: 0, length: 16, shift: 0 }
          },
-         display: { group: groups.no, name: "Invalid User Demo (click on User)", user: { name: "employee", url: "./account-info/invalid-user.html" } },
+         display: { group: groups.no, name: "Invalid User Demo (click on User)", user: { name: "Employee", url: "./account-info/invalid-user.html" } },
       },
       {
          identity: {
             seed: "Missing user info",
-            selection: { characterRepertoire: strongCharacterRepertoire, inserts: { value: "1Fb", position: 4 }, start: 0, length: 16, shift: 0 }
+            selection: { characterRepertoire: strongCharacterRepertoire, inserts: { value: "9tL", position: 4 }, start: 0, length: 16, shift: 0 }
          },
-         display: { group: groups.no, name: "Missing User Info Demo", user: { name: "employee", url: "" } },
+         display: { group: groups.no, name: "Missing User Info Demo", user: { name: "Missing", url: 0 } },
       },
    ]; // accounts
 

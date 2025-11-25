@@ -35,6 +35,12 @@ or
 electron . :Personal.Database <data_file>
 ~~~
 
+or
+
+~~~
+electron . :Storage-Free.Pass -accounts:accounts.js -crypto:optional-custom-crypto-script.js
+~~~
+
 ### As the Packaged Application
 
 If the application is packaged, the executable file is `mt-host` (`mt-host.exe` for Windows). As the tenant applications use a considerable portion of shared code, they cannot be executed on the packaged form. If someone packages a separate tenant application, the executable will show an error message with the explanation of the recommended ways of execution, and then terminate.
@@ -57,6 +63,12 @@ or
 mt-host :Personal.Database <data-file>
 ~~~
 
+or
+
+~~~
+mt-host :Storage-Free.Pass -accounts:accounts.js -crypto:optional-custom-crypto-script.js
+~~~
+
 If a tenant application name is not specified, a default application will be started:
 
 ~~~
@@ -64,4 +76,3 @@ mt-host <data-file>
 ~~~
 
 In this case, the list of available tenant applications is shown in a console.
-

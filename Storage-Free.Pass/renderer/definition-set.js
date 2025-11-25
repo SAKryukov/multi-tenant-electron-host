@@ -16,6 +16,7 @@ const definitionSet = (() => {
         }, //elements
         cssClasses: {
             anchor: 0,
+            disabled: 0,
         }, //cssClasses
         pluginErrors: {
             missingOption: optionKey =>

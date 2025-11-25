@@ -29,6 +29,7 @@ const extensibleDefinitionSet = (() => {
             fileSaveAs: { key: "KeyS", prefix: ["ctrlKey", "shiftKey"] },
             fileSaveExisting: { key: "KeyS", prefix: ["ctrlKey"] },
             helpAbout: { key: "F1", prefix: [] },
+            helpDocument: { key: "F1", prefix: ["ctrlKey"] },
         }, //menuShortcuts
         isShortcut: (event, shortcut) => {
             if (!(event.code == shortcut.key || shortcut.keys?.includes(event.code)))
