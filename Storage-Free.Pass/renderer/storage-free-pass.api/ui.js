@@ -117,11 +117,9 @@ const ui = (accountData, effectivePasswordGenerator, metadata) => {
             value.display.user.name : value.display.hiddenUserAuthenticationName;
         elements.seed.textContent = value.identity.seed;
         elements.positions.textContent = `${value.identity.selection.start} ${value.identity.selection.length} ${value.identity.selection.shift}`;
-        elements.anchorUser.enabled = !!value.display.user.url;
-        if (value.display.user.url)
-            elements.anchorUser.filename = value.display.user.url;
-        else
-            elements.anchorUser.filename = null;
+        const userUrlDefined = !!value.display.user.url;
+        elements.anchorUser.enabled = userUrlDefined;
+        elements.anchorUser.filename = userUrlDefined ? value.display.user.url : null;
     }; //refresh
 
     const main = () => {

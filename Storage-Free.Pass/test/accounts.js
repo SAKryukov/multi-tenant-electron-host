@@ -101,7 +101,7 @@
             seed: "Missing user info",
             selection: { characterRepertoire: strongCharacterRepertoire, inserts: { value: "9tL", position: 4 }, start: 0, length: 16, shift: 0 }
          },
-         display: { group: groups.no, name: "Missing User Info Demo", user: { name: "Missing", url: 0 } },
+         display: { group: groups.no, name: "Missing User Info Demo", user: { name: "Missing" } },
       },
    ]; // accounts
 
@@ -110,7 +110,7 @@
          seed: "ERROR! define seed!",
          selection: { characterRepertoire: strongCharacterRepertoire, start: 0, length: defaultPasswordLength, shift: 0, }
       },
-      display: { name: "Incomplete account", url: "https://www.undefined.account", user: { name: "unknown user", url: new String() } }
+      display: { name: "Incomplete account", user: { name: "unknown user" } }
    };
 
    return { metadata, accounts, default: defaultAccount };

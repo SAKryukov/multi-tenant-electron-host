@@ -31,21 +31,15 @@ const utility = {
         for (let index in structure)
             if (structure[index] && structure[index] instanceof Object)
                 structure[index] = this.createReadonly(structure[index]);
-        return new Proxy(structure, { set: () => { } });
+        return new Proxy(structure, { set: () => { }, });
     }, //createReadonly
 
     clipboard: {
-        setup: function() {
-            if (this.clipboardTarget) return;
-            this.clipboardTarget = document.createElement("input");            
-        }, //setup
-        copy: function(text) {
-            this.setup();
-            document.body.appendChild(this.clipboardTarget);
-            this.clipboardTarget.value = text;
-            this.clipboardTarget.select();
-            document.execCommand("copy");
-            document.body.removeChild(this.clipboardTarget);
+        copy: text => {
+            const type = "text/plain";
+            const clipboardItemData = { [type]: text, };
+            const clipboardItem = new ClipboardItem(clipboardItemData);
+            navigator.clipboard.write([clipboardItem]);            
         } //copy
     }, //clipboard
 
