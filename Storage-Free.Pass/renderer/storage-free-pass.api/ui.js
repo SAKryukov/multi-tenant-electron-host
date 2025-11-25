@@ -98,14 +98,6 @@ const ui = (accountData, effectivePasswordGenerator, metadata) => {
                 elements.accountSelector.size = itemLength;
             elements.optimizeWidths(true);
         }
-        { //populate metadata:
-            if (!inputData.metadata.title) return;
-            const accountSetInfo = inputData.metadata.version ? 
-                `${inputData.metadata.title}${String.fromCodePoint(0x2003)}v.${String.fromCodePoint(0x2009)}${inputData.metadata.version}`
-                :
-                inputData.metadata.title;
-            elements.accountSelector.title += `\n\nAccount set:${String.fromCodePoint(0x2003)}${accountSetInfo}`;
-        }
     }; //populate
 
     const refresh = accountIndex => {

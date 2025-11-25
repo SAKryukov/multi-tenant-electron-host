@@ -138,7 +138,6 @@ const createContent = () => {
         const footer = document.createElement("footer");
         const footerContent = document.createElement("small");
         const span = document.createElement("span");
-        span.innerHTML = "Copyright &copy; ";
         elementSet.copyrightElement = document.createElement("span");
         elementSet.helpAnchor = new ElectronAnchorButton();
         elementSet.helpAboutAnchor = new ElectronAnchorButton();

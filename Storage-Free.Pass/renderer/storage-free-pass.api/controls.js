@@ -120,11 +120,9 @@
                     window.bridgeUI.showInBrowserHelp();
                 elementSet.helpAboutAnchor.customHandler = () => 
                     showMessage(definitionSet.aboutDialog(metadata, definitionSet.paths.image), elementSet.helpAboutAnchor);
-                mainTitleElement.textContent = definitionSet.title;
-                mainTitleElement.title =
-                    definitionSet.formats.mainTitleTooltip(definitionSet.description, definitionSet.version, this.inputData.metadata.title, this.inputData.metadata.version);
-                copyrightElement.textContent = definitionSet.copyright;
-                versionElement.textContent = utility.showPartialVersion(definitionSet.version, 2);
+                mainTitleElement.textContent = metadata.package.description;
+                    copyrightElement.innerHTML = metadata.package.metadata.copyright;
+                versionElement.textContent = utility.showPartialVersion(metadata.applicationVersion, 2);
                 if (this.inputData.metadata.title) {
                     elementSet.userMetadataSeparatorPlaceholder.style.display = "inline";
                     userMetadataPlaceholder.textContent = this.inputData.metadata.title;
