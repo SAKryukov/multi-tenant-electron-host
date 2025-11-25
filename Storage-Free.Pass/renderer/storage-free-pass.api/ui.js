@@ -153,9 +153,9 @@ const ui = (accountData, effectivePasswordGenerator, metadata) => {
         } //if
         window.addEventListener(definitionSet.events.keydown, event => {
             if (definitionSet.isShortcut(event, definitionSet.menuShortcuts.helpAbout))
-                showMessage(definitionSet.aboutDialog(metadata, definitionSet.paths.image));
-            if (definitionSet.isShortcut(event, definitionSet.menuShortcuts.helpDocument))
-                window.bridgeUI.showInBrowserHelp();
+                elements.helpAboutHandler();
+            else if (definitionSet.isShortcut(event, definitionSet.menuShortcuts.helpDocument))
+                elements.helpHandler();
         }); //window.addEventListener
     }; //main
 

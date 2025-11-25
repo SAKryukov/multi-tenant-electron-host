@@ -1,5 +1,9 @@
 {
-  "copyright": "Copyright &copy; 2020, 2025 by Sergey A Kryukov",
-  "executable-file-name": "storage-free-pass",
-  "documentation": "renderer/help.html"
+    "copyright": "Copyright &copy; 2020, 2025 by Sergey A Kryukov",
+    "executable-file-name": "storage-free-pass",
+    "documentation": "renderer/help.html",
+    "publications": [
+        "https://sakryukov.github.io/publications/2022-12-06.No-need-to-Store-Encrypt-or-Memorize-Passwords!.html",
+        "https://www.codeproject.com/articles/No-need-to-Store-Encrypt-or-Memorize-Passwords#comments-section"
+    ]
 }

@@ -25,7 +25,7 @@
       software: String.fromCodePoint(0x1F4BB),
       wiki: String.fromCodePoint(0x1F4DA),
       car: String.fromCodePoint(0x1F698),
-   }; //groupCharacters
+   }; //groups
 
    const metadata = {
       title: `User Data Sample ${String.fromCodePoint(0x1f9e1)}`, version: "1.0.0",

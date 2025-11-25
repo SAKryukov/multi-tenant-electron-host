@@ -137,16 +137,22 @@ const createContent = () => {
         const footerContent = document.createElement("small");
         const span = document.createElement("span");
         elementSet.copyrightElement = document.createElement("span");
-        elementSet.helpAnchor = new ElectronAnchorButton();
-        elementSet.helpAboutAnchor = new ElectronAnchorButton();
-        elementSet.helpAnchor.text = "Help";
-        elementSet.helpAboutAnchor.text = "About";
-        elementSet.helpAnchor.title = "Ctrl+F1";
-        elementSet.helpAboutAnchor.title = "F1";
+        elementSet.helpButton = new ElectronAnchorButton();
+        elementSet.helpAboutButton = new ElectronAnchorButton();
+        elementSet.helpSourceCodeButton = new ElectronAnchorButton();
+        elementSet.helpArticleButton = new ElectronAnchorButton();
+        elementSet.helpButton.text = "Help";
+        elementSet.helpAboutButton.text = "About";
+        elementSet.helpSourceCodeButton.text = "Source Code";
+        elementSet.helpArticleButton.text = "Original Publication"
+        elementSet.helpButton.title = "Ctrl+F1";
+        elementSet.helpAboutButton.title = "F1";
         footerContent.appendChild(span);
         footerContent.appendChild(elementSet.copyrightElement);
-        elementSet.helpAnchor.append(footerContent);
-        elementSet.helpAboutAnchor.append(footerContent);
+        elementSet.helpButton.append(footerContent);
+        elementSet.helpAboutButton.append(footerContent);
+        elementSet.helpSourceCodeButton.append(footerContent);
+        elementSet.helpArticleButton.append(footerContent);
         footer.appendChild(footerContent);
         document.body.appendChild(footer);
     })(); //footer

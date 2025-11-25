@@ -15,6 +15,7 @@ const ipcChannel = {
     metadata: {
         metadataPush: 0,
         source: 0, // show application source code in a default external browser
+        publication: 0, // show publication by index, if any
     }, //metadata
     ui: {
         fullscreen: 0,

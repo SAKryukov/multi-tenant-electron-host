@@ -109,16 +109,25 @@
                 }    
                 this.masterPassword.style.height = utility.styleSize(maxButtonSize);
             }, //adjustSizes
+
+            helpHandler: () =>
+                window.bridgeUI.showInBrowserHelp(),
+            helpAboutHandler: () => 
+                showMessage(definitionSet.aboutDialog(metadata, definitionSet.paths.image)),
             
             processMeta: function(elementSet) {
                 const mainTitleElement = elementSet.titlePlaceholder;
                 const copyrightElement = elementSet.copyrightElement;
                 const versionElement = elementSet.versionPlaceholder;
                 const userMetadataPlaceholder = elementSet.userMetadataPlaceholder;
-                elementSet.helpAnchor.customHandler = () =>
-                    window.bridgeUI.showInBrowserHelp();
-                elementSet.helpAboutAnchor.customHandler = () => 
-                    showMessage(definitionSet.aboutDialog(metadata, definitionSet.paths.image), elementSet.helpAboutAnchor);
+                elementSet.helpButton.customHandler = () =>
+                    this.helpHandler();
+                elementSet.helpAboutButton.customHandler = () => 
+                    this.helpAboutHandler();
+                elementSet.helpSourceCodeButton.customHandler = () =>
+                    window.bridgeMetadata.showSource();
+                elementSet.helpArticleButton.customHandler = () =>
+                    window.bridgeMetadata.showPublication(0);
                 mainTitleElement.textContent = metadata.package.description;
                     copyrightElement.innerHTML = metadata.package.metadata.copyright;
                 versionElement.textContent = utility.showPartialVersion(metadata.applicationVersion, 2);

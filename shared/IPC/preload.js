@@ -82,6 +82,8 @@ contextBridge.exposeInMainWorld(bridgeAPI.bridgeMetadata, {
     pushedMetadata: () => metadata,
     showSource: () =>
         ipcRenderer.send(ipcChannel.metadata.source),
+    showPublication: index =>
+        ipcRenderer.send(ipcChannel.metadata.publication, index),
 }); //contextBridge.exposeInMainWorld
 
 contextBridge.exposeInMainWorld(bridgeAPI.bridgeUI, {

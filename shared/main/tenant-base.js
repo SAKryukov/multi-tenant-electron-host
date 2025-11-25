@@ -77,6 +77,13 @@ const tenantBase = {
                         shell.openExternal(source);
                 } //if
             }); //metadata.source
+            ipcMain.on(ipcChannel.metadata.publication, (_event, index) => {
+                if (!applicationPackage) return;
+                const publications = applicationPackage.metadata.publications;
+                if (!publications) return;
+                if (!publications[index]) return;
+                shell.openExternal(publications[index]);
+            }), //metadata.publication
             ipcMain.on(ipcChannel.ui.showExternalUri, (_event, uri) => {
                 const promise = shell.openExternal(uri);
                 promise.then(() => {}, error =>
@@ -94,6 +101,7 @@ const tenantBase = {
                     window.webContents.send(ipcChannel.ui.openLocalFile, normalizedPath, error.message));
             }), //openLocalFile
             ipcMain.on(ipcChannel.ui.showInBrowserHelp, (_event) => {
+                if (!applicationPackage) return;
                 const documentation = applicationPackage.metadata.documentation;
                 if (!documentation) return;
                 const fullPath = path.join(app.getAppPath(), tenantRoot, documentation);
