@@ -43,7 +43,7 @@ const pluginHandler = (() => {
     } //formatIssues
 
     const processPlugin = (option, isOptional) => {
-        if (option.isMissing && isOptional)
+        if (option.isMissing && !isOptional)
             return null;
         if (option.isMissing)
             return issues.push({ classified: issueClassifier.missing, optionKey: option.key });
@@ -64,16 +64,14 @@ const pluginHandler = (() => {
     const processAccounts = option => 
         accountSet = processPlugin(option);
     const processCrypto = option => 
-        crypto = processPlugin(option);
-    const processAccountDocumentation = option =>
-        accountDocumentation = processPlugin(option, true);
+        crypto = processPlugin(option) ?? crypto;
 
     const pluginHandler = {
         load: plugins => {
             window.onerror = (message, source, line, column, error) =>
                 lastError = { message, source, line, column, error };
             processAccounts(plugins.accounts);
-            processCrypto(plugins.crypto, true); // not documentation, optional
+            processCrypto(plugins.crypto, true); // optional
             window.onerror = null;
         }, //load
     }; //pluginHandler
