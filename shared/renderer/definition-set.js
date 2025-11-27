@@ -98,7 +98,7 @@ const extensibleDefinitionSet = (() => {
             show: function () {
                 const electron = `<a href="${this.electron}">Electron</a>`;
                 document.body.innerHTML = `<aside>This HTML only works under ${electron}</aside>
-                <p><a href="${this.url}">Conceptual Electron Editor</a>, ${this.copyright}</p>`;
+                <p><a href="${this.url}">Multi-Tenant Electron Host</a>, ${this.copyright}</p>`;
                 window.stop();
             }, //show
         }, //standaloneExecutionProtection

@@ -6,7 +6,8 @@ window.addEventListener(definitionSet.events.DOMContentLoaded, async () => {
         window.bridgeUI.subscribeToApplicationClose(() => {
             return true;
         });
-    }; //window.bridgePlugin.subscribeToPlugin
+    } else
+        return definitionSet.standaloneExecutionProtection.show();
 
     if (window.bridgePlugin)
         window.bridgePlugin.subscribeToPlugin(async plugins => {
